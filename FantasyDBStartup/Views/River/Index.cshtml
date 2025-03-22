@@ -1,0 +1,12 @@
+@model IEnumerable<FantasyDB.ViewModels.RiverViewModel>
+
+<h2>River List</h2>
+
+@await Html.PartialAsync("_EntityTable", Model.Cast<object>())
+
+
+<!-- Responsive Table with Scroll -->
+<div class="table-responsive">
+    <table class="table table-bordered table-striped text-nowrap" id="characterTable">
+    </table>
+</div>

@@ -1,0 +1,26 @@
+﻿@using System.Reflection
+@using FantasyDB.Models
+
+@{
+    var modelAssembly = AppDomain.CurrentDomain.GetAssemblies()
+        .FirstOrDefault(a => a.GetName().Name == "FantasyDB");
+
+    var entityTypes = modelAssembly?.GetTypes()
+        .Where(t => (t.Namespace != null && t.Namespace.Contains("FantasyDB.Models"))
+                    && t.IsClass
+                    && !t.IsAbstract
+                    && t.GetProperties().Any(p => p.Name.Equals("Id", StringComparison.OrdinalIgnoreCase)))
+        ?? Enumerable.Empty<Type>();
+}
+
+<h1>Fantasy Database</h1>
+<p>Browse and manage your fantasy world data:</p>
+
+<ul class="list-group"></ul>
+    @foreach (var type in entityTypes)
+    {
+        <li class="list-group-item">
+            <a href="@Url.Action("Index", type.Name)">Manage @type.Name</a>
+        </li>
+
+    }

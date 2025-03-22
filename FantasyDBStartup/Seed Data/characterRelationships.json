@@ -1,0 +1,121 @@
+[
+    {
+        "Character1Id": 1,
+        "Character2Id": 2,
+        "RelationshipType": "Friend",
+        "RelationshipDynamic": "Survival partners, fiercely loyal to each other",
+        "SnapshotId": 1
+    },
+    {
+        "Character1Id": 1,
+        "Character2Id": 3,
+        "RelationshipType": "Mentor",
+        "RelationshipDynamic": "Grizz was a father figure to Arana, taught her survival",
+        "SnapshotId": 1
+    },
+    {
+        "Character1Id": 2,
+        "Character2Id": 3,
+        "RelationshipType": "Mentor",
+        "RelationshipDynamic": "Grizz taught Liam everything he knows about survival",
+        "SnapshotId": 1
+    },
+    {
+        "Character1Id": 1,
+        "Character2Id": 4,
+        "RelationshipType": "Enemy",
+        "RelationshipDynamic": "Hates Aryn, a noble's daughter who bullies others",
+        "SnapshotId": 1
+    },
+    {
+        "Character1Id": 1,
+        "Character2Id": 5,
+        "RelationshipType": "Enemy",
+        "RelationshipDynamic": "Master Harro despises Arana for being a street orphan",
+        "SnapshotId": 1
+    },
+    {
+        "Character1Id": 1,
+        "Character2Id": 6,
+        "RelationshipType": "Mentor",
+        "RelationshipDynamic": "Brother Rhyn sees potential in Arana, protects her",
+        "SnapshotId": 1
+    },
+    {
+        "Character1Id": 1,
+        "Character2Id": 7,
+        "RelationshipType": "Enemy",
+        "RelationshipDynamic": "Inquisitor Varick hunts Arana as a threat to the Church",
+        "SnapshotId": 1
+    },
+    {
+        "Character1Id": 4,
+        "Character2Id": 5,
+        "RelationshipType": "Father-Son",
+        "RelationshipDynamic": "Tense, filled with expectation and disappointment",
+        "SnapshotId": 1
+    },
+    {
+        "Character1Id": 4,
+        "Character2Id": 6,
+        "RelationshipType": "Devoted Follower",
+        "RelationshipDynamic": "Prince Edric sees The High Flame as a prophet of truth",
+        "SnapshotId": 1
+    },
+    {
+        "Character1Id": 5,
+        "Character2Id": 6,
+        "RelationshipType": "Political Allies",
+        "RelationshipDynamic": "King Alistair and The High Flame maintain an uneasy alliance",
+        "SnapshotId": 1
+    },
+    {
+        "Character1Id": 1,
+        "Character2Id": 4,
+        "RelationshipType": "Enemy",
+        "RelationshipDynamic": "Arana and Prince Edric are fated rivals, opposite sides of the war",
+        "SnapshotId": 1
+    },
+    {
+        "Character1Id": 1,
+        "Character2Id": 6,
+        "RelationshipType": "Sworn Enemy",
+        "RelationshipDynamic": "The High Flame sees Arana as the greatest blasphemy against the Divine",
+        "SnapshotId": 1
+    },
+    {
+        "Character1Id": 7,
+        "Character2Id": 1,
+        "RelationshipType": "Complicated",
+        "RelationshipDynamic": "Siva (Lia) is spying on Arana but starts to genuinely care for her",
+        "SnapshotId": 1
+    },
+    {
+        "Character1Id": 7,
+        "Character2Id": 6,
+        "RelationshipType": "Undercover Operative",
+        "RelationshipDynamic": "Siva pretends to be a loyal follower of the High Flame",
+        "SnapshotId": 1
+    },
+    {
+        "Character1Id": 8,
+        "Character2Id": 4,
+        "RelationshipType": "Mentor",
+        "RelationshipDynamic": "Master Harro trained Prince Edric to be ruthless and disciplined",
+        "SnapshotId": 1
+    },
+    {
+        "Character1Id": 9,
+        "Character2Id": 1,
+        "RelationshipType": "Bullying Rival",
+        "RelationshipDynamic": "Aryn enjoys tormenting Arana, seeing her as a filthy street rat",
+        "SnapshotId": 1
+    },
+    {
+        "Character1Id": 10,
+        "Character2Id": 1,
+        "RelationshipType": "Hunter and Prey",
+        "RelationshipDynamic": "Inquisitor Varick is obsessed with capturing and executing Arana",
+        "SnapshotId": 1
+    }
+]

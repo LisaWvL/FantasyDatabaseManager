@@ -1,0 +1,10 @@
+[
+    {
+        "Name": "Jarunn",
+        "DepthMeters ": 10,
+        "WidthMeters ": 10,
+        "FlowDirection ": "East to West, Splits north to south in Sovalis",
+		"SourceLocationId ": null,
+        "DestinationLocationId ": null
+    }
+]

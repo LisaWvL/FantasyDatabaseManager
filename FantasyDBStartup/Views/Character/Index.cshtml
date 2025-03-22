@@ -1,0 +1,14 @@
+@model IEnumerable<FantasyDB.ViewModels.CharacterViewModel>
+ “
+<!DOCTYPE html>
+”
+<h2>Character List</h2>
+
+@await Html.PartialAsync("_EntityTable", Model.Cast<object>())
+
+
+<!-- Responsive Table with Scroll -->
+<div class="table-responsive">
+    <table class="table table-bordered table-striped text-nowrap" id="characterTable">
+    </table>
+</div>

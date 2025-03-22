@@ -1,0 +1,12 @@
+@model IEnumerable<FantasyDB.ViewModels.CalendarViewModel>
+
+<h2>Calendar List</h2>
+
+@await Html.PartialAsync("_EntityTable", Model.Cast<object>())
+
+<h2>Calendar List</h2>
+<!-- Responsive Table with Scroll -->
+<div class="table-responsive">
+    <table class="table table-bordered table-striped text-nowrap" id="characterTable">
+    </table>
+</div>

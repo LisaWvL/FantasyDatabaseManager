@@ -1,0 +1,42 @@
+[
+    {
+        "Name": "The Church of Divine Light",
+        "Alias": "The Holy Order",
+        "FounderId": null,
+        "LeaderId": null,
+        "FoundingYear": 1023,
+        "HQLocationId": null,
+        "Magic": "Divine",
+        "SnapshotId": null
+    },
+    {
+        "Name": "The Monarchy",
+        "Alias": "The Royal Court",
+        "FounderId": null,
+        "LeaderId": null,
+        "FoundingYear": 1023,
+        "HQLocationId": null,
+        "Magic": "Divine",
+        "SnapshotId": null
+    },
+    {
+        "Name": "The Shadows of Dawn",
+        "Alias": "The Hidden Rebellion",
+        "FounderId": null,
+        "LeaderId": null,
+        "FoundingYear": 1023,
+        "HQLocationId": null,
+        "Magic": "Divine",
+        "SnapshotId": null
+    },
+    {
+        "Name": "The Order of Flame",
+        "Alias": "The Purging Fire",
+        "FounderId": null,
+        "LeaderId": null,
+        "FoundingYear": 1023,
+        "HQLocationId": null,
+        "Magic": "Divine",
+        "SnapshotId": null
+    }
+]

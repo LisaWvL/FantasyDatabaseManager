@@ -1,0 +1,32 @@
+{
+    "eraa": [
+        {
+            "era": "The Unity",
+            "start_year": -2000,
+            "end_year": -1000,
+            "magic_system": "Every magician had the ability to speak and listen to the gods.",
+            "magic_status": "Energy was in balance."
+        },
+        {
+            "era": "The Shift",
+            "start_year": -1000,
+            "end_year": -800,
+            "magic_system": "Magicians were either Speakers or Listeners; they could change paths.",
+            "status": "Magic remained balanced."
+        },
+        {
+            "era": "The Fracture",
+            "start_year": -800,
+            "end_year": -600,
+            "magic_system": "Speakers and Listeners were now fixed paths; Wild Magicians emerged using true names of the gods.",
+            "status": "Magic remained balanced, but separation was irreversible."
+        },
+        {
+            "era": "The Rift",
+            "start_year": -600,
+            "end_year": -500,
+            "magic_system": "Speakers became Divine Magicians, Listeners became Wild Magicians. Mixed bloodlines resulted in stillborns or madness.",
+            "status": "Magic began to destabilize."
+        }
+    ]
+}

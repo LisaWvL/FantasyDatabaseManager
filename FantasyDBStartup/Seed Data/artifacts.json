@@ -1,0 +1,16 @@
+[
+    {
+        "name": "Caelan's Gauntlet",
+        "Origin": "Forged by the Divine Smiths of Sovalis",
+        "effects": "Grants immense strength and divine protection.",
+        "OwnerId": null,
+        "SnapshotId": null
+    },
+    {
+        "name": "Thalaa's Tears",
+        "origin": "Crystallized remnants of an ancient goddess's sorrow.",
+        "effects": "Restores health and vitality when worn.",
+        "OwnerId": null,
+        "SnapshotId": null
+    }
+]

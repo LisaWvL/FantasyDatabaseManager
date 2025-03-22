@@ -1,0 +1,136 @@
+﻿@using System.Reflection
+@model IEnumerable<object>
+
+@{
+    var entityName = ViewData["CurrentEntity"]?.ToString() ?? "Entity";
+}
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped text-nowrap">
+        <thead class="table-dark">
+            <tr>
+                @if (Model.Any())
+                {
+                    var firstItem = Model.First();
+                    foreach (var prop in firstItem.GetType().GetProperties())
+                    {
+                        if (prop.Name.EndsWith("Id") && prop.Name != "Id")
+                            continue;
+
+                        <th style="min-width: 150px;">@prop.Name</th>
+                    }
+                    <th style="min-width: 180px;">Actions</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var itemId = item.GetType().GetProperty("Id")?.GetValue(item)?.ToString() ?? "0";
+                <tr data-id="@itemId">
+                    @foreach (var prop in item.GetType().GetProperties())
+                    {
+                        var value = prop.GetValue(item);
+                        <td>
+                            @if (prop.Name.EndsWith("Name") && prop.Name != "Name")
+                            {
+                                var listName = prop.Name.Replace("Name", "Id") + "List";
+                                var entityList = ViewData[listName] as IEnumerable<SelectListItem>;
+                                var idProperty = prop.Name.Replace("Name", "Id");
+                                var selectedId = item.GetType().GetProperty(idProperty)?.GetValue(item)?.ToString();
+
+                                <span class="view-mode">@(value?.ToString() ?? "Not Set")</span>
+
+                                <select class="edit-mode form-control dropdown" name="@idProperty" hidden>
+                                    <option value="">Select @prop.Name</option>
+                                    @if (entityList != null)
+                                    {
+                                        foreach (var entity in entityList)
+                                        {
+                                            if (entity.Value == selectedId)
+                                            {
+                                                <option value="@entity.Value" selected>@entity.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@entity.Value">@entity.Text</option>
+                                            }
+                                        }
+                                    }
+
+                                </select>
+                            }
+                            else
+                            {
+                                <span class="view-mode">@value</span>
+                                <input class="edit-mode form-control" name="@prop.Name" type="text" value="@value" hidden>
+                            }
+                        </td>
+
+                    }
+                    <td>
+                        <button class="btn btn-warning edit-btn view-mode">Edit</button>
+                        <button class="btn btn-success save-btn edit-mode" hidden>Save</button>
+                        <button class="btn btn-secondary cancel-btn edit-mode" hidden>Cancel</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const entity = "@ViewData["CurrentEntity"]" || window.location.pathname.split('/')[1];
+
+        document.querySelectorAll(".edit-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                const row = this.closest("tr");
+                row.querySelectorAll(".view-mode").forEach(el => el.hidden = true);
+                row.querySelectorAll(".edit-mode").forEach(el => el.hidden = false);
+            });
+        });
+
+        document.querySelectorAll(".cancel-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                const row = this.closest("tr");
+                row.querySelectorAll(".view-mode").forEach(el => el.hidden = false);
+                row.querySelectorAll(".edit-mode").forEach(el => el.hidden = true);
+            });
+        });
+
+        document.querySelectorAll(".save-btn").forEach(button => {
+            button.addEventListener("click", async function () {
+                const row = this.closest("tr");
+                const id = row.getAttribute("data-id");
+                const data = {};
+
+                row.querySelectorAll("input, select").forEach(input => {
+                    data[input.name] = input.value;
+                });
+
+                const isNew = id === "0" || !id;
+                const url = isNew
+                    ? `/${entity}/Create`
+                    : `/${entity}/Edit/${id}`;
+
+                try {
+                    const response = await fetch(url, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        alert("Failed to update.");
+                    }
+                } catch (err) {
+                    console.error("Error saving entity:", err);
+                    alert("Something went wrong.");
+                }
+            });
+        });
+    });
+</script>

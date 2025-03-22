@@ -1,0 +1,11 @@
+@model IEnumerable<FantasyDB.ViewModels.LanguageViewModel>
+
+<h2>Language List</h2>
+
+@await Html.PartialAsync("_EntityTable", Model.Cast<object>())
+
+<!-- Responsive Table with Scroll -->
+<div class="table-responsive">
+    <table class="table table-bordered table-striped text-nowrap" id="characterTable">
+    </table>
+</div>
