@@ -24,13 +24,6 @@ namespace FantasyDB.Models // ✅ Add this line
         public int? EventId { get; set; }
         public int? LanguageId { get; set; }
         public int? SnapshotId { get; set; }
-        // ✅ Computed Property for Display
-        [NotMapped]
-        public string DisplayName => $"{Type} - {Name}";
-
-        // ✅ Navigation Properties (Add These Back)
-        [NotMapped]
-        public virtual Location? ChildLocation { get; set; }
         [NotMapped]
         public virtual Location? ParentLocation { get; set; }
         [NotMapped]

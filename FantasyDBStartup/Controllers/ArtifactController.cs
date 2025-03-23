@@ -10,7 +10,6 @@ using FantasyDB.Models;
 using FantasyDB.ViewModels;
 using FantasyDB.Services; // Required for IDropdownService and BaseEntityController
 
-
 namespace FantasyDBStartup.Controllers
 {
     public class ArtifactController : Controller

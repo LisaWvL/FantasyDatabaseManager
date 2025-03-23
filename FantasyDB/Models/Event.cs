@@ -20,10 +20,8 @@ namespace FantasyDB.Models // ✅ Add this line
         public string? Purpose { get; set; }
         public int? SnapshotId { get; set; }
         public int? LocationId { get; set; }
-        // ✅ Navigation Properties (Add These Back)
-        [NotMapped]
+        // Navigation Properties
         public virtual Location? Location { get; set; }
-        [NotMapped]
         public virtual Snapshot? Snapshot { get; set; }
     }
 }

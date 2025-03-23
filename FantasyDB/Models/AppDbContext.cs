@@ -60,7 +60,6 @@ public class AppDbContext : DbContext
         base.OnModelCreating(modelBuilder);
     }
 
-
 private List<T> LoadSeedData<T>(string fileName)
     {
         var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "FantasyDBStartup/SeedData/", fileName);

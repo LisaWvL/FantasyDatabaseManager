@@ -15,7 +15,5 @@ namespace FantasyDB.ViewModels
         public int DaysPerWeek { get; set; } = 7;
         public int MonthsPerYear { get; set; } = 13;
         public int DaysPerYear { get; set; } = 365;
-        [NotMapped]
-        public string? EventName { get; set; } = string.Empty;// Readable Name
     }
 }

@@ -15,10 +15,6 @@ namespace FantasyDB.Models // ✅ Add this line
         public int DaysPerWeek { get; set; } = 7;
         public int MonthsPerYear { get; set; } = 13;
         public int DaysPerYear { get; set; } = 365;
-        public int? EventId { get; set; }
-        // ✅ Navigation Properties (Add These Back)
-        [NotMapped]
-        public virtual Event? Event { get; set; }
     }
 }
 
