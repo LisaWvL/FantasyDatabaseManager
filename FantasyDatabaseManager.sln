@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasyDB", "FantasyDB\Fant
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasyDBStartup", "FantasyDBStartup\FantasyDBStartup.csproj", "{DB38138A-3766-5B3B-476D-5148C1CD166C}"
 EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "worldbuilderapp", "WorldBuilderApp\worldbuilderapp.esproj", "{6E47F272-91D3-9FF1-917F-553FF098FA5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,24 @@ Global
 		{DB38138A-3766-5B3B-476D-5148C1CD166C}.Release|x64.Build.0 = Release|Any CPU
 		{DB38138A-3766-5B3B-476D-5148C1CD166C}.Release|x86.ActiveCfg = Release|Any CPU
 		{DB38138A-3766-5B3B-476D-5148C1CD166C}.Release|x86.Build.0 = Release|Any CPU
+		{6E47F272-91D3-9FF1-917F-553FF098FA5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E47F272-91D3-9FF1-917F-553FF098FA5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E47F272-91D3-9FF1-917F-553FF098FA5B}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{6E47F272-91D3-9FF1-917F-553FF098FA5B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6E47F272-91D3-9FF1-917F-553FF098FA5B}.Debug|x64.Build.0 = Debug|Any CPU
+		{6E47F272-91D3-9FF1-917F-553FF098FA5B}.Debug|x64.Deploy.0 = Debug|Any CPU
+		{6E47F272-91D3-9FF1-917F-553FF098FA5B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6E47F272-91D3-9FF1-917F-553FF098FA5B}.Debug|x86.Build.0 = Debug|Any CPU
+		{6E47F272-91D3-9FF1-917F-553FF098FA5B}.Debug|x86.Deploy.0 = Debug|Any CPU
+		{6E47F272-91D3-9FF1-917F-553FF098FA5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E47F272-91D3-9FF1-917F-553FF098FA5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E47F272-91D3-9FF1-917F-553FF098FA5B}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{6E47F272-91D3-9FF1-917F-553FF098FA5B}.Release|x64.ActiveCfg = Release|Any CPU
+		{6E47F272-91D3-9FF1-917F-553FF098FA5B}.Release|x64.Build.0 = Release|Any CPU
+		{6E47F272-91D3-9FF1-917F-553FF098FA5B}.Release|x64.Deploy.0 = Release|Any CPU
+		{6E47F272-91D3-9FF1-917F-553FF098FA5B}.Release|x86.ActiveCfg = Release|Any CPU
+		{6E47F272-91D3-9FF1-917F-553FF098FA5B}.Release|x86.Build.0 = Release|Any CPU
+		{6E47F272-91D3-9FF1-917F-553FF098FA5B}.Release|x86.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

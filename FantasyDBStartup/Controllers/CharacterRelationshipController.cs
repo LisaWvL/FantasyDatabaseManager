@@ -1,77 +1,88 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FantasyDB.Models;
 using FantasyDB.ViewModels;
-using FantasyDB.Services; // Required for IDropdownService and BaseEntityController
-
+using FantasyDB.Services;
+using AutoMapper;
 
 namespace FantasyDBStartup.Controllers
 {
+    [Route("api/character-relationship")]
     public class CharacterRelationshipController : BaseEntityController<CharacterRelationship, CharacterRelationshipViewModel>
     {
-        public CharacterRelationshipController(AppDbContext context, IDropdownService dropdowns)
-            : base(context, dropdowns)
+        private readonly IDropdownService _dropdownService;
+
+        public CharacterRelationshipController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
+            : base(context, mapper, dropdownService)
         {
+            _dropdownService = dropdownService;
         }
 
         protected override IQueryable<CharacterRelationship> GetQueryable()
         {
-            return _context.CharacterRelationship.AsNoTracking();
+            return _context.CharacterRelationship;
         }
 
-        protected override CharacterRelationshipViewModel MapToViewModel(CharacterRelationship r)
+        public override async Task<IActionResult> Index()
         {
-            return new CharacterRelationshipViewModel
-            {
-                Id = r.Id,
-                Character1Id = r.Character1Id,
-                Character2Id = r.Character2Id,
-                RelationshipType = r.RelationshipType,
-                RelationshipDynamic = r.RelationshipDynamic,
-                SnapshotId = r.SnapshotId,
+            var relationships = await _context.CharacterRelationship
+                .Include(r => r.Character1)
+                .Include(r => r.Character2)
+                .Include(r => r.Snapshot)
+                .AsNoTracking()
+                .ToListAsync();
 
-                Character1Name = _context.Character.FirstOrDefault(c => c.Id == r.Character1Id)?.Name,
-                Character2Name = _context.Character.FirstOrDefault(c => c.Id == r.Character2Id)?.Name,
-                SnapshotName = _context.Snapshot.FirstOrDefault(s => s.Id == r.SnapshotId)?.SnapshotName
-            };
+            var viewModels = _mapper.Map<List<CharacterRelationshipViewModel>>(relationships);
+
+            ViewData["CurrentEntity"] = "CharacterRelationship";
+            await LoadDropdownsForViewModel<CharacterRelationshipViewModel>();
+
+            return View("_EntityTable", viewModels);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int id, [FromBody] CharacterRelationshipViewModel viewModel)
         {
-            using var reader = new StreamReader(Request.Body);
-            var rawJson = await reader.ReadToEndAsync();
+            if (viewModel == null || id != viewModel.Id)
+            {
+                return BadRequest("Invalid request");
+            }
 
-            if (string.IsNullOrWhiteSpace(rawJson))
-                return BadRequest("No data received");
+            var characterRelationship = await _context.CharacterRelationship.FindAsync(id);
+            if (characterRelationship == null)
+            {
+                return NotFound();
+            }
 
-            var data = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(rawJson);
-            if (data == null) return BadRequest("Invalid JSON");
+            _mapper.Map(viewModel, characterRelationship);
 
-            var relationship = await _context.CharacterRelationship.FindAsync(id);
-            if (relationship == null) return NotFound();
-
-            relationship.Character1Id = ParseNullableInt(data.GetValueOrDefault("Character1Id"));
-            relationship.Character2Id = ParseNullableInt(data.GetValueOrDefault("Character2Id"));
-            relationship.SnapshotId = ParseNullableInt(data.GetValueOrDefault("SnapshotId"));
-            relationship.RelationshipType = data.GetValueOrDefault("RelationshipType");
-            relationship.RelationshipDynamic = data.GetValueOrDefault("RelationshipDynamic");
-
-            _context.CharacterRelationship.Update(relationship);
+            _context.Update(characterRelationship);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Character relationship updated" });
+            return Ok(new { message = "CharacterRelationship updated" });
         }
 
-        private int? ParseNullableInt(string? value)
+        [HttpDelete("{id}")]
+        public override async Task<IActionResult> Delete(int id)
         {
-            return int.TryParse(value, out var result) ? result : null;
+            var characterRelationship = await _context.CharacterRelationship.FindAsync(id);
+            if (characterRelationship == null)
+            {
+                return NotFound();
+            }
+
+            _context.CharacterRelationship.Remove(characterRelationship);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "CharacterRelationship deleted" });
+        }
+
+        public override async Task<IActionResult> Create([FromBody] CharacterRelationshipViewModel viewModel)
+        {
+            await LoadDropdownsForViewModel<CharacterRelationshipViewModel>();
+            return await base.Create(viewModel);
         }
     }
 }

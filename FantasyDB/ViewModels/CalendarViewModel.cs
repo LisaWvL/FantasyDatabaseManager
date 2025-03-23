@@ -5,11 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FantasyDB.Models;
+using FantasyDB.Services;
 
 namespace FantasyDB.ViewModels
 {
-    public class CalendarViewModel
+    public class CalendarViewModel : IViewModelWithId
     {
+        public int Id { get; set; }
         public string Weekdays { get; set; } = "Solrun, Lura Stellis Embra Umbrin Even Auro"; // Store weekdays as JSON
         public string Months { get; set; } = "Aurn, Brol, Chana, Drom, Eice, Fram, Gila, Heno, Irrst, Jart, Kwarm, Lehnd, Jespen"; // Store months as JSON
         public int DaysPerWeek { get; set; } = 7;

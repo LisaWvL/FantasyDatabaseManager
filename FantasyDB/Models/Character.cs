@@ -46,13 +46,9 @@ namespace FantasyDB.Models // ✅ Add this line
         public int? LanguageId { get; set; }
 
         // ✅ Navigation Properties (Add These Back)
-        [NotMapped]
         public virtual Faction? Faction { get; set; }
-        [NotMapped]
         public virtual Location? Location { get; set; }
-        [NotMapped]
         public virtual Language? Language { get; set; }
-        [NotMapped]
         public virtual Snapshot? Snapshot { get; set; }
     }
 

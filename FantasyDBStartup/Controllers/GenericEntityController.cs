@@ -43,7 +43,6 @@ public class GenericEntityController : Controller
     { "Currency", (typeof(Currency), typeof(CurrencyViewModel)) }
 };
 
-    
     public async Task<IActionResult> Index(string entity)
     {
 
@@ -71,6 +70,7 @@ public class GenericEntityController : Controller
 
         return View("_EntityTable", viewModelList);
     }
+
 
     private object ConvertToViewModel(object model, Type modelType, Type viewModelType)
     {

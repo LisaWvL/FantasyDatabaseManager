@@ -1,201 +1,174 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FantasyDB.Models;
 using FantasyDB.ViewModels;
-using FantasyDB.Services; // Required for IDropdownService and BaseEntityController
-
+using FantasyDB.Services;
+using AutoMapper;
+using static FantasyDB.Models.JunctionClasses;
 
 namespace FantasyDBStartup.Controllers
 {
-    public class CharacterController : Controller
+    [Route("api/character")]
+    public class CharacterController : BaseEntityController<Character, CharacterViewModel>
     {
-        private readonly AppDbContext _context;
+        // NOTE: You don't need to redeclare _dropdownService if you're using it in the base class only.
+        // But you can keep it here if this controller needs to use dropdowns in custom endpoints.
+        private readonly IDropdownService _dropdownService;
 
-        public CharacterController(AppDbContext context)
+
+        public CharacterController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
+            : base(context, mapper, dropdownService)
         {
-            _context = context;
+            _dropdownService = dropdownService;
         }
 
-        public async Task<IActionResult> Index()
+        // Override Index to include related entities so dropdown names resolve in your table
+        public override async Task<IActionResult> Index()
         {
             var characters = await _context.Character
+                .Include(c => c.Snapshot)
+                .Include(c => c.Faction)
+                .Include(c => c.Location)
+                .Include(c => c.Language)
                 .AsNoTracking()
-                .ToListAsync(); // Fetch from DB first to avoid translation errors
+                .ToListAsync();
 
-            var viewModel = characters
-                .AsEnumerable() // ✅ Forces client-side evaluation
-                .Select(c => new CharacterViewModel
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    Role = c.Role,
-                    Alias = c.Alias,
-                    BirthDay = c.BirthDay,
-                    BirthMonth = c.BirthMonth,
-                    BirthYear = c.BirthYear,
-                    Gender = c.Gender,
-                    HeightCm = c.HeightCm,
-                    Build = c.Build,
-                    Hair = c.Hair,
-                    Eyes = c.Eyes,
-                    DefiningFeatures = c.DefiningFeatures,
-                    Personality = c.Personality,
-                    SocialStatus = c.SocialStatus,
-                    Occupation = c.Occupation,
-                    Magic = c.Magic,
-                    Desire = c.Desire,
-                    Fear = c.Fear,
-                    Weakness = c.Weakness,
-                    Motivation = c.Motivation,
-                    Flaw = c.Flaw,
-                    Misbelief = c.Misbelief,
-                    SnapshotId = c.SnapshotId, 
-                    FactionId = c.FactionId, 
-                    LocationId = c.LocationId, 
-                    LanguageId = c.LanguageId,
+            var viewModels = _mapper.Map<List<CharacterViewModel>>(characters);
 
-                    SnapshotName = _context.Snapshot.Where(s => s.Id == c.SnapshotId).Select(s => s.SnapshotName).FirstOrDefault(),
+            ViewData["CurrentEntity"] = "Character";
+            await LoadDropdownsForViewModel<CharacterViewModel>();
 
-                    FactionName = _context.Faction.Where(f => f.Id == c.FactionId).Select(f => f.Name).FirstOrDefault(),
-
-                    LocationName = _context.Location.Where(l => l.Id == c.LocationId).Select(l => l.Name).FirstOrDefault(),
-
-                    LanguageName = _context.Language.Where(lang => lang.Id == c.LanguageId).Select(lang => lang.Type).FirstOrDefault()
-                })
-                .ToList();
-
-            await LoadDropdowns(); // ? Ensures ViewBag.SnapshotList is set
-
-            ViewData["Snapshots"] = await _context.Snapshot.ToListAsync();
-            ViewData["Factions"] = await _context.Faction.ToListAsync();
-            ViewData["Locations"] = await _context.Location.ToListAsync();
-            ViewData["Languages"] = await _context.Language.ToListAsync();
-
-            return View(viewModel);
+            return View("_EntityTable", viewModels); // Assuming you're using the shared table partial
         }
 
+        // Optional: render a character details page
+        [HttpGet("{id}")]
+        public override async Task<IActionResult> GetById(int id)
+        {
+            var character = await _context.Character
+                .Include(c => c.Faction)
+                .Include(c => c.Location)
+                .Include(c => c.Snapshot)
+                .Include(c => c.Language)
+                .FirstOrDefaultAsync(c => c.Id == id);
 
+            if (character == null)
+                return NotFound();
+
+            var viewModel = _mapper.Map<CharacterViewModel>(character);
+            return Ok(viewModel);
+        }
+
+        // Optional: return a Razor partial or full view of a character's info
+        [HttpGet("{id}/details")]
+        public async Task<IActionResult> Details(int id)
+        {
+            var character = await _context.Character
+                .Include(c => c.Faction)
+                .Include(c => c.Location)
+                .Include(c => c.Snapshot)
+                .Include(c => c.Language)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (character == null)
+                return NotFound();
+
+            var viewModel = _mapper.Map<CharacterViewModel>(character);
+
+            return View("Details", viewModel); // optional Details.cshtml view
+        }
+
+        // Render the form for new character creation
+        [HttpGet("create")]
         public async Task<IActionResult> Create()
         {
-            await LoadDropdowns();
-            return View(new Character());
+            ViewData["CurrentEntity"] = "Character";
+            await LoadDropdownsForViewModel<CharacterViewModel>();
+            return View("Create");
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Character character)
+        // POST: Create new character via form or inline-editing
+        [HttpPost("create")]
+        public override async Task<IActionResult> Create([FromBody] CharacterViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(character);
+                var character = _mapper.Map<Character>(viewModel);
+                _context.Character.Add(character);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                if (character.SnapshotId.HasValue)
+                {
+                    var snapshotCharacter = new SnapshotCharacter
+                    {
+                        CharacterId = character.Id,
+                        SnapshotId = character.SnapshotId.Value
+                    };
+
+                    _context.SnapshotCharacter.Add(snapshotCharacter);
+                    await _context.SaveChangesAsync();
+                }
+
+
+                var createdViewModel = _mapper.Map<CharacterViewModel>(character);
+                return CreatedAtAction(nameof(GetById), new { id = createdViewModel.Id }, createdViewModel);
             }
-            await LoadDropdowns();
-            return View(character);
+            if (!ModelState.IsValid)
+            {
+                var errors = string.Join("\n", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+                return BadRequest("Invalid Model: \n" + errors);
+            }
+
+            return BadRequest(ModelState);
         }
 
-        //public async Task<IActionResult> Edit(int id)
-        //{
-        //    var character = await _context.Character.FindAsync(id);
-        //    await LoadDropdowns();
-        //    return View(character);
-        //}
+        // PUT: Update via inline-edit or form (optional View)
+        [HttpPut("{id}")]
+        public override async Task<IActionResult> Update(int id, [FromBody] CharacterViewModel viewModel)
+        {
+            return await base.Update(id, viewModel);
+        }
 
+        // DELETE: Remove character
+        [HttpDelete("{id}")]
+        public override async Task<IActionResult> Delete(int id)
+        {
+            return await base.Delete(id);
+        }
 
-        [HttpPost]
+        // Optional: Render a Razor edit page (not just inline)
+        [HttpGet("{id}/edit")]
         public async Task<IActionResult> Edit(int id)
         {
-            using var reader = new StreamReader(Request.Body);
-            var rawJson = await reader.ReadToEndAsync();
-
-            if (string.IsNullOrWhiteSpace(rawJson))
-                return BadRequest("No data received");
-
-            var data = JsonSerializer.Deserialize<Dictionary<string, string>>(rawJson);
-            if (data == null)
-                return BadRequest("Invalid JSON");
-
             var character = await _context.Character.FindAsync(id);
             if (character == null)
                 return NotFound();
 
-            // Apply updates (carefully parse ints)
-            character.Name = data.GetValueOrDefault("Name");
-            character.Role = data.GetValueOrDefault("Role");
-            character.Alias = data.GetValueOrDefault("Alias");
-            character.Gender = data.GetValueOrDefault("Gender");
-            character.Build = data.GetValueOrDefault("Build");
-            character.Hair = data.GetValueOrDefault("Hair");
-            character.Eyes = data.GetValueOrDefault("Eyes");
-            character.DefiningFeatures = data.GetValueOrDefault("DefiningFeatures");
-            character.Personality = data.GetValueOrDefault("Personality");
-            character.SocialStatus = data.GetValueOrDefault("SocialStatus");
-            character.Occupation = data.GetValueOrDefault("Occupation");
-            character.Magic = data.GetValueOrDefault("Magic");
-            character.Desire = data.GetValueOrDefault("Desire");
-            character.Fear = data.GetValueOrDefault("Fear");
-            character.Weakness = data.GetValueOrDefault("Weakness");
-            character.Motivation = data.GetValueOrDefault("Motivation");
-            character.Flaw = data.GetValueOrDefault("Flaw");
-            character.Misbelief = data.GetValueOrDefault("Misbelief");
-
-            // Optional parsing for nullable ints
-            character.HeightCm = ParseNullableInt(data.GetValueOrDefault("HeightCm"));
-            character.BirthDay = ParseNullableInt(data.GetValueOrDefault("BirthDay"));
-            character.BirthYear = ParseNullableInt(data.GetValueOrDefault("BirthYear"));
-
-            character.SnapshotId = ParseNullableInt(data.GetValueOrDefault("SnapshotId"));
-            character.FactionId = ParseNullableInt(data.GetValueOrDefault("FactionId"));
-            character.LocationId = ParseNullableInt(data.GetValueOrDefault("LocationId"));
-            character.LanguageId = ParseNullableInt(data.GetValueOrDefault("LanguageId"));
-
-            _context.Update(character);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Character updated directly" });
+            var viewModel = _mapper.Map<CharacterViewModel>(character);
+            await LoadDropdownsForViewModel<CharacterViewModel>();
+            return View("Edit", viewModel);
         }
 
-        private int? ParseNullableInt(string? value)
+        [HttpGet("{id}/new-snapshot")]
+        public override async Task<IActionResult> CreateNewSnapshot(int id)
         {
-            if (int.TryParse(value, out var result))
-                return result;
-            return null;
+            return await base.CreateNewSnapshot(id);
         }
 
 
-
-
-        private async Task LoadDropdowns()
+        protected override IQueryable<Character> GetQueryable()
         {
-            ViewData["SnapshotIdList"] = await _context.Snapshot
-                .AsNoTracking()
-                .OrderBy(s => s.SnapshotName)
-                .Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.SnapshotName })
-                .ToListAsync();
-
-
-            // ✅ Fetch other dropdowns normally
-            ViewData["FactionIdList"] = await _context.Faction
-        .AsNoTracking()
-        .Select(f => new SelectListItem { Value = f.Id.ToString(), Text = f.Name })
-        .ToListAsync();
-
-            ViewData["LocationIdList"] = await _context.Location
-                .AsNoTracking()
-                .Select(l => new SelectListItem { Value = l.Id.ToString(), Text = l.Name })
-                .ToListAsync();
-
-            ViewData["LanguageIdList"] = await _context.Language
-                .AsNoTracking()
-                .Select(lang => new SelectListItem { Value = lang.Id.ToString(), Text = lang.Type })
-                .ToListAsync();
+            return _context.Character
+                .Include(c => c.Snapshot)
+                .Include(c => c.Faction)
+                .Include(c => c.Location)
+                .Include(c => c.Language);
         }
+
+
     }
 }

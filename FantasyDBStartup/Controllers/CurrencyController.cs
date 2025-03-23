@@ -1,90 +1,79 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FantasyDB.Models;
 using FantasyDB.ViewModels;
-using FantasyDB.Services; // Required for IDropdownService and BaseEntityController
-
+using FantasyDB.Services;
+using AutoMapper;
+using System.Threading.Tasks;
+using System.Text.Json;
+using System.IO;
 
 namespace FantasyDBStartup.Controllers
 {
-    public class CurrencyController : Controller
+    public class CurrencyController : BaseEntityController<Currency, CurrencyViewModel>
     {
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
+        private readonly IDropdownService _dropdownService;
 
-        public CurrencyController(AppDbContext context)
+        public CurrencyController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
+            : base(context, mapper, dropdownService)
         {
-            _context = context;
+            _dropdownService = dropdownService;
         }
 
-        public async Task<IActionResult> Index()
-        {
+        protected override IQueryable<Currency> GetQueryable() => _context.Currency;
 
-           var currencies = await _context.Currency
+        //Override Index to include Related Names
+        public override async Task<IActionResult> Index()
+        {
+            var currencies = await _context.Currency
                 .AsNoTracking()
-                .ToListAsync(); // Fetch from DB first to avoid translation errors
+                .ToListAsync();
 
-            var viewModel = currencies
-                .AsEnumerable() // ✅ Forces client-side evaluation
-                .Select(c => new CurrencyViewModel
-                {
-                    Id = c.Id,
-                    Crown = c.Crown,
-                    Shilling = c.Shilling,
-                    Penny = c.Penny
-                })
-                .ToList();
+            var viewModels = _mapper.Map<List<CurrencyViewModel>>(currencies);
 
-            return View(viewModel);
+            ViewData["CurrentEntity"] = "Currency";
+            // No dropdowns needed
+            return View("_EntityTable", viewModels);
         }
 
-
-        public IActionResult Create()
-        {
-            return View(new Currency());
-        }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Currency currency)
+        public async Task<IActionResult> Edit(int id, [FromBody] CurrencyViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            if (viewModel == null || id != viewModel.Id)
             {
-                _context.Add(currency);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return BadRequest("Invalid request");
             }
-            return View(currency);
-        }
 
-        public async Task<IActionResult> Edit(int id)
-        {
             var currency = await _context.Currency.FindAsync(id);
-            if (currency == null) return NotFound();
+            if (currency == null)
+            {
+                return NotFound();
+            }
 
-            return View(currency);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Currency currencyUpdate)
-        {
-            var currency = await _context.Currency.FindAsync(id);
-            if (currency == null) return NotFound();
-
-            currency.Crown = currencyUpdate.Crown;
-            currency.Shilling = currencyUpdate.Shilling;
-            currency.Penny = currencyUpdate.Penny;
+            _mapper.Map(viewModel, currency);
 
             _context.Currency.Update(currency);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Currency updated successfully" });
+        }
+
+        [HttpDelete("{id}")]
+        public override async Task<IActionResult> Delete(int id)
+        {
+            var currency = await _context.Currency.FindAsync(id);
+            if (currency == null)
+            {
+                return NotFound();
+            }
+
+            _context.Currency.Remove(currency);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Currency deleted" });
         }
     }
 }

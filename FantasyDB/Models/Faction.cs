@@ -21,13 +21,9 @@ namespace FantasyDB.Models // ✅ Add this line
         public string? Magic { get; set; }
         public int? SnapshotId { get; set; }
         // ✅ Navigation Properties (Add These Back)
-        [NotMapped]
         public virtual Character? Founder { get; set; }
-        [NotMapped]
         public virtual Character? Leader { get; set; }
-        [NotMapped]
         public virtual Location? HQLocation { get; set; }
-        [NotMapped]
         public virtual Snapshot? Snapshot { get; set; }
 
     }

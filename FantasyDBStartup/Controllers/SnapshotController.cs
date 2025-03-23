@@ -1,113 +1,80 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FantasyDB.Models;
 using FantasyDB.ViewModels;
-using FantasyDB.Services; // Required for IDropdownService and BaseEntityController
-
+using FantasyDB.Services;
+using AutoMapper;
+using System.Threading.Tasks;
+using System.Text.Json;
+using System.IO;
 
 namespace FantasyDBStartup.Controllers
 {
-    public class SnapshotController : Controller
+    public class SnapshotController : BaseEntityController<Snapshot, SnapshotViewModel>
     {
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
+        private readonly IDropdownService _dropdownService;
 
-        public SnapshotController(AppDbContext context)
+        public SnapshotController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
+            : base(context, mapper, dropdownService)
         {
-            _context = context;
+            _dropdownService = dropdownService;
         }
 
-        public async Task<IActionResult> Index()
+        protected override IQueryable<Snapshot> GetQueryable() => _context.Snapshot;
+
+        //Override index to use Automapper
+        public override async Task<IActionResult> Index()
         {
-            var snapshots = await _context.Snapshot.AsNoTracking().ToListAsync();
+            var snapshots = await _context.Snapshot
+                .AsNoTracking()
+                .ToListAsync();
 
-            var viewModel = snapshots
-                .Select(s => new SnapshotViewModel
-                {
-                    Id = s.Id,
-                    Book = s.Book,
-                    Act = s.Act,
-                    Chapter = s.Chapter,
-                    SnapshotName = s.SnapshotName // ✅ Now from DB column
-                })
-                .ToList();
+            var viewModels = _mapper.Map<List<SnapshotViewModel>>(snapshots);
 
-            return View(viewModel);
+            ViewData["CurrentEntity"] = "Snapshot";
+            await LoadDropdownsForViewModel<SnapshotViewModel>();
+
+            return View("_EntityTable", viewModels);
         }
 
-        public IActionResult Create()
-        {
-            return View(new Snapshot());
-        }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Snapshot snapshot)
+        public async Task<IActionResult> Edit(int id, [FromBody] SnapshotViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            if (viewModel == null || id != viewModel.Id)
             {
-                _context.Snapshot.Add(snapshot);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return BadRequest("Invalid request");
             }
-
-            return View(snapshot);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Edit(int id)
-        {
-            using var reader = new StreamReader(Request.Body);
-            var rawJson = await reader.ReadToEndAsync();
-
-            if (string.IsNullOrWhiteSpace(rawJson))
-                return BadRequest("No data received");
-
-            var data = JsonSerializer.Deserialize<Dictionary<string, string>>(rawJson);
-            if (data == null)
-                return BadRequest("Invalid JSON");
 
             var snapshot = await _context.Snapshot.FindAsync(id);
             if (snapshot == null)
+            {
                 return NotFound();
+            }
 
-            snapshot.Book = data.GetValueOrDefault("Book") ?? string.Empty;
-            snapshot.Act = data.GetValueOrDefault("Act") ?? string.Empty;
-            snapshot.Chapter = data.GetValueOrDefault("Chapter") ?? string.Empty;
+            _mapper.Map(viewModel, snapshot);
 
-            // SnapshotName is computed in DB column definition
-
-            _context.Update(snapshot);
+            _context.Snapshot.Update(snapshot);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Snapshot updated successfully" });
         }
 
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id}")]
+        public override async Task<IActionResult> Delete(int id)
         {
             var snapshot = await _context.Snapshot.FindAsync(id);
-            if (snapshot == null) return NotFound();
-
-            return View(snapshot);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var snapshot = await _context.Snapshot.FindAsync(id);
-            if (snapshot != null)
+            if (snapshot == null)
             {
-                _context.Snapshot.Remove(snapshot);
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
 
-            return RedirectToAction(nameof(Index));
+            _context.Snapshot.Remove(snapshot);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Snapshot deleted" });
         }
     }
 }

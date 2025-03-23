@@ -17,9 +17,7 @@ namespace FantasyDB.Models // ✅ Add this line
         public int? OwnerId { get; set; }
         public int? SnapshotId { get; set; }
         // ✅ Navigation Properties (Add These Back)
-        [NotMapped]
         public virtual Character? Owner { get; set; }
-        [NotMapped]
         public virtual Snapshot? Snapshot { get; set; }
     }
 }

@@ -14,10 +14,8 @@ namespace FantasyDB.Services
         Task<List<SelectListItem>> GetSnapshotsAsync();
         Task<List<SelectListItem>> GetEventsAsync();
         Task<List<SelectListItem>> GetErasAsync();
-
-        Task LoadDropdowns(ViewDataDictionary viewData); // ✅ Add this!
+        Task<List<SelectListItem>> GetRoutesAsync();
+        Task<List<SelectListItem>> GetRiversAsync();
+        Task LoadDropdownsForViewModel<TViewModel>(ViewDataDictionary viewData);
     }
 }
-
-
-

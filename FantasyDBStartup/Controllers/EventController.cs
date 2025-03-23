@@ -1,151 +1,89 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FantasyDB.Models;
 using FantasyDB.ViewModels;
-using FantasyDB.Services; // Required for IDropdownService and BaseEntityController
-
+using FantasyDB.Services;
+using AutoMapper;
+using System.Threading.Tasks;
+using System.Text.Json;
+using System.IO;
 
 namespace FantasyDBStartup.Controllers
 {
-    public class EventController : Controller
+    [Route("api/event")]
+    public class EventController : BaseEntityController<Event, EventViewModel>
     {
         private readonly AppDbContext _context;
+        private readonly IDropdownService _dropdownService;
 
-        public EventController(AppDbContext context)
+        public EventController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
+            : base(context, mapper, dropdownService)
         {
-            _context = context;
+            _dropdownService = dropdownService;
         }
 
-        public async Task<IActionResult> Index()
+        protected override IQueryable<Event> GetQueryable() => _context.Event;
+
+        //Override Index to include Related Names
+        public override async Task<IActionResult> Index()
         {
             var events = await _context.Event
+                .Include(e => e.Snapshot)
+                .Include(e => e.Location)
                 .AsNoTracking()
                 .ToListAsync();
 
-            var viewModel = events
-                .AsEnumerable()
-                .Select(e => new EventViewModel
-                {
-                    Id = e.Id,
-                    Name = e.Name,
-                    Description = e.Description,
-                    Day = e.Day,
-                    Month = e.Month,
-                    Year = e.Year,
-                    Purpose = e.Purpose,
-                    SnapshotId = e.SnapshotId,
-                    LocationId = e.LocationId,
-                    SnapshotName = _context.Snapshot.FirstOrDefault(s => s.Id == e.SnapshotId)?.SnapshotName,
-                    LocationName = _context.Location.FirstOrDefault(l => l.Id == e.LocationId)?.Name
-                })
-                .ToList();
+            var viewModels = _mapper.Map<List<EventViewModel>>(events);
 
-            await LoadDropdowns();
-            return View(viewModel);
+            ViewData["CurrentEntity"] = "Event";
+            await LoadDropdownsForViewModel<EventViewModel>();
+
+            return View("_EntityTable", viewModels);
         }
 
-        public async Task<IActionResult> Create()
-        {
-            await LoadDropdowns();
-            return View(new Event());
-        }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Event model)
+        public async Task<IActionResult> Edit(int id, [FromBody] EventViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            if (viewModel == null || id != viewModel.Id)
             {
-                _context.Event.Add(model);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return BadRequest("Invalid request");
             }
-            await LoadDropdowns();
-            return View(model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Edit(int id)
-        {
-            using var reader = new StreamReader(Request.Body);
-            var rawJson = await reader.ReadToEndAsync();
-
-            if (string.IsNullOrWhiteSpace(rawJson))
-                return BadRequest("No data received");
-
-            var data = JsonSerializer.Deserialize<Dictionary<string, string>>(rawJson);
-            if (data == null)
-                return BadRequest("Invalid JSON");
 
             var ev = await _context.Event.FindAsync(id);
             if (ev == null)
+            {
                 return NotFound();
+            }
 
-            ev.Name = data.GetValueOrDefault("Name");
-            ev.Description = data.GetValueOrDefault("Description");
-            ev.Day = ParseNullableInt(data.GetValueOrDefault("Day"));
-            ev.Month = data.GetValueOrDefault("Month");
-            ev.Year = ParseNullableInt(data.GetValueOrDefault("Year"));
-            ev.Purpose = data.GetValueOrDefault("Purpose");
-            ev.SnapshotId = ParseNullableInt(data.GetValueOrDefault("SnapshotId"));
-            ev.LocationId = ParseNullableInt(data.GetValueOrDefault("LocationId"));
+            _mapper.Map(viewModel, ev);
 
-            _context.Update(ev);
+            _context.Event.Update(ev);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Event updated successfully" });
         }
 
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id}")]
+        public override async Task<IActionResult> Delete(int id)
         {
             var ev = await _context.Event.FindAsync(id);
-            if (ev == null) return NotFound();
-            return View(ev);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var ev = await _context.Event.FindAsync(id);
-            if (ev != null)
+            if (ev == null)
             {
-                _context.Event.Remove(ev);
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
-            return RedirectToAction(nameof(Index));
+
+            _context.Event.Remove(ev);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Event deleted" });
         }
 
-        private async Task LoadDropdowns()
+        public override async Task<IActionResult> Create([FromBody] EventViewModel viewModel)
         {
-            ViewData["SnapshotIdList"] = await _context.Snapshot
-                .AsNoTracking()
-                .Select(s => new SelectListItem
-                {
-                    Value = s.Id.ToString(),
-                    Text = s.SnapshotName
-                })
-                .ToListAsync();
+            await LoadDropdownsForViewModel<EventViewModel>();
 
-            ViewData["LocationIdList"] = await _context.Location
-                .AsNoTracking()
-                .Select(l => new SelectListItem
-                {
-                    Value = l.Id.ToString(),
-                    Text = l.Name
-                })
-                .ToListAsync();
-        }
-
-        private int? ParseNullableInt(string? value)
-        {
-            return int.TryParse(value, out var result) ? result : null;
+            return await base.Create(viewModel);
         }
     }
 }

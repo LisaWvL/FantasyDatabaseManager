@@ -1,8 +1,14 @@
 ﻿@using System.Reflection
+@using Microsoft.AspNetCore.Mvc.Rendering
 @model IEnumerable<object>
 
 @{
     var entityName = ViewData["CurrentEntity"]?.ToString() ?? "Entity";
+    var apiEntityName = "api/" + entityName.ToLower();
+
+    var groupedByName = Model
+        .GroupBy(c => c.GetType().GetProperty("Name")?.GetValue(c)?.ToString())
+        .ToDictionary(g => g.Key, g => g.ToList());
 }
 
 <div class="table-responsive">
@@ -14,9 +20,7 @@
                     var firstItem = Model.First();
                     foreach (var prop in firstItem.GetType().GetProperties())
                     {
-                        if (prop.Name.EndsWith("Id") && prop.Name != "Id")
-                            continue;
-
+                        if (prop.Name == "Id" || prop.Name.EndsWith("Id")) continue;
                         <th style="min-width: 150px;">@prop.Name</th>
                     }
                     <th style="min-width: 180px;">Actions</th>
@@ -24,56 +28,54 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var group in groupedByName)
             {
-                var itemId = item.GetType().GetProperty("Id")?.GetValue(item)?.ToString() ?? "0";
-                <tr data-id="@itemId">
-                    @foreach (var prop in item.GetType().GetProperties())
+                var name = group.Key;
+                var versions = group.Value;
+                var main = versions.First();
+                var itemId = main.GetType().GetProperty("Id")?.GetValue(main)?.ToString() ?? "0";
+
+                <tr class="main-row" data-id="@itemId" data-name="@name">
+                    @foreach (var prop in main.GetType().GetProperties())
                     {
-                        var value = prop.GetValue(item);
+                        if (prop.Name == "Id" || prop.Name.EndsWith("Id")) continue;
+                        var value = prop.GetValue(main);
+
                         <td>
-                            @if (prop.Name.EndsWith("Name") && prop.Name != "Name")
-                            {
-                                var listName = prop.Name.Replace("Name", "Id") + "List";
-                                var entityList = ViewData[listName] as IEnumerable<SelectListItem>;
-                                var idProperty = prop.Name.Replace("Name", "Id");
-                                var selectedId = item.GetType().GetProperty(idProperty)?.GetValue(item)?.ToString();
-
-                                <span class="view-mode">@(value?.ToString() ?? "Not Set")</span>
-
-                                <select class="edit-mode form-control dropdown" name="@idProperty" hidden>
-                                    <option value="">Select @prop.Name</option>
-                                    @if (entityList != null)
-                                    {
-                                        foreach (var entity in entityList)
-                                        {
-                                            if (entity.Value == selectedId)
-                                            {
-                                                <option value="@entity.Value" selected>@entity.Text</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@entity.Value">@entity.Text</option>
-                                            }
-                                        }
-                                    }
-
-                                </select>
-                            }
-                            else
-                            {
-                                <span class="view-mode">@value</span>
-                                <input class="edit-mode form-control" name="@prop.Name" type="text" value="@value" hidden>
-                            }
+                            <span class="view-mode">@value</span>
+                            <input class="edit-mode form-control" name="@prop.Name" type="text" value="@value" hidden />
                         </td>
-
                     }
                     <td>
                         <button class="btn btn-warning edit-btn view-mode">Edit</button>
+                        <button class="btn btn-info snapshot-btn view-mode">Create New Snapshot</button>
+                        @if (versions.Count > 1)
+                        {
+                            <button class="btn btn-outline-dark toggle-versions-btn view-mode" data-name="@name">▼ Show Versions</button>
+                        }
                         <button class="btn btn-success save-btn edit-mode" hidden>Save</button>
                         <button class="btn btn-secondary cancel-btn edit-mode" hidden>Cancel</button>
                     </td>
                 </tr>
+
+                foreach (var version in versions.Skip(1))
+                {
+                    var versionId = version.GetType().GetProperty("Id")?.GetValue(version)?.ToString() ?? "0";
+                    <tr class="snapshot-row" data-group="@name" data-id="@versionId" hidden>
+                        @foreach (var prop in version.GetType().GetProperties())
+                        {
+                            if (prop.Name == "Id" || prop.Name.EndsWith("Id")) continue;
+                            var value = prop.GetValue(version);
+                            <td>@value</td>
+                        }
+                        <td>
+                            <button class="btn btn-warning edit-btn view-mode">Edit</button>
+                            <button class="btn btn-success save-btn edit-mode" hidden>Save</button>
+                            <button class="btn btn-secondary cancel-btn edit-mode" hidden>Cancel</button>
+                            <button class="btn btn-danger delete-btn view-mode">Delete</button>
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>
@@ -81,7 +83,8 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const entity = "@ViewData["CurrentEntity"]" || window.location.pathname.split('/')[1];
+        const entity = "@entityName";
+        const apiEntity = "@apiEntityName";
 
         document.querySelectorAll(".edit-btn").forEach(button => {
             button.addEventListener("click", function () {
@@ -105,18 +108,17 @@
                 const id = row.getAttribute("data-id");
                 const data = {};
 
-                row.querySelectorAll("input, select").forEach(input => {
+                row.querySelectorAll("input[name], select[name]").forEach(input => {
                     data[input.name] = input.value;
                 });
 
                 const isNew = id === "0" || !id;
-                const url = isNew
-                    ? `/${entity}/Create`
-                    : `/${entity}/Edit/${id}`;
+                const url = isNew ? `/${apiEntity}/create` : `/${apiEntity}/${id}`;
+                const method = isNew ? "POST" : "PUT";
 
                 try {
                     const response = await fetch(url, {
-                        method: "POST",
+                        method,
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(data)
                     });
@@ -124,12 +126,48 @@
                     if (response.ok) {
                         location.reload();
                     } else {
-                        alert("Failed to update.");
+                        const error = await response.text();
+                        alert("Failed to save changes:\n" + error);
                     }
                 } catch (err) {
-                    console.error("Error saving entity:", err);
-                    alert("Something went wrong.");
+                    console.error("Error saving:", err);
+                    alert("Unexpected error.");
                 }
+            });
+        });
+
+        document.querySelectorAll(".delete-btn").forEach(button => {
+            button.addEventListener("click", async function () {
+                const row = this.closest("tr");
+                const id = row.getAttribute("data-id");
+                if (confirm("Are you sure you want to delete this entry?")) {
+                    try {
+                        const response = await fetch(`/${apiEntity}/${id}`, { method: "DELETE" });
+                        if (response.ok) row.remove();
+                        else alert("Failed to delete entry.");
+                    } catch (err) {
+                        console.error("Delete failed:", err);
+                        alert("Unexpected error.");
+                    }
+                }
+            });
+        });
+
+        document.querySelectorAll(".snapshot-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                const row = this.closest("tr");
+                const id = row.getAttribute("data-id");
+                const url = `/${apiEntity}/${id}/new-snapshot-page`;
+                window.location.href = url;
+            });
+        });
+
+        document.querySelectorAll(".toggle-versions-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                const name = this.getAttribute("data-name");
+                const rows = document.querySelectorAll(`.snapshot-row[data-group='${name}']`);
+                rows.forEach(r => r.hidden = !r.hidden);
+                this.textContent = rows[0].hidden ? "▼ Show Versions" : "▲ Hide Versions";
             });
         });
     });

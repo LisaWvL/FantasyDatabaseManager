@@ -1,0 +1,74 @@
+﻿@using System.Reflection
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model object
+
+@{
+    var entityName = ViewData["CurrentEntity"]?.ToString() ?? "Entity";
+    var type = Model.GetType();
+    var props = type.GetProperties();
+    var id = "0"; // Always treat this row as a new one
+}
+
+<tr data-id="@id">
+    @foreach (var prop in props)
+    {
+        // Skip raw ID field and raw foreign keys (we want to show dropdowns for their Names)
+        if (prop.Name == "Id" || (prop.Name.EndsWith("Id") && prop.Name != "SnapshotId"))
+            continue;
+
+        var value = prop.GetValue(Model);
+
+        <td>
+            @if (prop.Name.EndsWith("Name") && prop.Name != "Name")
+            {
+                var idProp = prop.Name.Replace("Name", "Id");
+                var listName = idProp + "List";
+                var entityList = ViewData[listName] as IEnumerable<SelectListItem>;
+
+                <span class="view-mode">@value</span>
+
+                <select class="edit-mode form-control dropdown" name="@idProp">
+                    <option value="">Select @prop.Name</option>
+                    @if (entityList != null)
+                    {
+                        foreach (var item in entityList)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+            }
+            else
+            {
+                <span class="view-mode">@value</span>
+                <input class="edit-mode form-control" name="@prop.Name" type="text" value="@value" />
+            }
+
+            @if (prop.PropertyType == typeof(List<int>) && prop.Name.EndsWith("Ids"))
+            {
+                var listName = prop.Name + "List";
+                var items = ViewData[listName] as IEnumerable<SelectListItem>;
+                var selectedIds = prop.GetValue(item) as List<int> ?? new List<int>();
+
+                <span class="view-mode">
+                    @string.Join(", ", selectedIds.Select(id => items?.FirstOrDefault(i => i.Value == id.ToString())?.Text ?? $"#{id}"))
+                </span>
+
+                <select multiple name="@prop.Name" class="edit-mode form-control" hidden>
+                    @foreach (var opt in items ?? Enumerable.Empty<SelectListItem>())
+                    {
+                        <option value="@opt.Value" selected="@(selectedIds.Contains(int.Parse(opt.Value)) ? "selected" : null)">
+                            @opt.Text
+                        </option>
+                    }
+                </select>
+            }
+
+        </td>
+    }
+
+    <td>
+        <button class="btn btn-success save-btn edit-mode">Save</button>
+        <button class="btn btn-secondary cancel-btn edit-mode">Cancel</button>
+    </td>
+</tr>

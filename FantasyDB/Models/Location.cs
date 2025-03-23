@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FantasyDB.Services;
 namespace FantasyDB.Models // ✅ Add this line
 {
     public class Location
@@ -19,19 +20,22 @@ namespace FantasyDB.Models // ✅ Add this line
         public int? TotalPopulation { get; set; }
         public int? DivineMagicians { get; set; }
         public int? WildMagicians { get; set; }
-        public int? ChildLocationId { get; set; }
         public int? ParentLocationId { get; set; }
-        public int? EventId { get; set; }
         public int? LanguageId { get; set; }
         public int? SnapshotId { get; set; }
-        [NotMapped]
+         
         public virtual Location? ParentLocation { get; set; }
-        [NotMapped]
-        public virtual Event? Event { get; set; }
-        [NotMapped]
+         
         public virtual Language? Language { get; set; }
-        [NotMapped]
+         
         public virtual Snapshot? Snapshot { get; set; }
 
+        // --------------------------------------------
+        // MULTIPLE CHILD LOCATIONS AND EVENTS
+        // --------------------------------------------
+         
+        public List<Location> ChildLocations { get; set; } = new();
+         
+        public List<Event> Events { get; set; } = new();
     }
 }

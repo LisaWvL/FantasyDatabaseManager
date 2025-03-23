@@ -1,93 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FantasyDB.Models;
 using FantasyDB.ViewModels;
-using FantasyDB.Services; // Required for IDropdownService and BaseEntityController
+using FantasyDB.Services;
+using AutoMapper;
 
 namespace FantasyDBStartup.Controllers
 {
-    public class CalendarController : Controller
+    [Route("api/calendar")]
+    public class CalendarController : BaseEntityController<Calendar, CalendarViewModel>
     {
-        private readonly AppDbContext _context;
+        private readonly IDropdownService _dropdownService;
 
-        public CalendarController(AppDbContext context)
+        public CalendarController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
+            : base(context, mapper, dropdownService)
         {
-            _context = context;
+            _dropdownService = dropdownService;
         }
 
-        public async Task<IActionResult> Index()
+        protected override IQueryable<Calendar> GetQueryable() => _context.Calendar;
+
+        public override async Task<IActionResult> Index()
         {
-            var calendars = await _context.Calendar
-                .AsNoTracking()
-                .ToListAsync(); // Fetch from DB first to avoid translation errors
+            var calendars = await _context.Calendar.ToListAsync();
 
-            var viewModel = calendars
-                .AsEnumerable() // ✅ Forces client-side evaluation
-                .Select(c => new CalendarViewModel
-                {
-                    Id = c.Id,
-                    Weekdays = c.Weekdays,
-                    Months = c.Months,
-                    DaysPerWeek = c.DaysPerWeek,
-                    MonthsPerYear = c.MonthsPerYear,
-                    DaysPerYear = c.DaysPerYear,
-                    EventId = c.EventId,
-                    EventName = _context.Event.Where(e => e.Id == c.EventId).Select(e => e.Name).FirstOrDefault()
-                })
-                .ToList();
-
-            await LoadDropdowns();
-            return View(viewModel);
+            var viewModels = _mapper.Map<List<CalendarViewModel>>(calendars);
+            return Ok(viewModels);
         }
 
-        public async Task<IActionResult> Create()
+        [HttpPut("{id}")]
+        public override async Task<IActionResult> Update(int id, [FromBody] CalendarViewModel viewModel)
         {
-            await LoadDropdowns();
-            return View(new Calendar());
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Calendar calendar)
-        {
-            if (ModelState.IsValid)
+            if (viewModel == null || id != viewModel.Id)
             {
-                _context.Add(calendar);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return BadRequest("Invalid request");
             }
-            await LoadDropdowns();
-            return View(calendar);
-        }
 
-        public async Task<IActionResult> Edit(int id)
-        {
             var calendar = await _context.Calendar.FindAsync(id);
-            if (calendar == null) return NotFound();
+            if (calendar == null)
+            {
+                return NotFound();
+            }
 
-            await LoadDropdowns();
-            return View(calendar);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Calendar calendarUpdate)
-        {
-            var calendar = await _context.Calendar.FindAsync(id);
-            if (calendar == null) return NotFound();
-
-            calendar.Weekdays = calendarUpdate.Weekdays;
-            calendar.Months = calendarUpdate.Months;
-            calendar.DaysPerWeek = calendarUpdate.DaysPerWeek;
-            calendar.MonthsPerYear = calendarUpdate.MonthsPerYear;
-            calendar.DaysPerYear = calendarUpdate.DaysPerYear;
-            calendar.EventId = calendarUpdate.EventId;
+            _mapper.Map(viewModel, calendar);
 
             _context.Calendar.Update(calendar);
             await _context.SaveChangesAsync();
@@ -95,9 +52,27 @@ namespace FantasyDBStartup.Controllers
             return Ok(new { message = "Calendar updated successfully" });
         }
 
-        private async Task LoadDropdowns()
+        [HttpDelete("{id}")]
+        public override async Task<IActionResult> Delete(int id)
         {
-            ViewData["EventIdList"] = new SelectList(await _context.Event.ToListAsync(), "Id", "Name");
+            var calendar = await _context.Calendar.FindAsync(id);
+            if (calendar == null)
+            {
+                return NotFound();
+            }
+
+            _context.Calendar.Remove(calendar);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Calendar deleted" });
+        }
+
+
+
+        public override async Task<IActionResult> Create([FromBody] CalendarViewModel viewModel)
+        {
+            await LoadDropdownsForViewModel<CalendarViewModel>();
+            return await base.Create(viewModel);
         }
     }
 }

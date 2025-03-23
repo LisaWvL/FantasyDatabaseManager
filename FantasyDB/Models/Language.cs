@@ -11,15 +11,11 @@ namespace FantasyDB.Models // ✅ Add this line
     public class Language
     {
         public int Id { get; set; }
+        public string? Name { get; set; } = string.Empty;
         public string? Type { get; set; } = string.Empty;
-        public string? Text { get; set; }
-        public int? LocationId { get; set; }
+        public string? Text { get; set; } = string.Empty;
         // ✅ Navigation Properties (Add These Back)
-        public virtual Location? Location { get; set; }
 
-        // ✅ Computed Property for Display
-        [NotMapped]
-        public string? LanguageName { get; set; }
-
+        public List<Location> Locations { get; set; } = new();
     }
 }

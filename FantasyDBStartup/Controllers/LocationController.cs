@@ -1,167 +1,177 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FantasyDB.Models;
 using FantasyDB.ViewModels;
-using FantasyDB.Services; // Required for IDropdownService and BaseEntityController
+using FantasyDB.Services;
+using AutoMapper;
+using System.Threading.Tasks;
+using System.Text.Json;
+using System.IO;
+using static FantasyDB.Models.JunctionClasses;
 
 namespace FantasyDBStartup.Controllers
 {
-    public class LocationController : Controller
+    [Route("api/location")]
+    public class LocationController : BaseEntityController<Location, LocationViewModel>
     {
         private readonly AppDbContext _context;
+        private readonly IDropdownService _dropdownService;
 
-        public LocationController(AppDbContext context)
+        public LocationController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
+            : base(context, mapper, dropdownService)
         {
-            _context = context;
+            _dropdownService = dropdownService;
         }
 
-        public async Task<IActionResult> Index()
+        protected override IQueryable<Location> GetQueryable() => _context.Location;
+
+        //Override Index to include Related Names
+        public override async Task<IActionResult> Index()
         {
             var locations = await _context.Location
+                .Include(l => l.ParentLocation)
+                .Include(l => l.ChildLocations)
+                .Include(l => l.Events)
+                .Include(l => l.Language)
+                .Include(l => l.Snapshot)
                 .AsNoTracking()
                 .ToListAsync();
 
-            var viewModel = locations
-                .Select(loc => new LocationViewModel
-                {
-                    Id = loc.Id,
-                    Name = loc.Name,
-                    Type = loc.Type,
-                    Biome = loc.Biome,
-                    Cultures = loc.Cultures,
-                    Politics = loc.Politics,
-                    TotalPopulation = loc.TotalPopulation,
-                    DivineMagicians = loc.DivineMagicians,
-                    WildMagicians = loc.WildMagicians,
-                    ChildLocationId = loc.ChildLocationId,
-                    ParentLocationId = loc.ParentLocationId,
-                    EventId = loc.EventId,
-                    LanguageId = loc.LanguageId,
-                    SnapshotId = loc.SnapshotId,
+            var viewModels = _mapper.Map<List<LocationViewModel>>(locations);
 
-                    ChildLocationName = _context.Location.FirstOrDefault(c => c.Id == loc.ChildLocationId)?.Name,
-                    ParentLocationName = _context.Location.FirstOrDefault(p => p.Id == loc.ParentLocationId)?.Name,
-                    EventName = _context.Event.FirstOrDefault(e => e.Id == loc.EventId)?.Name,
-                    LanguageName = _context.Language.FirstOrDefault(l => l.Id == loc.LanguageId)?.Type,
-                    SnapshotName = _context.Snapshot.FirstOrDefault(s => s.Id == loc.SnapshotId)?.SnapshotName
-                })
-                .ToList();
+            ViewData["CurrentEntity"] = "Location";
+            await LoadDropdownsForViewModel<LocationViewModel>();
 
-            await LoadDropdowns();
-            return View(viewModel);
+            return View("_EntityTable", viewModels);
         }
 
-        public async Task<IActionResult> Create()
-        {
-            await LoadDropdowns();
-            return View(new Location());
-        }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Location location)
+        public async Task<IActionResult> Edit(int id, [FromBody] LocationViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            if (viewModel == null || id != viewModel.Id)
             {
-                _context.Add(location);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return BadRequest("Invalid request");
             }
-
-            await LoadDropdowns();
-            return View(location);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Edit(int id)
-        {
-            using var reader = new StreamReader(Request.Body);
-            var rawJson = await reader.ReadToEndAsync();
-
-            if (string.IsNullOrWhiteSpace(rawJson))
-                return BadRequest("No data received");
-
-            var data = JsonSerializer.Deserialize<Dictionary<string, string>>(rawJson);
-            if (data == null)
-                return BadRequest("Invalid JSON");
 
             var location = await _context.Location.FindAsync(id);
             if (location == null)
+            {
                 return NotFound();
+            }
 
-            location.Name = data.GetValueOrDefault("Name");
-            location.Type = data.GetValueOrDefault("Type");
-            location.Biome = data.GetValueOrDefault("Biome");
-            location.Cultures = data.GetValueOrDefault("Cultures");
-            location.Politics = data.GetValueOrDefault("Politics");
+            _mapper.Map(viewModel, location);
 
-            location.TotalPopulation = ParseNullableInt(data.GetValueOrDefault("TotalPopulation"));
-            location.DivineMagicians = ParseNullableInt(data.GetValueOrDefault("DivineMagicians"));
-            location.WildMagicians = ParseNullableInt(data.GetValueOrDefault("WildMagicians"));
-            location.ChildLocationId = ParseNullableInt(data.GetValueOrDefault("ChildLocationId"));
-            location.ParentLocationId = ParseNullableInt(data.GetValueOrDefault("ParentLocationId"));
-            location.EventId = ParseNullableInt(data.GetValueOrDefault("EventId"));
-            location.LanguageId = ParseNullableInt(data.GetValueOrDefault("LanguageId"));
-            location.SnapshotId = ParseNullableInt(data.GetValueOrDefault("SnapshotId"));
-
-            _context.Update(location);
+            _context.Location.Update(location);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Location updated successfully" });
         }
 
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id}")]
+        public override async Task<IActionResult> Delete(int id)
         {
             var location = await _context.Location.FindAsync(id);
-            if (location == null) return NotFound();
-            return View(location);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var location = await _context.Location.FindAsync(id);
-            if (location != null)
+            if (location == null)
             {
-                _context.Location.Remove(location);
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
-            return RedirectToAction(nameof(Index));
+
+            _context.Location.Remove(location);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Location deleted" });
         }
 
-        private async Task LoadDropdowns()
+        [HttpPost("create")]
+        public override async Task<IActionResult> Create([FromBody] LocationViewModel viewModel)
         {
-            ViewData["ChildLocationIdList"] = await _context.Location
-                .Select(l => new SelectListItem { Value = l.Id.ToString(), Text = l.Name })
-                .ToListAsync();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            ViewData["ParentLocationIdList"] = await _context.Location
-                .Select(l => new SelectListItem { Value = l.Id.ToString(), Text = l.Name })
-                .ToListAsync();
+            var location = _mapper.Map<Location>(viewModel);
+            _context.Location.Add(location);
+            await _context.SaveChangesAsync(); // Save first to get Location.Id
 
-            ViewData["EventIdList"] = await _context.Event
-                .Select(e => new SelectListItem { Value = e.Id.ToString(), Text = e.Name })
-                .ToListAsync();
+            // --- Add Location-ChildLocation relationships ---
+            if (viewModel.ChildLocationIds != null)
+            {
+                foreach (var childId in viewModel.ChildLocationIds)
+                {
+                    _context.LocationLocation.Add(new LocationLocation
+                    {
+                        LocationId = location.Id,
+                        ChildLocationId = childId
+                    });
+                }
+            }
 
-            ViewData["LanguageIdList"] = await _context.Language
-                .Select(l => new SelectListItem { Value = l.Id.ToString(), Text = l.Type })
-                .ToListAsync();
+            // --- Add Location-Event relationships ---
+            if (viewModel.EventIds != null)
+            {
+                foreach (var eventId in viewModel.EventIds)
+                {
+                    _context.LocationEvent.Add(new LocationEvent
+                    {
+                        LocationId = location.Id,
+                        EventId = eventId
+                    });
+                }
+            }
 
-            ViewData["SnapshotIdList"] = await _context.Snapshot
-                .Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.SnapshotName })
-                .ToListAsync();
+            await _context.SaveChangesAsync(); // Save junction tables
+            return Ok(new { message = "Location created", id = location.Id });
         }
 
-        private int? ParseNullableInt(string? value)
+
+        [HttpPut("{id}")]
+        public override async Task<IActionResult> Update(int id, [FromBody] LocationViewModel viewModel)
         {
-            return int.TryParse(value, out var result) ? result : null;
+            if (viewModel == null || id != viewModel.Id)
+                return BadRequest();
+
+            var location = await _context.Location.FirstOrDefaultAsync(l => l.Id == id);
+            if (location == null)
+                return NotFound();
+
+            // Update base properties
+            _mapper.Map(viewModel, location);
+
+            // Remove old junctions
+            var existingEventLinks = _context.LocationEvent.Where(e => e.LocationId == id);
+            var existingChildLinks = _context.LocationLocation.Where(l => l.LocationId == id);
+            _context.LocationEvent.RemoveRange(existingEventLinks);
+            _context.LocationLocation.RemoveRange(existingChildLinks);
+
+            // Add new Event junctions
+            if (viewModel.EventIds != null)
+            {
+                foreach (var eventId in viewModel.EventIds)
+                {
+                    _context.LocationEvent.Add(new LocationEvent
+                    {
+                        LocationId = id,
+                        EventId = eventId
+                    });
+                }
+            }
+
+            // Add new ChildLocation junctions
+            if (viewModel.ChildLocationIds != null)
+            {
+                foreach (var childId in viewModel.ChildLocationIds)
+                {
+                    _context.LocationLocation.Add(new LocationLocation
+                    {
+                        LocationId = id,
+                        ChildLocationId = childId
+                    });
+                }
+            }
+
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Location updated" });
         }
+
     }
 }

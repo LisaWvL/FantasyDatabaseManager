@@ -1,176 +1,91 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FantasyDB.Models;
 using FantasyDB.ViewModels;
-using FantasyDB.Services; // Required for IDropdownService and BaseEntityController
-
+using FantasyDB.Services;
+using AutoMapper;
+using System.Threading.Tasks;
+using System.Text.Json;
+using System.IO;
 
 namespace FantasyDBStartup.Controllers
 {
-    public class FactionController : Controller
+    [Route("api/faction")]
+    public class FactionController : BaseEntityController<Faction, FactionViewModel>
     {
         private readonly AppDbContext _context;
+        private readonly IDropdownService _dropdownService;
 
-        public FactionController(AppDbContext context)
+        public FactionController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
+            : base(context, mapper, dropdownService)
         {
-            _context = context;
+            _dropdownService = dropdownService;
         }
 
-        public async Task<IActionResult> Index()
+        protected override IQueryable<Faction> GetQueryable() => _context.Faction;
+
+        //Override Index to include Related Names
+        public override async Task<IActionResult> Index()
         {
             var factions = await _context.Faction
+                .Include(f => f.Founder)
+                .Include(f => f.Leader)
+                .Include(f => f.HQLocation)
+                .Include(f => f.Snapshot)
                 .AsNoTracking()
                 .ToListAsync();
 
-            var viewModel = factions
-                .AsEnumerable()
-                .Select(f => new FactionViewModel
-                {
-                    Id = f.Id,
-                    Name = f.Name,
-                    Alias = f.Alias,
-                    Magic = f.Magic,
-                    FoundingYear = f.FoundingYear,
+            var viewModels = _mapper.Map<List<FactionViewModel>>(factions);
 
-                    FounderId = f.FounderId,
-                    LeaderId = f.LeaderId,
-                    HQLocationId = f.HQLocationId,
-                    SnapshotId = f.SnapshotId,
+            ViewData["CurrentEntity"] = "Faction";
+            await LoadDropdownsForViewModel<FactionViewModel>();
 
-                    FounderName = _context.Character
-                        .Where(c => c.Id == f.FounderId)
-                        .Select(c => c.Name)
-                        .FirstOrDefault(),
-
-                    LeaderName = _context.Character
-                        .Where(c => c.Id == f.LeaderId)
-                        .Select(c => c.Name)
-                        .FirstOrDefault(),
-
-                    HQLocationName = _context.Location
-                        .Where(l => l.Id == f.HQLocationId)
-                        .Select(l => l.Name)
-                        .FirstOrDefault(),
-
-                    SnapshotName = _context.Snapshot
-                        .Where(s => s.Id == f.SnapshotId)
-                        .Select(s => s.SnapshotName)
-                        .FirstOrDefault()
-                })
-                .ToList();
-
-            await LoadDropdowns();
-            return View(viewModel);
+            return View("_EntityTable", viewModels);
         }
 
-        public async Task<IActionResult> Create()
-        {
-            await LoadDropdowns();
-            return View(new Faction());
-        }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Faction faction)
+        public async Task<IActionResult> Edit(int id, [FromBody] FactionViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            if (viewModel == null || id != viewModel.Id)
             {
-                _context.Add(faction);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return BadRequest("Invalid request");
             }
-            await LoadDropdowns();
-            return View(faction);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Edit(int id)
-        {
-            using var reader = new StreamReader(Request.Body);
-            var rawJson = await reader.ReadToEndAsync();
-
-            if (string.IsNullOrWhiteSpace(rawJson))
-                return BadRequest("No data received");
-
-            var data = JsonSerializer.Deserialize<Dictionary<string, string>>(rawJson);
-            if (data == null)
-                return BadRequest("Invalid JSON");
 
             var faction = await _context.Faction.FindAsync(id);
             if (faction == null)
+            {
                 return NotFound();
+            }
 
-            faction.Name = data.GetValueOrDefault("Name");
-            faction.Alias = data.GetValueOrDefault("Alias");
-            faction.Magic = data.GetValueOrDefault("Magic");
-            faction.FoundingYear = ParseNullableInt(data.GetValueOrDefault("FoundingYear"));
+            _mapper.Map(viewModel, faction);
 
-            faction.FounderId = ParseNullableInt(data.GetValueOrDefault("FounderId"));
-            faction.LeaderId = ParseNullableInt(data.GetValueOrDefault("LeaderId"));
-            faction.HQLocationId = ParseNullableInt(data.GetValueOrDefault("HQLocationId"));
-            faction.SnapshotId = ParseNullableInt(data.GetValueOrDefault("SnapshotId"));
-
-            _context.Update(faction);
+            _context.Faction.Update(faction);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Faction updated successfully" });
         }
 
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id}")]
+        public override async Task<IActionResult> Delete(int id)
         {
             var faction = await _context.Faction.FindAsync(id);
-            if (faction == null) return NotFound();
-            return View(faction);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var faction = await _context.Faction.FindAsync(id);
-            if (faction != null)
+            if (faction == null)
             {
-                _context.Faction.Remove(faction);
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
-            return RedirectToAction(nameof(Index));
+
+            _context.Faction.Remove(faction);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Faction deleted" });
         }
 
-        private async Task LoadDropdowns()
+        public override async Task<IActionResult> Create([FromBody] FactionViewModel viewModel)
         {
-            ViewData["FounderIdList"] = await _context.Character
-                .AsNoTracking()
-                .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name })
-                .ToListAsync();
-
-            ViewData["LeaderIdList"] = await _context.Character
-                .AsNoTracking()
-                .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name })
-                .ToListAsync();
-
-            ViewData["HQLocationIdList"] = await _context.Location
-                .AsNoTracking()
-                .Select(l => new SelectListItem { Value = l.Id.ToString(), Text = l.Name })
-                .ToListAsync();
-
-            ViewData["SnapshotIdList"] = await _context.Snapshot
-                .AsNoTracking()
-                .OrderBy(s => s.SnapshotName)
-                .Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.SnapshotName })
-                .ToListAsync();
+            await LoadDropdownsForViewModel<FactionViewModel>();
+            return await base.Create(viewModel);
         }
 
-        private int? ParseNullableInt(string? value)
-        {
-            if (int.TryParse(value, out var result))
-                return result;
-            return null;
-        }
     }
 }

@@ -5,22 +5,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FantasyDB.Models;
+using FantasyDB.Services;
 
 namespace FantasyDB.ViewModels
 {
-    public class FactionViewModel
+    public class FactionViewModel : IViewModelWithId
     {
+        public int Id { get; set; }
         public string? Name { get; set; } = string.Empty;
         public string? Alias { get; set; } = string.Empty;
         public int? FoundingYear { get; set; }
+        [EditableForSnapshot]
         public string? Magic { get; set; } = string.Empty;
-        [NotMapped]
+        [EditableForSnapshot]
+        public int? SnapshotId { get; set; }
+        public int? FounderId { get; set; }
+        [EditableForSnapshot]
+        public int? LeaderId { get; set; }
+        [EditableForSnapshot]
+        public int? HQLocationId { get; set; }
         public string? FounderName { get; set; } = string.Empty;// Readable Name
-        [NotMapped]
         public string? LeaderName { get; set; } = string.Empty;// Readable Name
-        [NotMapped]
         public string? HQLocationName { get; set; } = string.Empty;
-        [NotMapped]
         public string? SnapshotName { get; set; } = string.Empty;
     }
 }

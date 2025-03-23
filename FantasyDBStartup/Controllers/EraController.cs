@@ -1,97 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FantasyDB.Models;
 using FantasyDB.ViewModels;
-using FantasyDB.Services; // Required for IDropdownService and BaseEntityController
-
+using FantasyDB.Services;
+using AutoMapper;
+using System.Threading.Tasks;
+using System.Text.Json;
+using System.IO;
 
 namespace FantasyDBStartup.Controllers
 {
-    public class EraController : Controller
+    [Route("api/era")]
+    public class EraController : BaseEntityController<Era, EraViewModel>
     {
         private readonly AppDbContext _context;
+        private readonly IDropdownService _dropdownService;
 
-        public EraController(AppDbContext context)
+        public EraController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
+            : base(context, mapper, dropdownService)
         {
-            _context = context;
+            _dropdownService = dropdownService;
         }
 
-        public async Task<IActionResult> Index()
+        protected override IQueryable<Era> GetQueryable() => _context.Era;
+
+        //Override Index to include Related Names
+        public override async Task<IActionResult> Index()
         {
             var eras = await _context.Era
+                .Include(e => e.Snapshot)
                 .AsNoTracking()
                 .ToListAsync();
 
-            var viewModel = eras
-                .AsEnumerable()
-                .Select(e => new EraViewModel
-                {
-                    Id = e.Id,
-                    Name = e.Name,
-                    Description = e.Description,
-                    StartYear = e.StartYear,
-                    EndYear = e.EndYear,
-                    MagicSystem = e.MagicSystem,
-                    MagicStatus = e.MagicStatus,
-                    SnapshotId = e.SnapshotId,
-                    SnapshotName = _context.Snapshot.FirstOrDefault(s => s.Id == e.SnapshotId)?.SnapshotName
-                })
-                .ToList();
+            var viewModels = _mapper.Map<List<EraViewModel>>(eras);
 
-            await LoadDropdowns();
-            return View(viewModel);
+            ViewData["CurrentEntity"] = "Era";
+            await LoadDropdownsForViewModel<EraViewModel>();
+
+            return View("_EntityTable", viewModels);
         }
 
-        public async Task<IActionResult> Create()
-        {
-            await LoadDropdowns();
-            return View(new Era());
-        }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Era era)
+        public async Task<IActionResult> Edit(int id, [FromBody] EraViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            if (viewModel == null || id != viewModel.Id)
             {
-                _context.Era.Add(era);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return BadRequest("Invalid request");
             }
-            await LoadDropdowns();
-            return View(era);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Edit(int id)
-        {
-            using var reader = new StreamReader(Request.Body);
-            var rawJson = await reader.ReadToEndAsync();
-
-            if (string.IsNullOrWhiteSpace(rawJson))
-                return BadRequest("No data received");
-
-            var data = JsonSerializer.Deserialize<Dictionary<string, string>>(rawJson);
-            if (data == null)
-                return BadRequest("Invalid JSON");
 
             var era = await _context.Era.FindAsync(id);
             if (era == null)
+            {
                 return NotFound();
+            }
 
-            era.Name = data.GetValueOrDefault("Name");
-            era.Description = data.GetValueOrDefault("Description");
-            era.StartYear = ParseNullableInt(data.GetValueOrDefault("StartYear"));
-            era.EndYear = ParseNullableInt(data.GetValueOrDefault("EndYear"));
-            era.MagicSystem = data.GetValueOrDefault("MagicSystem");
-            era.MagicStatus = data.GetValueOrDefault("MagicStatus");
-            era.SnapshotId = ParseNullableInt(data.GetValueOrDefault("SnapshotId"));
+            _mapper.Map(viewModel, era);
 
             _context.Era.Update(era);
             await _context.SaveChangesAsync();
@@ -99,41 +63,26 @@ namespace FantasyDBStartup.Controllers
             return Ok(new { message = "Era updated successfully" });
         }
 
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id}")]
+        public override async Task<IActionResult> Delete(int id)
         {
             var era = await _context.Era.FindAsync(id);
-            if (era == null) return NotFound();
-            return View(era);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var era = await _context.Era.FindAsync(id);
-            if (era != null)
+            if (era == null)
             {
-                _context.Era.Remove(era);
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
-            return RedirectToAction(nameof(Index));
+
+            _context.Era.Remove(era);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Era deleted" });
         }
 
-        private async Task LoadDropdowns()
+        public override async Task<IActionResult> Create([FromBody] EraViewModel viewModel)
         {
-            ViewData["SnapshotIdList"] = await _context.Snapshot
-                .AsNoTracking()
-                .Select(s => new SelectListItem
-                {
-                    Value = s.Id.ToString(),
-                    Text = s.SnapshotName
-                })
-                .ToListAsync();
-        }
+            await LoadDropdownsForViewModel<EraViewModel>();
 
-        private int? ParseNullableInt(string? value)
-        {
-            return int.TryParse(value, out var result) ? result : null;
+            return await base.Create(viewModel);
         }
     }
 }

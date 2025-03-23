@@ -1,114 +1,79 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FantasyDB.Models;
 using FantasyDB.ViewModels;
-using FantasyDB.Services; // Required for IDropdownService and BaseEntityController
-
+using FantasyDB.Services;
+using AutoMapper;
+using System.Threading.Tasks;
+using System.Text.Json;
+using System.IO;
 
 namespace FantasyDBStartup.Controllers
 {
-    public class PriceExampleController : Controller
+    public class PriceExampleController : BaseEntityController<PriceExample, PriceExampleViewModel>
     {
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
+        private readonly IDropdownService _dropdownService;
 
-        public PriceExampleController(AppDbContext context)
+        public PriceExampleController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
+            : base(context, mapper, dropdownService)
         {
-            _context = context;
+            _dropdownService = dropdownService;
         }
 
-        public async Task<IActionResult> Index()
+        protected override IQueryable<PriceExample> GetQueryable() => _context.PriceExample;
+
+        //Override index to use Automapper
+        public override async Task<IActionResult> Index()
         {
-            var prices = await _context.PriceExample.AsNoTracking().ToListAsync();
+            var prices = await _context.PriceExample
+                .AsNoTracking()
+                .ToListAsync();
 
-            var viewModel = prices
-                .Select(p => new PriceExampleViewModel
-                {
-                    Id = p.Id,
-                    Category = p.Category,
-                    Name = p.Name,
-                    Exclusivity = p.Exclusivity,
-                    Price = p.Price
-                })
-                .ToList();
+            var viewModels = _mapper.Map<List<PriceExampleViewModel>>(prices);
 
-            return View(viewModel);
+            ViewData["CurrentEntity"] = "PriceExample";
+            // No dropdowns needed
+            return View("_EntityTable", viewModels);
         }
 
-        public IActionResult Create()
-        {
-            return View(new PriceExample());
-        }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PriceExample model)
+        public async Task<IActionResult> Edit(int id, [FromBody] PriceExampleViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            if (viewModel == null || id != viewModel.Id)
             {
-                _context.PriceExample.Add(model);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return BadRequest("Invalid request");
             }
-            return View(model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Edit(int id)
-        {
-            using var reader = new StreamReader(Request.Body);
-            var rawJson = await reader.ReadToEndAsync();
-
-            if (string.IsNullOrWhiteSpace(rawJson))
-                return BadRequest("No data received");
-
-            var data = JsonSerializer.Deserialize<Dictionary<string, string>>(rawJson);
-            if (data == null)
-                return BadRequest("Invalid JSON");
 
             var price = await _context.PriceExample.FindAsync(id);
             if (price == null)
+            {
                 return NotFound();
+            }
 
-            price.Category = data.GetValueOrDefault("Category");
-            price.Name = data.GetValueOrDefault("Name");
-            price.Exclusivity = data.GetValueOrDefault("Exclusivity");
-            price.Price = ParseNullableDecimal(data.GetValueOrDefault("Price"));
+            _mapper.Map(viewModel, price);
 
-            _context.Update(price);
+            _context.PriceExample.Update(price);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Price example updated successfully" });
         }
 
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id}")]
+        public override async Task<IActionResult> Delete(int id)
         {
-            var item = await _context.PriceExample.FindAsync(id);
-            if (item == null) return NotFound();
-            return View(item);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var item = await _context.PriceExample.FindAsync(id);
-            if (item != null)
+            var price = await _context.PriceExample.FindAsync(id);
+            if (price == null)
             {
-                _context.PriceExample.Remove(item);
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
-            return RedirectToAction(nameof(Index));
-        }
 
-        private decimal? ParseNullableDecimal(string? value)
-        {
-            return decimal.TryParse(value, out var result) ? result : null;
+            _context.PriceExample.Remove(price);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Price example deleted" });
         }
     }
 }
