@@ -19,6 +19,7 @@ namespace FantasyDB.Models // ✅ Add this line
         public string? MagicStatus { get; set; }
         public int? SnapshotId { get; set; }
         // ✅ Navigation Properties (Add These Back)
+        [ForeignKey("SnapshotId")]
         public virtual Snapshot? Snapshot { get; set; }
     }
 }

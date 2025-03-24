@@ -17,7 +17,9 @@ namespace FantasyDB.Models // ✅ Add this line
         public int? OwnerId { get; set; }
         public int? SnapshotId { get; set; }
         // ✅ Navigation Properties (Add These Back)
+        [ForeignKey("OwnerId")]
         public virtual Character? Owner { get; set; }
+        [ForeignKey("SnapshotId")]
         public virtual Snapshot? Snapshot { get; set; }
     }
 }

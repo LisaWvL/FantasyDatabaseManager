@@ -18,9 +18,10 @@ namespace FantasyDB.Models // ✅ Add this line
         public int? SourceLocationId { get; set; }
         public int? DestinationLocationId { get; set; }
         // ✅ Navigation Properties (Add These Back)
-         
+
+        [ForeignKey("SourceLocationId")]
         public virtual Location? SourceLocation { get; set; }
-         
+        [ForeignKey("DestinationLocationId")]
         public virtual Location? DestinationLocation { get; set; }
 
     }

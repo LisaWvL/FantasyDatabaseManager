@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using static FantasyDB.Models.JunctionClasses;
+using System.Text.Json;
+using System.Reflection;
+using FantasyDB.Attributes; // Make sure you define the [HandlesJunction] attribute here
+using System;
+
 
 namespace FantasyDB.Services
 {
@@ -47,7 +52,7 @@ namespace FantasyDB.Services
             return Ok(viewModel);
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public virtual async Task<IActionResult> Create([FromBody] TViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -57,7 +62,7 @@ namespace FantasyDB.Services
             _context.Add(entity);
             await _context.SaveChangesAsync();
 
-            await HandleJunctionsAfterCreate(entity, viewModel);
+            await HandleJunctions(entity, viewModel, isUpdate: false);
 
             var createdViewModel = _mapper.Map<TViewModel>(entity);
             return CreatedAtAction(nameof(GetById), new { id = createdViewModel.Id }, createdViewModel);
@@ -66,20 +71,18 @@ namespace FantasyDB.Services
         [HttpPut("{id}")]
         public virtual async Task<IActionResult> Update(int id, [FromBody] TViewModel viewModel)
         {
-            if (viewModel == null || id != viewModel.Id)
-                return BadRequest("Invalid request");
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             var entity = await _context.Set<TModel>().FindAsync(id);
             if (entity == null)
                 return NotFound();
 
             _mapper.Map(viewModel, entity);
-            _context.Update(entity);
             await _context.SaveChangesAsync();
 
-            await HandleJunctionsAfterUpdate(entity, viewModel);
-
-            return Ok(new { message = "Entity updated" });
+            await HandleJunctions(entity, viewModel, isUpdate: true);
+            return Ok(entity);
         }
 
         [HttpDelete("{id}")]
@@ -94,17 +97,120 @@ namespace FantasyDB.Services
             return Ok(new { message = "Entity deleted" });
         }
 
-        protected void SetCurrentEntityName()
-        {
-            var name = typeof(TModel).Name;
-            ViewData["CurrentEntity"] = name;
-        }
-
         protected async Task LoadDropdownsForViewModel<T>()
         {
             await _dropdownService.LoadDropdownsForViewModel<T>(ViewData);
         }
 
+        protected void SetCurrentEntityName()
+        {
+            ViewData["CurrentEntity"] = typeof(TModel).Name;
+        }
+
+        // ------------------------------------------------------
+        // 🔁 Unified Generic Junction Handler with Attribute Support
+        // ------------------------------------------------------
+        private async Task HandleJunctions(TModel entity, TViewModel viewModel, bool isUpdate)
+        {
+            var entityId = (int)(typeof(TModel).GetProperty("Id")?.GetValue(entity) ?? 0);
+
+            // 1. Handle snapshot relationships (manually mapped ones)
+            await HandleSnapshotLinks(entity, viewModel, entityId);
+
+            // 2. Handle generic [HandlesJunction] mappings
+            foreach (var prop in typeof(TViewModel).GetProperties())
+            {
+                var junctionAttr = prop.GetCustomAttribute<HandlesJunctionAttribute>();
+                if (junctionAttr == null) continue;
+
+                var selectedIds = prop.GetValue(viewModel) as IEnumerable<int>;
+                if (selectedIds == null) continue;
+
+                // Get the junction entity type
+                var junctionType = AppDomain.CurrentDomain.GetAssemblies()
+                    .SelectMany(a => a.GetTypes())
+                    .FirstOrDefault(t => t.Name == junctionAttr.JunctionEntity);
+
+                if (junctionType == null)
+                {
+                    Console.WriteLine($"[JUNCTION] Could not find type: {junctionAttr.JunctionEntity}");
+                    continue;
+                }
+
+                // Get the DbSet for the junction type
+                var junctionSet = _context.GetType()
+                    .GetMethod("Set", Type.EmptyTypes)!
+                    .MakeGenericMethod(junctionType)
+                    .Invoke(_context, null);
+
+                if (junctionSet is not IQueryable junctionQuery) continue;
+
+                // Materialize to list so we can filter with runtime reflection
+                var allJunctions = junctionQuery.Cast<object>().ToList();
+
+                var toRemove = allJunctions
+                    .Where(j =>
+                    {
+                        var thisKeyValue = j.GetType().GetProperty(junctionAttr.ThisKey)?.GetValue(j);
+                        return thisKeyValue != null && (int)thisKeyValue == entityId;
+                    })
+                    .ToList();
+
+                foreach (var j in toRemove)
+                {
+                    _context.Remove(j);
+                }
+
+
+                // Add new junction entries
+                foreach (var foreignId in selectedIds)
+                {
+                    var newJunction = Activator.CreateInstance(junctionType);
+                    if (newJunction == null) continue;
+
+                    junctionType.GetProperty(junctionAttr.ThisKey)?.SetValue(newJunction, entityId);
+                    junctionType.GetProperty(junctionAttr.ForeignKey)?.SetValue(newJunction, foreignId);
+
+                    _context.Add(newJunction);
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+
+        }
+
+        private async Task HandleSnapshotLinks(TModel entity, TViewModel viewModel, int entityId)
+        {
+            var snapshotProp = typeof(TViewModel).GetProperty("SnapshotId");
+            if (snapshotProp == null) return;
+
+            var snapshotId = snapshotProp.GetValue(viewModel) as int?;
+            if (!snapshotId.HasValue) return;
+
+            if (typeof(TModel) == typeof(Character))
+                _context.SnapshotCharacter.Add(new SnapshotCharacter { CharacterId = entityId, SnapshotId = snapshotId.Value });
+
+            else if (typeof(TModel) == typeof(Artifact))
+                _context.SnapshotArtifact.Add(new SnapshotArtifact { ArtifactId = entityId, SnapshotId = snapshotId.Value });
+
+            else if (typeof(TModel) == typeof(Location))
+                _context.SnapshotLocation.Add(new SnapshotLocation { LocationId = entityId, SnapshotId = snapshotId.Value });
+
+            else if (typeof(TModel) == typeof(Faction))
+                _context.SnapshotFaction.Add(new SnapshotFaction { FactionId = entityId, SnapshotId = snapshotId.Value });
+
+            else if (typeof(TModel) == typeof(Era))
+                _context.SnapshotEra.Add(new SnapshotEra { EraId = entityId, SnapshotId = snapshotId.Value });
+
+            else if (typeof(TModel) == typeof(Event))
+                _context.SnapshotEvent.Add(new SnapshotEvent { EventId = entityId, SnapshotId = snapshotId.Value });
+
+            else if (typeof(TModel) == typeof(CharacterRelationship))
+                _context.SnapshotCharacterRelationship.Add(new SnapshotCharacterRelationship { CharacterRelationshipId = entityId, SnapshotId = snapshotId.Value });
+
+            await _context.SaveChangesAsync();
+        }
 
         [HttpGet("{id}/new-snapshot")]
         public virtual async Task<IActionResult> CreateNewSnapshot(int id)
@@ -114,8 +220,9 @@ namespace FantasyDB.Services
                 return NotFound();
 
             var viewModel = _mapper.Map<TViewModel>(original);
-            viewModel.Id = 0;
+            viewModel.Id = 0; // Reset Id for the new entity
 
+            // Reset SnapshotId
             var snapshotProp = typeof(TViewModel).GetProperty("SnapshotId");
             snapshotProp?.SetValue(viewModel, null);
 
@@ -144,9 +251,11 @@ namespace FantasyDB.Services
             var viewModel = _mapper.Map<TViewModel>(original);
             viewModel.Id = 0;
 
+            // Reset SnapshotId
             var snapshotProp = typeof(TViewModel).GetProperty("SnapshotId");
             snapshotProp?.SetValue(viewModel, null);
 
+            // Try to get the "Name" value to group other versions
             var nameProp = typeof(TViewModel).GetProperty("Name");
             var nameValue = nameProp?.GetValue(viewModel)?.ToString();
 
@@ -175,115 +284,6 @@ namespace FantasyDB.Services
             return View("~/Views/Shared/CreateNewSnapshot.cshtml", pageModel);
         }
 
-        private async Task HandleJunctionsAfterCreate(TModel entity, TViewModel viewModel)
-        {
-            await HandleJunctions(entity, viewModel, isUpdate: false);
-        }
 
-        private async Task HandleJunctionsAfterUpdate(TModel entity, TViewModel viewModel)
-        {
-            await HandleJunctions(entity, viewModel, isUpdate: true);
-        }
-
-        private async Task HandleJunctions(TModel entity, TViewModel viewModel, bool isUpdate)
-        {
-            var entityName = typeof(TModel).Name;
-            var entityId = (int)typeof(TModel).GetProperty("Id")?.GetValue(entity)!;
-
-            if (entityName == "Location" && viewModel is LocationViewModel lvm)
-            {
-                if (isUpdate)
-                {
-                    _context.LocationLocation.RemoveRange(_context.LocationLocation.Where(l => l.LocationId == entityId));
-                    _context.LocationEvent.RemoveRange(_context.LocationEvent.Where(l => l.LocationId == entityId));
-                }
-
-                foreach (var childId in lvm.ChildLocationIds ?? new List<int>())
-                    _context.LocationLocation.Add(new LocationLocation { LocationId = entityId, ChildLocationId = childId });
-
-                foreach (var eventId in lvm.EventIds ?? new List<int>())
-                    _context.LocationEvent.Add(new LocationEvent { LocationId = entityId, EventId = eventId });
-
-                await _context.SaveChangesAsync();
-            }
-
-            if (entityName == "Language" && viewModel is LanguageViewModel langVM)
-            {
-                if (isUpdate)
-                    _context.LanguageLocation.RemoveRange(_context.LanguageLocation.Where(ll => ll.LanguageId == entityId));
-
-                foreach (var locId in langVM.LocationIds ?? new List<int>())
-                    _context.LanguageLocation.Add(new LanguageLocation { LanguageId = entityId, LocationId = locId });
-
-                await _context.SaveChangesAsync();
-            }
-
-            if (typeof(TModel) == typeof(Character) && viewModel is CharacterViewModel c)
-            {
-                if (c.SnapshotId.HasValue)
-                {
-                    _context.SnapshotCharacter.Add(new SnapshotCharacter { CharacterId = entityId, SnapshotId = c.SnapshotId });
-                    await _context.SaveChangesAsync();
-                }
-            }
-
-            if (typeof(TModel) == typeof(Artifact) && viewModel is ArtifactViewModel a)
-            {
-                if (a.SnapshotId.HasValue)
-                {
-                    _context.SnapshotArtifact.Add(new SnapshotArtifact { ArtifactId = entityId, SnapshotId = a.SnapshotId });
-                    await _context.SaveChangesAsync();
-                }
-            }
-
-            if (typeof(TModel) == typeof(Event) && viewModel is EventViewModel ev)
-            {
-                if (ev.SnapshotId.HasValue)
-                {
-                    _context.SnapshotEvent.Add(new SnapshotEvent { EventId = entityId, SnapshotId = ev.SnapshotId });
-                    await _context.SaveChangesAsync();
-                }
-            }
-
-            if (typeof(TModel) == typeof(Era) && viewModel is EraViewModel era)
-            {
-                if (era.SnapshotId.HasValue)
-                {
-                    _context.SnapshotEra.Add(new SnapshotEra { EraId = entityId, SnapshotId = era.SnapshotId });
-                    await _context.SaveChangesAsync();
-                }
-            }
-
-            if (typeof(TModel) == typeof(Faction) && viewModel is FactionViewModel f)
-            {
-                if (f.SnapshotId.HasValue)
-                {
-                    _context.SnapshotFaction.Add(new SnapshotFaction { FactionId = entityId, SnapshotId = f.SnapshotId });
-                    await _context.SaveChangesAsync();
-                }
-            }
-
-            if (typeof(TModel) == typeof(Location) && viewModel is LocationViewModel loc)
-            {
-                if (loc.SnapshotId.HasValue)
-                {
-                    _context.SnapshotLocation.Add(new SnapshotLocation { LocationId = entityId, SnapshotId = loc.SnapshotId });
-                    await _context.SaveChangesAsync();
-                }
-            }
-
-            if (typeof(TModel) == typeof(CharacterRelationship) && viewModel is CharacterRelationshipViewModel cr)
-            {
-                if (cr.SnapshotId.HasValue)
-                {
-                    _context.SnapshotCharacterRelationship.Add(new SnapshotCharacterRelationship
-                    {
-                        CharacterRelationshipId = entityId,
-                        SnapshotId = cr.SnapshotId
-                    });
-                    await _context.SaveChangesAsync();
-                }
-            }
-        }
     }
 }

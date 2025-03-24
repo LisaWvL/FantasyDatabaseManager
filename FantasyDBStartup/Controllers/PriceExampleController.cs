@@ -12,17 +12,18 @@ namespace FantasyDBStartup.Controllers
 {
     public class PriceExampleController : BaseEntityController<PriceExample, PriceExampleViewModel>
     {
-        private readonly AppDbContext _context;
-        private readonly IMapper _mapper;
-        private readonly IDropdownService _dropdownService;
+
 
         public PriceExampleController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
             : base(context, mapper, dropdownService)
         {
-            _dropdownService = dropdownService;
+
         }
 
-        protected override IQueryable<PriceExample> GetQueryable() => _context.PriceExample;
+        protected override IQueryable<PriceExample> GetQueryable()
+        {
+            return _context.PriceExample;
+        }
 
         //Override index to use Automapper
         public override async Task<IActionResult> Index()
@@ -75,5 +76,7 @@ namespace FantasyDBStartup.Controllers
 
             return Ok(new { message = "Price example deleted" });
         }
+
+
     }
 }

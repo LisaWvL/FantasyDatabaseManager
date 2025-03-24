@@ -13,15 +13,10 @@ namespace FantasyDBStartup.Controllers
     [Route("api/character")]
     public class CharacterController : BaseEntityController<Character, CharacterViewModel>
     {
-        // NOTE: You don't need to redeclare _dropdownService if you're using it in the base class only.
-        // But you can keep it here if this controller needs to use dropdowns in custom endpoints.
-        private readonly IDropdownService _dropdownService;
-
 
         public CharacterController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
             : base(context, mapper, dropdownService)
         {
-            _dropdownService = dropdownService;
         }
 
         // Override Index to include related entities so dropdown names resolve in your table
@@ -93,6 +88,7 @@ namespace FantasyDBStartup.Controllers
         [HttpPost("create")]
         public override async Task<IActionResult> Create([FromBody] CharacterViewModel viewModel)
         {
+
             if (ModelState.IsValid)
             {
                 var character = _mapper.Map<Character>(viewModel);
@@ -126,12 +122,6 @@ namespace FantasyDBStartup.Controllers
             return BadRequest(ModelState);
         }
 
-        // PUT: Update via inline-edit or form (optional View)
-        [HttpPut("{id}")]
-        public override async Task<IActionResult> Update(int id, [FromBody] CharacterViewModel viewModel)
-        {
-            return await base.Update(id, viewModel);
-        }
 
         // DELETE: Remove character
         [HttpDelete("{id}")]
@@ -158,6 +148,13 @@ namespace FantasyDBStartup.Controllers
         {
             return await base.CreateNewSnapshot(id);
         }
+
+        [HttpGet("{id}/new-snapshot-page")]
+        public override async Task<IActionResult> CreateNewSnapshotPage(int id)
+        {
+            return await base.CreateNewSnapshotPage(id);
+        }
+
 
 
         protected override IQueryable<Character> GetQueryable()

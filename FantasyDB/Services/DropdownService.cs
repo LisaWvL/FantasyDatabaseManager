@@ -45,7 +45,7 @@ namespace FantasyDB.Services
 
         public async Task<List<SelectListItem>> GetLanguagesAsync() =>
             await _context.Language.AsNoTracking()
-                .Select(l => new SelectListItem { Value = l.Id.ToString(), Text = l.Type })
+                .Select(l => new SelectListItem { Value = l.Id.ToString(), Text = l.Name })
                 .ToListAsync();
 
         public async Task<List<SelectListItem>> GetSnapshotsAsync() =>

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FantasyDB.Services;
+using static FantasyDB.Models.JunctionClasses;
 namespace FantasyDB.Models // ✅ Add this line
 {
     public class Location
@@ -23,19 +24,22 @@ namespace FantasyDB.Models // ✅ Add this line
         public int? ParentLocationId { get; set; }
         public int? LanguageId { get; set; }
         public int? SnapshotId { get; set; }
-         
+
+        // Navigation Properties
+        [ForeignKey("ParentLocationId")]
         public virtual Location? ParentLocation { get; set; }
-         
+        [ForeignKey("LanguageId")]
+
         public virtual Language? Language { get; set; }
-         
+        [ForeignKey("SnapshotId")]
+
         public virtual Snapshot? Snapshot { get; set; }
 
         // --------------------------------------------
         // MULTIPLE CHILD LOCATIONS AND EVENTS
         // --------------------------------------------
-         
-        public List<Location> ChildLocations { get; set; } = new();
-         
-        public List<Event> Events { get; set; } = new();
+
+        public List<LocationLocation> LocationLocations { get; set; } = new();
+        public List<LocationEvent> LocationEvents { get; set; } = new();
     }
 }

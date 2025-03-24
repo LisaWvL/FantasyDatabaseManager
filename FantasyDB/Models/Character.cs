@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using FantasyDB.Models;
-using FantasyDB.Utilities;
+
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,9 +46,13 @@ namespace FantasyDB.Models // ✅ Add this line
         public int? LanguageId { get; set; }
 
         // ✅ Navigation Properties (Add These Back)
+        [ForeignKey("FactionId")]
         public virtual Faction? Faction { get; set; }
+        [ForeignKey("LocationId")]
         public virtual Location? Location { get; set; }
+        [ForeignKey("LanguageId")]
         public virtual Language? Language { get; set; }
+        [ForeignKey("SnapshotId")]
         public virtual Snapshot? Snapshot { get; set; }
     }
 

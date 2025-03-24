@@ -13,16 +13,15 @@ namespace FantasyDBStartup.Controllers
     [Route("api/event")]
     public class EventController : BaseEntityController<Event, EventViewModel>
     {
-        private readonly AppDbContext _context;
-        private readonly IDropdownService _dropdownService;
 
         public EventController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
             : base(context, mapper, dropdownService)
         {
-            _dropdownService = dropdownService;
+
         }
 
-        protected override IQueryable<Event> GetQueryable() => _context.Event;
+        protected override IQueryable<Event> GetQueryable()
+        { return _context.Event; }
 
         //Override Index to include Related Names
         public override async Task<IActionResult> Index()
@@ -84,6 +83,19 @@ namespace FantasyDBStartup.Controllers
             await LoadDropdownsForViewModel<EventViewModel>();
 
             return await base.Create(viewModel);
+        }
+
+
+        [HttpGet("{id}/new-snapshot")]
+        public override async Task<IActionResult> CreateNewSnapshot(int id)
+        {
+            return await base.CreateNewSnapshot(id);
+        }
+
+        [HttpGet("{id}/new-snapshot-page")]
+        public override async Task<IActionResult> CreateNewSnapshotPage(int id)
+        {
+            return await base.CreateNewSnapshotPage(id);
         }
     }
 }

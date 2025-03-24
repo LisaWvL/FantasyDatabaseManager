@@ -1,13 +1,19 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import React from "react";
+import SnapshotEntityView from "./components/SnapshotEntityView";
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
+      <>
+          <div className="App">
+              <h1 className="my-4 text-center">Worldbuilder Timeline Viewer</h1>
+              <SnapshotEntityView />
+          </div>
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />

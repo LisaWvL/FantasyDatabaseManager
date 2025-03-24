@@ -167,12 +167,13 @@ public class AppDbContext : DbContext
         // PriceExample
         modelBuilder.Entity<PriceExample>()
             .Property(p => p.Price)
-            .HasColumnType("decimal(18,2)");
+            .HasColumnType("int");
 
         modelBuilder.Entity<Location>()
           .HasOne(l => l.ParentLocation)
           .WithMany()
           .HasForeignKey(l => l.ParentLocationId);
+
 
         modelBuilder.Entity<JunctionClasses.SnapshotArtifact>()
             .HasKey(sa => new { sa.SnapshotId, sa.ArtifactId });
@@ -251,21 +252,6 @@ public class AppDbContext : DbContext
             .HasOne(scr => scr.CharacterRelationship)
             .WithMany()
             .HasForeignKey(scr => scr.CharacterRelationshipId);
-
-        // Location - Location Junction Table
-        modelBuilder.Entity<LocationLocation>()
-            .HasKey(ll => new { ll.LocationId, ll.ChildLocationId });
-
-        modelBuilder.Entity<LocationLocation>()
-            .HasOne(ll => ll.Location)
-            .WithMany()
-            .HasForeignKey(ll => ll.LocationId);
-
-        modelBuilder.Entity<LocationLocation>()
-            .HasOne(ll => ll.ChildLocation)
-            .WithMany()
-            .HasForeignKey(ll => ll.ChildLocationId);
-
 
         // Junction Table Configurations
         modelBuilder.Entity<SnapshotCharacter>()
@@ -366,12 +352,14 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<LocationLocation>()
             .HasOne(ll => ll.Location)
             .WithMany()
-            .HasForeignKey(ll => ll.LocationId);
+            .HasForeignKey(ll => ll.LocationId)
+            .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<LocationLocation>()
             .HasOne(ll => ll.ChildLocation)
             .WithMany()
-            .HasForeignKey(ll => ll.ChildLocationId);
+            .HasForeignKey(ll => ll.ChildLocationId)
+            .OnDelete(DeleteBehavior.NoAction);
 
         // Location - Event Junction Table
         modelBuilder.Entity<LocationEvent>()
@@ -402,14 +390,5 @@ public class AppDbContext : DbContext
             .HasForeignKey(ll => ll.LanguageId);
 
         base.OnModelCreating(modelBuilder);
-    }
-
-    private List<T> LoadSeedData<T>(string fileName)
-    {
-        var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "FantasyDBStartup/SeedData/", fileName);
-        if (!File.Exists(fullPath)) return new List<T>();
-
-        var json = File.ReadAllText(fullPath);
-        return JsonSerializer.Deserialize<List<T>>(json) ?? new List<T>();
     }
 }

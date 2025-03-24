@@ -1,0 +1,10 @@
+[
+  {
+    "Weekdays": "Solrun, Lura Stellis Embra Umbrin Even Auro",
+    "Months": "Aurn, Brol, Chana, Drom, Eice, Fram, Gila, Heno, Irrst, Jart, Kwarm, Lehnd, Jespen",
+    "DaysPerWeek": 7,
+    "MonthsPerYear": 28,
+    "DaysPerYear": 365,
+    "EventId": null
+  }
+]

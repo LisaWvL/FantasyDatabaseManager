@@ -1,7 +1,0 @@
-[
-    {
-        "Type": "Curse",
-        "Text": "Choke on my fist, you sack of rats cum!",
-		"LocationId": null
-    }
-]

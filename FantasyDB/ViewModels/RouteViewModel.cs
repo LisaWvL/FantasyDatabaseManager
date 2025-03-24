@@ -20,8 +20,8 @@ namespace FantasyDB.ViewModels
         public string? TravelTime { get; set; } = string.Empty;
 
 
-        public int? FromLocationId { get; set; }
-        public int? ToLocationId { get; set; }
+        public int? FromId { get; set; }
+        public int? ToId { get; set; }
 
 
         public string? ToLocationName { get; set; } = string.Empty;

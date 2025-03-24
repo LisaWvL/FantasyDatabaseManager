@@ -14,24 +14,24 @@ namespace FantasyDBStartup.Controllers
     [Route("api/location")]
     public class LocationController : BaseEntityController<Location, LocationViewModel>
     {
-        private readonly AppDbContext _context;
-        private readonly IDropdownService _dropdownService;
 
         public LocationController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
             : base(context, mapper, dropdownService)
         {
-            _dropdownService = dropdownService;
         }
 
-        protected override IQueryable<Location> GetQueryable() => _context.Location;
+        protected override IQueryable<Location> GetQueryable()
+        { return _context.Location; }
 
         //Override Index to include Related Names
         public override async Task<IActionResult> Index()
         {
             var locations = await _context.Location
                 .Include(l => l.ParentLocation)
-                .Include(l => l.ChildLocations)
-                .Include(l => l.Events)
+                .Include(l => l.LocationLocations)
+                    .ThenInclude(ll => ll.Location)
+                .Include(l => l.LocationEvents)
+                    .ThenInclude(ll => ll.Location)
                 .Include(l => l.Language)
                 .Include(l => l.Snapshot)
                 .AsNoTracking()
@@ -171,6 +171,19 @@ namespace FantasyDBStartup.Controllers
 
             await _context.SaveChangesAsync();
             return Ok(new { message = "Location updated" });
+        }
+
+
+        [HttpGet("{id}/new-snapshot")]
+        public override async Task<IActionResult> CreateNewSnapshot(int id)
+        {
+            return await base.CreateNewSnapshot(id);
+        }
+
+        [HttpGet("{id}/new-snapshot-page")]
+        public override async Task<IActionResult> CreateNewSnapshotPage(int id)
+        {
+            return await base.CreateNewSnapshotPage(id);
         }
 
     }

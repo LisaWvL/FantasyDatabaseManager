@@ -13,16 +13,16 @@ namespace FantasyDBStartup.Controllers
     [Route("api/river")]
     public class RiverController : BaseEntityController<River, RiverViewModel>
     {
-        private readonly AppDbContext _context;
-        private readonly IDropdownService _dropdownService;
+
 
         public RiverController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
             : base(context, mapper, dropdownService)
         {
-            _dropdownService = dropdownService;
+
         }
 
-        protected override IQueryable<River> GetQueryable() => _context.River;
+        protected override IQueryable<River> GetQueryable()
+        { return _context.River; }
 
         //Override Index to include Location Names
         public override async Task<IActionResult> Index()
@@ -84,5 +84,8 @@ namespace FantasyDBStartup.Controllers
             await LoadDropdownsForViewModel<RiverViewModel>();
             return await base.Create(viewModel);
         }
+
+
+
     }
 }

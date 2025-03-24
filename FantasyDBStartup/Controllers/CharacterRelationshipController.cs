@@ -9,15 +9,13 @@ using AutoMapper;
 
 namespace FantasyDBStartup.Controllers
 {
-    [Route("api/character-relationship")]
+    [Route("api/characterrelationship")]
     public class CharacterRelationshipController : BaseEntityController<CharacterRelationship, CharacterRelationshipViewModel>
     {
-        private readonly IDropdownService _dropdownService;
 
         public CharacterRelationshipController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
             : base(context, mapper, dropdownService)
         {
-            _dropdownService = dropdownService;
         }
 
         protected override IQueryable<CharacterRelationship> GetQueryable()
@@ -83,6 +81,19 @@ namespace FantasyDBStartup.Controllers
         {
             await LoadDropdownsForViewModel<CharacterRelationshipViewModel>();
             return await base.Create(viewModel);
+        }
+
+
+        [HttpGet("{id}/new-snapshot")]
+        public override async Task<IActionResult> CreateNewSnapshot(int id)
+        {
+            return await base.CreateNewSnapshot(id);
+        }
+
+        [HttpGet("{id}/new-snapshot-page")]
+        public override async Task<IActionResult> CreateNewSnapshotPage(int id)
+        {
+            return await base.CreateNewSnapshotPage(id);
         }
     }
 }

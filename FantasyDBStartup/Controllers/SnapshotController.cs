@@ -12,17 +12,18 @@ namespace FantasyDBStartup.Controllers
 {
     public class SnapshotController : BaseEntityController<Snapshot, SnapshotViewModel>
     {
-        private readonly AppDbContext _context;
-        private readonly IMapper _mapper;
-        private readonly IDropdownService _dropdownService;
+
 
         public SnapshotController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
             : base(context, mapper, dropdownService)
         {
-            _dropdownService = dropdownService;
+
         }
 
-        protected override IQueryable<Snapshot> GetQueryable() => _context.Snapshot;
+        protected override IQueryable<Snapshot> GetQueryable()
+        {
+            return _context.Snapshot;
+        }
 
         //Override index to use Automapper
         public override async Task<IActionResult> Index()

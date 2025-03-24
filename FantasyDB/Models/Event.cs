@@ -21,7 +21,9 @@ namespace FantasyDB.Models // ✅ Add this line
         public int? SnapshotId { get; set; }
         public int? LocationId { get; set; }
         // Navigation Properties
+        [ForeignKey("LocationId")]
         public virtual Location? Location { get; set; }
+        [ForeignKey("SnapshotId")]
         public virtual Snapshot? Snapshot { get; set; }
     }
 }

@@ -6,9 +6,49 @@
     var entityName = ViewData["CurrentEntity"]?.ToString() ?? "Entity";
     var apiEntityName = "api/" + entityName.ToLower();
 
-    var groupedByName = Model
-        .GroupBy(c => c.GetType().GetProperty("Name")?.GetValue(c)?.ToString())
-        .ToDictionary(g => g.Key, g => g.ToList());
+    Dictionary<string, List<object>> groupedByName;
+
+    if (entityName == "CharacterRelationship")
+    {
+        // Use both Character1Name and Character2Name as identifier
+        groupedByName = Model
+            .GroupBy(r =>
+            {
+                var char1 = r.GetType().GetProperty("Character1Name")?.GetValue(r)?.ToString() ?? "";
+                var char2 = r.GetType().GetProperty("Character2Name")?.GetValue(r)?.ToString() ?? "";
+                return $"{char1} ↔ {char2}";
+            })
+            .ToDictionary(g => g.Key, g => g.ToList());
+
+        var allCharacters = Model
+            .SelectMany(r => new[]
+            {
+                r.GetType().GetProperty("Character1Name")?.GetValue(r)?.ToString(),
+                r.GetType().GetProperty("Character2Name")?.GetValue(r)?.ToString()
+                    })
+            .Where(n => !string.IsNullOrEmpty(n))
+            .Distinct()
+            .OrderBy(n => n)
+            .ToList();
+
+        <div class="mb-3 d-flex gap-2 align-items-center">
+            <label for="relationshipFilter" class="form-label mb-0"><strong>Filter by Character:</strong></label>
+            <select id="relationshipFilter" class="form-select w-auto">
+                <option value="">-- Show All --</option>
+                @foreach (var name in allCharacters)
+                {
+                    <option value="@name">@name</option>
+                }
+            </select>
+            <button id="resetFilterBtn" class="btn btn-secondary">Reset</button>
+        </div>
+    }
+    else
+    {
+        groupedByName = Model
+            .GroupBy(c => c.GetType().GetProperty("Name")?.GetValue(c)?.ToString())
+            .ToDictionary(g => g.Key ?? "Unknown", g => g.ToList());
+    }
 }
 
 <div class="table-responsive">
@@ -42,8 +82,47 @@
                         var value = prop.GetValue(main);
 
                         <td>
-                            <span class="view-mode">@value</span>
-                            <input class="edit-mode form-control" name="@prop.Name" type="text" value="@value" hidden />
+                            @if (prop.Name == "LocationNames")
+                            {
+                                var selectedValues = main.GetType().GetProperty("LocationIds")?.GetValue(main) as List<int>;
+                                var dropdownList = ViewData["LocationIdList"] as IEnumerable<SelectListItem>;
+
+                                <span class="view-mode">@value</span>
+                                <select class="edit-mode form-control" name="LocationIds" multiple hidden>
+                                    @foreach (var item in dropdownList ?? Enumerable.Empty<SelectListItem>())
+                                    {
+                                        <option value="@item.Value" selected="@(selectedValues?.Contains(int.Parse(item.Value)) == true ? "selected" : null)">
+                                            @item.Text
+                                        </option>
+                                    }
+                                </select>
+                            }
+
+                            else if (prop.Name.EndsWith("Name") && prop.Name != "Name")
+                            {
+                                var idProp = prop.Name.Replace("Name", "Id");
+                                var listKey = idProp + "List";
+                                var dropdownList = ViewData[listKey] as IEnumerable<SelectListItem>;
+                                var selectedId = main.GetType().GetProperty(idProp)?.GetValue(main)?.ToString();
+
+                                <span class="view-mode">@value</span>
+
+                                <select class="edit-mode form-control" name="@idProp" hidden>
+                                    <option value="">-- Select --</option>
+                                    @if (dropdownList != null)
+                                    {
+                                        foreach (var item in dropdownList)
+                                        {
+                                            <option value="@item.Value" selected="@(item.Value == selectedId ? "selected" : null)">@item.Text</option>
+                                        }
+                                    }
+                                </select>
+                            }
+                            else
+                            {
+                                <span class="view-mode">@value</span>
+                                <input class="edit-mode form-control" name="@prop.Name" type="text" value="@value" hidden />
+                            }
                         </td>
                     }
                     <td>
@@ -91,8 +170,30 @@
                 const row = this.closest("tr");
                 row.querySelectorAll(".view-mode").forEach(el => el.hidden = true);
                 row.querySelectorAll(".edit-mode").forEach(el => el.hidden = false);
+            }});
+        });
+            // Relationship filtering by character
+    if (entity === "CharacterRelationship") {
+        const filterSelect = document.getElementById("relationshipFilter");
+        const resetBtn = document.getElementById("resetFilterBtn");
+
+        filterSelect.addEventListener("change", () => {
+            const selected = filterSelect.value;
+
+            document.querySelectorAll("tr.main-row, tr.snapshot-row").forEach(row => {
+                const name = row.dataset.name || "";
+                const cells = Array.from(row.children);
+                const matches = cells.some(cell => cell.textContent.includes(selected));
+                row.style.display = selected === "" || matches ? "" : "none";
             });
         });
+
+        resetBtn.addEventListener("click", () => {
+            filterSelect.value = "";
+            document.querySelectorAll("tr").forEach(r => r.style.display = "");
+        });
+    }
+
 
         document.querySelectorAll(".cancel-btn").forEach(button => {
             button.addEventListener("click", function () {
@@ -103,38 +204,53 @@
         });
 
         document.querySelectorAll(".save-btn").forEach(button => {
-            button.addEventListener("click", async function () {
-                const row = this.closest("tr");
-                const id = row.getAttribute("data-id");
-                const data = {};
+        button.addEventListener("click", async function () {
+            const row = this.closest("tr");
+            const id = row.getAttribute("data-id");
+            const data = {};
 
-                row.querySelectorAll("input[name], select[name]").forEach(input => {
-                    data[input.name] = input.value;
-                });
+            row.querySelectorAll("input[name], select[name]:not([multiple])").forEach(input => {
+                const key = input.name;
+                const value = input.value;
 
-                const isNew = id === "0" || !id;
-                const url = isNew ? `/${apiEntity}/create` : `/${apiEntity}/${id}`;
-                const method = isNew ? "POST" : "PUT";
-
-                try {
-                    const response = await fetch(url, {
-                        method,
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(data)
-                    });
-
-                    if (response.ok) {
-                        location.reload();
-                    } else {
-                        const error = await response.text();
-                        alert("Failed to save changes:\n" + error);
-                    }
-                } catch (err) {
-                    console.error("Error saving:", err);
-                    alert("Unexpected error.");
+                if ((key.endsWith("Id") || key === "Id") && value === "") {
+                    data[key] = null;
+                } else {
+                    data[key] = value;
                 }
             });
+
+            row.querySelectorAll("select[multiple]").forEach(select => {
+                const selected = Array.from(select.selectedOptions).map(opt => opt.value);
+                data[select.name] = selected;
+            });
+
+            const isNew = id === "0" || !id;
+            const url = isNew ? `/${apiEntity}/create` : `/${apiEntity}/${id}`;
+            const method = isNew ? "POST" : "PUT";
+
+            try {
+                const response = await fetch(url, {
+                    method,
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    const error = await response.text();
+                    alert("Failed to save changes:\n" + error);
+                }
+            } catch (err) {
+                console.error("Error saving:", err);
+                alert("Unexpected error.");
+            }
         });
+    });
+
 
         document.querySelectorAll(".delete-btn").forEach(button => {
             button.addEventListener("click", async function () {

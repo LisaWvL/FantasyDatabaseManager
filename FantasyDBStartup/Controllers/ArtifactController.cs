@@ -13,17 +13,17 @@ namespace FantasyDBStartup.Controllers
     [Route("api/artifact")]
     public class ArtifactController : BaseEntityController<Artifact, ArtifactViewModel>
     {
-        private readonly AppDbContext _context;
-        private readonly IDropdownService _dropdownService;
 
         public ArtifactController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
             : base(context, mapper, dropdownService)
         {
-            _dropdownService = dropdownService;
         }
 
 
-        protected override IQueryable<Artifact> GetQueryable() => _context.Artifact;
+        protected override IQueryable<Artifact> GetQueryable()
+        {
+            return _context.Artifact;
+        }
 
         //Override Index to include owner and snapshot name
         public override async Task<IActionResult> Index()
@@ -84,6 +84,19 @@ namespace FantasyDBStartup.Controllers
             await LoadDropdownsForViewModel<ArtifactViewModel>();
 
             return await base.Create(viewModel);
+        }
+
+
+        [HttpGet("{id}/new-snapshot")]
+        public override async Task<IActionResult> CreateNewSnapshot(int id)
+        {
+            return await base.CreateNewSnapshot(id);
+        }
+
+        [HttpGet("{id}/new-snapshot-page")]
+        public override async Task<IActionResult> CreateNewSnapshotPage(int id)
+        {
+            return await base.CreateNewSnapshotPage(id);
         }
     }
 }

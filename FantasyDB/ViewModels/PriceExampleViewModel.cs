@@ -14,6 +14,6 @@ namespace FantasyDB.ViewModels
         public string? Category { get; set; } = string.Empty;
         public string? Name { get; set; } = string.Empty;
         public string? Exclusivity { get; set; } = string.Empty;
-        public decimal? Price { get; set; }
+        public int? Price { get; set; }
     }
 }

@@ -12,17 +12,16 @@ namespace FantasyDBStartup.Controllers
 {
     public class CurrencyController : BaseEntityController<Currency, CurrencyViewModel>
     {
-        private readonly AppDbContext _context;
-        private readonly IMapper _mapper;
-        private readonly IDropdownService _dropdownService;
+
 
         public CurrencyController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
             : base(context, mapper, dropdownService)
         {
-            _dropdownService = dropdownService;
+
         }
 
-        protected override IQueryable<Currency> GetQueryable() => _context.Currency;
+        protected override IQueryable<Currency> GetQueryable()
+        { return _context.Currency; }
 
         //Override Index to include Related Names
         public override async Task<IActionResult> Index()

@@ -6,6 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static FantasyDB.Models.JunctionClasses;
 namespace FantasyDB.Models // ✅ Add this line
 {
     public class Language
@@ -16,6 +17,7 @@ namespace FantasyDB.Models // ✅ Add this line
         public string? Text { get; set; } = string.Empty;
         // ✅ Navigation Properties (Add These Back)
 
-        public List<Location> Locations { get; set; } = new();
+        public List<LanguageLocation> LanguageLocations { get; set; } = new();
+
     }
 }

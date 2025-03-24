@@ -13,16 +13,15 @@ namespace FantasyDBStartup.Controllers
     [Route("api/era")]
     public class EraController : BaseEntityController<Era, EraViewModel>
     {
-        private readonly AppDbContext _context;
-        private readonly IDropdownService _dropdownService;
 
         public EraController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
             : base(context, mapper, dropdownService)
         {
-            _dropdownService = dropdownService;
         }
 
-        protected override IQueryable<Era> GetQueryable() => _context.Era;
+
+        protected override IQueryable<Era> GetQueryable()
+        { return _context.Era; }
 
         //Override Index to include Related Names
         public override async Task<IActionResult> Index()
@@ -83,6 +82,19 @@ namespace FantasyDBStartup.Controllers
             await LoadDropdownsForViewModel<EraViewModel>();
 
             return await base.Create(viewModel);
+        }
+
+
+        [HttpGet("{id}/new-snapshot")]
+        public override async Task<IActionResult> CreateNewSnapshot(int id)
+        {
+            return await base.CreateNewSnapshot(id);
+        }
+
+        [HttpGet("{id}/new-snapshot-page")]
+        public override async Task<IActionResult> CreateNewSnapshotPage(int id)
+        {
+            return await base.CreateNewSnapshotPage(id);
         }
     }
 }

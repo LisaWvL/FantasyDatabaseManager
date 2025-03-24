@@ -12,15 +12,15 @@ namespace FantasyDBStartup.Controllers
     [Route("api/calendar")]
     public class CalendarController : BaseEntityController<Calendar, CalendarViewModel>
     {
-        private readonly IDropdownService _dropdownService;
-
         public CalendarController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
             : base(context, mapper, dropdownService)
         {
-            _dropdownService = dropdownService;
         }
 
-        protected override IQueryable<Calendar> GetQueryable() => _context.Calendar;
+        protected override IQueryable<Calendar> GetQueryable() 
+        {
+            return _context.Calendar; 
+        }
 
         public override async Task<IActionResult> Index()
         {

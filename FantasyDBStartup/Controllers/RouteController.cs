@@ -13,16 +13,14 @@ namespace FantasyDBStartup.Controllers
     [Route("api/route")]
     public class RouteController : BaseEntityController<FantasyDB.Models.Route, RouteViewModel>
     {
-        private readonly AppDbContext _context;
-        private readonly IDropdownService _dropdownService;
 
         public RouteController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
             : base(context, mapper, dropdownService)
         {
-            _dropdownService = dropdownService;
         }
 
-        protected override IQueryable<FantasyDB.Models.Route> GetQueryable() => _context.Route;
+        protected override IQueryable<FantasyDB.Models.Route> GetQueryable()
+        { return _context.Route; }
 
         //Override Index to include Location Names
         public override async Task<IActionResult> Index()
@@ -85,5 +83,7 @@ namespace FantasyDBStartup.Controllers
 
             return await base.Create(viewModel);
         }
+
+
     }
 }

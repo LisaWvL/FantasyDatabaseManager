@@ -110,9 +110,16 @@
 
         const form = e.target;
         const data = {};
-        new FormData(form).forEach((value, key) => {
+    new FormData(form).forEach((value, key) => {
+        if (value === "") {
+            data[key] = null; // send null for empty dropdowns or inputs
+        } else if (!isNaN(value) && value.trim() !== "") {
+            data[key] = Number(value); // cast to number if it's numeric
+        } else {
             data[key] = value;
-        });
+        }
+    });
+
 
         const api = "@apiEntity/create";
 

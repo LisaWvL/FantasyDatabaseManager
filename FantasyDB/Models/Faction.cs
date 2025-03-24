@@ -21,9 +21,13 @@ namespace FantasyDB.Models // ✅ Add this line
         public string? Magic { get; set; }
         public int? SnapshotId { get; set; }
         // ✅ Navigation Properties (Add These Back)
+        [ForeignKey("FounderId")]
         public virtual Character? Founder { get; set; }
+        [ForeignKey("LeaderId")]
         public virtual Character? Leader { get; set; }
+        [ForeignKey("HQLocationId")]
         public virtual Location? HQLocation { get; set; }
+        [ForeignKey("SnapshotId")]
         public virtual Snapshot? Snapshot { get; set; }
 
     }
