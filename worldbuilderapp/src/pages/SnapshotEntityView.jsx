@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import SnapshotSelector from "./SnapshotSelector";
-import EntitySelector from "./EntitySelector";
-import EntityTable from "./EntityTable";
+import SnapshotSelector from "../components/SnapshotSelector.jsx";
+import EntitySelector from "../components/EntitySelector.jsx";
+import EntityTable from "../components/EntityTable.jsx";
 
 export default function SnapshotEntityView() {
     const [snapshots, setSnapshots] = useState([]);
     const [selectedSnapshot, setSelectedSnapshot] = useState("");
-    const [entityTypes, setEntityTypes] = useState(["Character", "Location", "Event", "Faction", "Artifact"]);
+    const [entityTypes] = useState(["Character", "Location", "Event", "Faction", "Artifact"]);
     const [selectedEntity, setSelectedEntity] = useState("");
     const [entities, setEntities] = useState([]);
 

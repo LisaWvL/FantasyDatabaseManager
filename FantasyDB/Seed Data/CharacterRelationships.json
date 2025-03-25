@@ -1,0 +1,62 @@
+[
+    {
+        "RelationshipType": "Friend",
+        "RelationshipDynamic": "Survival partners, fiercely loyal to each other"
+    },
+    {
+        "RelationshipType": "Enemy",
+        "RelationshipDynamic": "Hates Aryn, a noble's daughter who bullies others"
+    },
+    {
+        "RelationshipType": "Enemy",
+        "RelationshipDynamic": "Master Harro despises Arana for being a street orphan"
+    },
+    {
+        "RelationshipType": "Mentor",
+        "RelationshipDynamic": "Brother Rhyn sees potential in Arana, protects her"
+    },
+    {
+        "RelationshipType": "Enemy",
+        "RelationshipDynamic": "Inquisitor Varick hunts Arana as a threat to the Church"
+    },
+    {
+        "RelationshipType": "Father-Son",
+        "RelationshipDynamic": "Tense, filled with expectation and disappointment"
+    },
+    {
+        "RelationshipType": "Devoted Follower",
+        "RelationshipDynamic": "Prince Edric sees The High Flame as a prophet of truth"
+    },
+    {
+        "RelationshipType": "Political Allies",
+        "RelationshipDynamic": "King Alistair and The High Flame maintain an uneasy alliance"
+    },
+    {
+        "RelationshipType": "Enemy",
+        "RelationshipDynamic": "Arana and Prince Edric are fated rivals, opposite sides of the war"
+    },
+    {
+        "RelationshipType": "Sworn Enemy",
+        "RelationshipDynamic": "The High Flame is intrigued by Aranas abilities, but he sees danger to the church and him in her too"
+    },
+    {
+        "RelationshipType": "Complicated",
+        "RelationshipDynamic": "Siva (Lia) is training Arana for the high flame but starts to genuinely care for her"
+    },
+    {
+        "RelationshipType": "Undercover Operative",
+        "RelationshipDynamic": "Siva is the most loyal follower of the High Flame"
+    },
+    {
+        "RelationshipType": "Mentor",
+        "RelationshipDynamic": "Master Harro loves Edric"
+    },
+    {
+        "RelationshipType": "Bullying Rival",
+        "RelationshipDynamic": "Aryn enjoys tormenting Arana, seeing her as a filthy street rat"
+    },
+    {
+        "RelationshipType": "Hunter and Prey",
+        "RelationshipDynamic": "Inquisitor Varick is obsessed with capturing and executing Arana"
+    }
+]

@@ -1,10 +1,12 @@
-console.log("Hello World!")// src/api/axiosInstance.js
-import axios from "axios";
+﻿// src/api/axiosInstance.js
+import axios from 'axios';
 
-export default axios.create({
-    baseURL: "https://localhost:63752/api/",
+const axiosInstance = axios.create({
+    baseURL: 'https://localhost:7210/api', // ✅ your backend port
+    withCredentials: true,
     headers: {
-        "Content-Type": "application/json"
-    },
-    withCredentials: true
+        'Content-Type': 'application/json'
+    }
 });
+
+export default axiosInstance;

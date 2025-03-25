@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using FantasyDB.Interfaces;
 using FantasyDB.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Mvc;
 
 namespace FantasyDB.Services
 {
@@ -18,172 +17,118 @@ namespace FantasyDB.Services
             _context = context;
         }
 
-        public async Task<List<SelectListItem>> GetFactionsAsync() =>
-            await _context.Faction.AsNoTracking()
-                .Select(f => new SelectListItem { Value = f.Id.ToString(), Text = f.Name })
+        public async Task<List<SimpleItem>> GetFactionsAsync() =>
+            await _context.Factions.AsNoTracking()
+                .Select(f => new SimpleItem(f.Id, f.Name))
                 .ToListAsync();
 
-        public async Task<List<SelectListItem>> GetCharactersAsync() =>
-            await _context.Character.AsNoTracking()
-                .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name })
+        public async Task<List<SimpleItem>> GetCharactersAsync() =>
+            await _context.Characters.AsNoTracking()
+                .Select(c => new SimpleItem(c.Id, c.Name))
                 .ToListAsync();
 
-        public async Task<List<SelectListItem>> GetLocationsAsync() =>
-            await _context.Location.AsNoTracking()
-                .Select(l => new SelectListItem { Value = l.Id.ToString(), Text = l.Name })
+        public async Task<List<SimpleItem>> GetLocationsAsync() =>
+            await _context.Locations.AsNoTracking()
+                .Select(l => new SimpleItem(l.Id, l.Name))
+                .ToListAsync();
+
+        public async Task<List<SimpleItem>> GetLanguagesAsync() =>
+            await _context.Languages.AsNoTracking()
+                .Select(l => new SimpleItem(l.Id, l.Name))
+                .ToListAsync();
+
+        public async Task<List<SimpleItem>> GetSnapshotsAsync() =>
+            await _context.Snapshots.AsNoTracking()
+                .Select(s => new SimpleItem(s.Id, s.SnapshotName))
+                .ToListAsync();
+
+        public async Task<List<SimpleItem>> GetEventsAsync() =>
+            await _context.Events.AsNoTracking()
+                .Select(e => new SimpleItem(e.Id, e.Name))
+                .ToListAsync();
+
+        public async Task<List<SimpleItem>> GetErasAsync() =>
+            await _context.Eras.AsNoTracking()
+                .Select(s => new SimpleItem(s.Id, s.Name))
+                .ToListAsync();
+
+        public async Task<List<SimpleItem>> GetArtifactsAsync() =>
+            await _context.Artifacts.AsNoTracking()
+                .Select(a => new SimpleItem(a.Id, a.Name))
                 .ToListAsync();
 
 
-        public async Task<List<SelectListItem>> GetChildLocationsAsync() =>
-            await _context.Location
-                .AsNoTracking()
-                .Select(l => new SelectListItem
-                {
-                    Value = l.Id.ToString(),
-                    Text = l.Name
-                }).ToListAsync();
-
-        public async Task<List<SelectListItem>> GetLanguagesAsync() =>
-            await _context.Language.AsNoTracking()
-                .Select(l => new SelectListItem { Value = l.Id.ToString(), Text = l.Name })
-                .ToListAsync();
-
-        public async Task<List<SelectListItem>> GetSnapshotsAsync() =>
-            await _context.Snapshot.AsNoTracking()
-                .Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.SnapshotName })
-                .ToListAsync();
-
-        public async Task<List<SelectListItem>> GetEventsAsync() =>
-            await _context.Event
-                .AsNoTracking()
-                .Select(e => new SelectListItem
-                {
-                    Value = e.Id.ToString(),
-                    Text = e.Name
-                }).ToListAsync();
-
-        public async Task<List<SelectListItem>> GetErasAsync() =>
-            await _context.Era.AsNoTracking()
-                .Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.Name })
-                .ToListAsync();
-
-        
-
-        // Implement the rest of the interface methods here, based on your actual data model
-        public async Task<List<SelectListItem>> GetRoutesAsync() =>
-            await _context.Route.AsNoTracking()
-                .Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.Name })
-                .ToListAsync();
-
-        public async Task<List<SelectListItem>> GetRiversAsync() =>
-            await _context.River.AsNoTracking()
-                .Select(r => new SelectListItem { Value = r.Id.ToString(), Text = r.Name })
-                .ToListAsync();
-
- 
-
-        private Dictionary<string, List<SelectListItem>> _cache = new();
-
-        public async Task LoadDropdownsByKeys(ViewDataDictionary viewData, IEnumerable<string> keys)
+        public async Task<List<SimpleItem>> GetCharacterRelationshipsForCharacterAsync(int characterId)
         {
-            var loaded = new Dictionary<string, List<SelectListItem>>();
-
-            foreach (var key in keys.Distinct())
-            {
-                var viewDataKey = $"{key}List";
-                if (viewData.ContainsKey(viewDataKey))
-                    continue;
-
-                switch (key)
-                {
-                    case "FactionId":
-                        if (!loaded.ContainsKey("Factions"))
-                            loaded["Factions"] = await GetFactionsAsync();
-                        viewData[viewDataKey] = loaded["Factions"];
-                        break;
-
-                    case "LanguageId":
-                        if (!loaded.ContainsKey("Languages"))
-                            loaded["Languages"] = await GetLanguagesAsync();
-                        viewData[viewDataKey] = loaded["Languages"];
-                        break;
-
-                    case "LocationId":
-                    case "HQLocationId":
-                    case "ParentLocationId":
-                    case "ChildLocationsId":
-                    case "SourceLocationId":
-                    case "DestinationLocationId":
-                    case "FromId":
-                    case "ToId":
-                        if (!loaded.ContainsKey("Locations"))
-                            loaded["Locations"] = await GetLocationsAsync();
-                        viewData[viewDataKey] = loaded["Locations"];
-                        break;
-
-                    case "SnapshotId":
-                        if (!loaded.ContainsKey("Snapshots"))
-                            loaded["Snapshots"] = await GetSnapshotsAsync();
-                        viewData[viewDataKey] = loaded["Snapshots"];
-                        break;
-
-                    case "CharacterId":
-                    case "Character1Id":
-                    case "Character2Id":
-                    case "FounderId":
-                    case "LeaderId":
-                    case "OwnerId":
-                        if (!loaded.ContainsKey("Characters"))
-                            loaded["Characters"] = await GetCharactersAsync();
-                        viewData[viewDataKey] = loaded["Characters"];
-                        break;
-
-                    case "EventId":
-                        if (!loaded.ContainsKey("Events"))
-                            loaded["Events"] = await GetEventsAsync();
-                        viewData[viewDataKey] = loaded["Events"];
-                        break;
-
-                    case "EventIds":
-                        if (!loaded.ContainsKey("Events"))
-                            loaded["Events"] = await GetEventsAsync();
-                        viewData[viewDataKey] = loaded["Events"];
-                        break;
-
-                    case "EraId":
-                        if (!loaded.ContainsKey("Eras"))
-                            loaded["Eras"] = await GetErasAsync();
-                        viewData[viewDataKey] = loaded["Eras"];
-                        break;
-
-                    case "RouteId":
-                        if (!loaded.ContainsKey("Routes"))
-                            loaded["Routes"] = await GetRoutesAsync();
-                        viewData[viewDataKey] = loaded["Routes"];
-                        break;
-
-                    case "RiverId":
-                        if (!loaded.ContainsKey("Rivers"))
-                            loaded["Rivers"] = await GetRiversAsync();
-                        viewData[viewDataKey] = loaded["Rivers"];
-                        break;
-
-
-                }
-            }
+            return await _context.CharacterRelationships.AsNoTracking()
+                .Where(cr => cr.Character1Id == characterId || cr.Character2Id == characterId)
+                .Select(cr => new SimpleItem(
+                    cr.Id,
+                    cr.Character1!.Name + " - " + cr.RelationshipType + " - " + cr.Character2!.Name
+                ))
+                .ToListAsync();
         }
 
-        public async Task LoadDropdownsForViewModel<TViewModel>(ViewDataDictionary viewData)
-        {
-            var dropdownKeys = typeof(TViewModel).GetProperties()
-                .Where(p => p.Name.EndsWith("Id") && p.PropertyType == typeof(int?))
-                .Select(p => p.Name)
-                .Distinct();
+        public async Task<List<SimpleItem>> GetRoutesAsync() =>
+            await _context.Routes.AsNoTracking()
+                .Select(r => new SimpleItem(r.Id, r.Name))
+                .ToListAsync();
 
-            await LoadDropdownsByKeys(viewData, dropdownKeys);
+        public async Task<List<SimpleItem>> GetRiversAsync() =>
+            await _context.Rivers.AsNoTracking()
+                .Select(r => new SimpleItem(r.Id, r.Name))
+                .ToListAsync();
+
+
+        public async Task<List<SimpleItem>> GetMonthsAsync()
+        {
+            return await _context.Calendar
+                .AsNoTracking()
+                .Where(c => !string.IsNullOrEmpty(c.Month))
+                .Select(c => c.Month!)
+                .Distinct()
+                .OrderBy(m => m) // Optional: alphabetically or keep a fixed order if needed
+                .Select((month, index) => new SimpleItem(index + 1, month))
+                .ToListAsync();
         }
+
+        public async Task<List<SimpleItem>> GetWeekdaysAsync()
+        {
+            return await _context.Calendar
+                .AsNoTracking()
+                .Where(c => !string.IsNullOrEmpty(c.Weekday))
+                .Select(c => c.Weekday!)
+                .Distinct()
+                .OrderBy(w => w)
+                .Select((weekday, index) => new SimpleItem(index + 1, weekday))
+                .ToListAsync();
+        }
+
+        public async Task<List<SimpleItem>> GetCharacterRelationshipsAsync() =>
+            await _context.CharacterRelationships.AsNoTracking()
+                .Select(r => new SimpleItem(
+                    r.Id,
+                    (r.Character1 != null ? r.Character1.Name : "??")
+                    + " " + (r.RelationshipType ?? "?")
+                    + " " + (r.Character2 != null ? r.Character2.Name : "??")
+                ))
+                .ToListAsync();
+
+        public async Task<List<SimpleItem>> GetCalendarsAsync() =>
+    await _context.Calendar.AsNoTracking()
+        .Select(c => new SimpleItem(c.Id, $"Day {c.Day} - {c.Month} ({c.Weekday})"))
+        .ToListAsync();
+
+        public async Task<List<SimpleItem>> GetPriceExamplesAsync() =>
+    await _context.PriceExamples.AsNoTracking()
+        .Select(p => new SimpleItem(p.Id, p.Name ?? $"Unnamed ({p.Category})"))
+        .ToListAsync();
+
+        public async Task<List<SimpleItem>> GetPlotPointsAsync() =>
+    await _context.PlotPoints.AsNoTracking()
+        .Select(p => new SimpleItem(p.Id, p.Title))
+        .ToListAsync();
 
     }
+    public record SimpleItem(int Id, string Name);
 }
-        
-    

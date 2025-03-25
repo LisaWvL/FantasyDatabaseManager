@@ -1,0 +1,42 @@
+[
+    {
+        "Id": 1,
+        "SnapshotId": null,
+        "LocationId": 3
+    },
+    {
+        "Id": 2,
+        "SnapshotId": null,
+        "LocationId": 1
+    },
+    {
+        "Id": 3,
+        "SnapshotId": null,
+        "LocationId": 4
+    },
+    {
+        "Id": 4,
+        "SnapshotId": null,
+        "LocationId": 2
+    },
+    {
+        "Id": 5,
+        "SnapshotId": null,
+        "LocationId": 2
+    },
+    {
+        "Id": 6,
+        "SnapshotId": null,
+        "LocationId": 2
+    },
+    {
+        "Id": 7,
+        "SnapshotId": null,
+        "LocationId": 2
+    },
+    {
+        "Id": 8,
+        "SnapshotId": null,
+        "LocationId": 2
+    }
+]

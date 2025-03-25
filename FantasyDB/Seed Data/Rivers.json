@@ -1,0 +1,68 @@
+[
+    {
+        "Name": "Ashwater River",
+        "DepthMeters": 12,
+        "WidthMeters": 35,
+        "FlowDirection": "North to South"
+    },
+    {
+        "Name": "Blackwood River",
+        "DepthMeters": 18,
+        "WidthMeters": 40,
+        "FlowDirection": "East to West"
+    },
+    {
+        "Name": "Clearwater Bend",
+        "DepthMeters": 9,
+        "WidthMeters": 25,
+        "FlowDirection": "West to East"
+    },
+    {
+        "Name": "Deerborne River",
+        "DepthMeters": 20,
+        "WidthMeters": 50,
+        "FlowDirection": "Southwest to Northeast"
+    },
+    {
+        "Name": "Elmwater Stream",
+        "DepthMeters": 6,
+        "WidthMeters": 15,
+        "FlowDirection": "Southeast to Northwest"
+    },
+    {
+        "Name": "Foxrun River",
+        "DepthMeters": 10,
+        "WidthMeters": 28,
+        "FlowDirection": "Northwest to Southeast"
+    },
+    {
+        "Name": "Garnet Flow",
+        "DepthMeters": 14,
+        "WidthMeters": 38,
+        "FlowDirection": "South to North"
+    },
+    {
+        "Name": "Hollow Creek",
+        "DepthMeters": 5,
+        "WidthMeters": 12,
+        "FlowDirection": "East to West"
+    },
+    {
+        "Name": "Ironvein River",
+        "DepthMeters": 22,
+        "WidthMeters": 45,
+        "FlowDirection": "North to South"
+    },
+    {
+        "Name": "Jade Drift",
+        "DepthMeters": 11,
+        "WidthMeters": 30,
+        "FlowDirection": "West to East"
+    },
+    {
+        "Name": "Jarunn River",
+        "DepthMeters": 25,
+        "WidthMeters": 60,
+        "FlowDirection": "East to West"
+    }
+]

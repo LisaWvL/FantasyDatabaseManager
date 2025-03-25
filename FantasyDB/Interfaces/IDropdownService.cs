@@ -1,0 +1,29 @@
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using FantasyDB.Services;
+
+namespace FantasyDB.Interfaces
+{
+    public interface IDropdownService
+    {
+        Task<List<SimpleItem>> GetFactionsAsync();
+        Task<List<SimpleItem>> GetCharactersAsync();
+        Task<List<SimpleItem>> GetLocationsAsync();
+        Task<List<SimpleItem>> GetLanguagesAsync();
+        Task<List<SimpleItem>> GetSnapshotsAsync();
+        Task<List<SimpleItem>> GetEventsAsync();
+        Task<List<SimpleItem>> GetErasAsync();
+        Task<List<SimpleItem>> GetArtifactsAsync();
+        Task<List<SimpleItem>> GetRoutesAsync();
+        Task<List<SimpleItem>> GetRiversAsync();
+        Task<List<SimpleItem>> GetWeekdaysAsync();
+        Task<List<SimpleItem>> GetMonthsAsync();
+        Task<List<SimpleItem>> GetCharacterRelationshipsForCharacterAsync(int characterId);
+        Task<List<SimpleItem>> GetCharacterRelationshipsAsync();
+        Task<List<SimpleItem>> GetPriceExamplesAsync();
+        Task<List<SimpleItem>> GetPlotPointsAsync();
+        Task<List<SimpleItem>> GetCalendarsAsync();
+
+
+    }
+}

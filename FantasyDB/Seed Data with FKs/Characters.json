@@ -1,0 +1,79 @@
+[
+    {
+        "Id": 1,
+        "LanguageId": 3,
+        "FactionId": null,
+        "SnapshotId": null,
+        "LocationId": 2
+    },
+    {
+        "Id": 2,
+        "LanguageId": 4,
+        "FactionId": null,
+        "SnapshotId": null,
+        "LocationId": 2
+    },
+    {
+        "Id": 3,
+        "LanguageId": null,
+        "FactionId": null,
+        "SnapshotId": null,
+        "LocationId": 2
+    },
+    {
+        "Id": 4,
+        "LanguageId": 5,
+        "FactionId": null,
+        "SnapshotId": null,
+        "LocationId": 3
+    },
+    {
+        "Id": 5,
+        "LanguageId": null,
+        "FactionId": null,
+        "SnapshotId": null,
+        "LocationId": 3
+    },
+    {
+        "Id": 6,
+        "LanguageId": null,
+        "FactionId": null,
+        "SnapshotId": null,
+        "LocationId": 2
+    },
+    {
+        "Id": 7,
+        "LanguageId": null,
+        "FactionId": null,
+        "SnapshotId": null,
+        "LocationId": 2
+    },
+    {
+        "Id": 8,
+        "LanguageId": null,
+        "FactionId": null,
+        "SnapshotId": null,
+        "LocationId": 2
+    },
+    {
+        "Id": 9,
+        "LanguageId": null,
+        "FactionId": null,
+        "SnapshotId": null,
+        "LocationId": 2
+    },
+    {
+        "Id": 10,
+        "LanguageId": null,
+        "FactionId": null,
+        "SnapshotId": null,
+        "LocationId": 3
+    },
+    {
+        "Id": 11,
+        "LanguageId": 6,
+        "FactionId": null,
+        "SnapshotId": null,
+        "LocationId": 2
+    }
+]

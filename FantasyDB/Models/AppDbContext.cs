@@ -1,43 +1,102 @@
-﻿using FantasyDB.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using System.Linq;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
+using FantasyDB.Models;
+using Microsoft.EntityFrameworkCore;
 using static FantasyDB.Models.JunctionClasses;
 
 public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-    public DbSet<Artifact> Artifact { get; set; }
+    public DbSet<Artifact> Artifacts { get; set; }
     public DbSet<Calendar> Calendar { get; set; }
-    public DbSet<Character> Character { get; set; }
-    public DbSet<CharacterRelationship> CharacterRelationship { get; set; }
-    public DbSet<Currency> Currency { get; set; }
-    public DbSet<Era> Era { get; set; }
-    public DbSet<Event> Event { get; set; }
-    public DbSet<Faction> Faction { get; set; }
-    public DbSet<Language> Language { get; set; }
-    public DbSet<Location> Location { get; set; }
-    public DbSet<PriceExample> PriceExample { get; set; }
-    public DbSet<River> River { get; set; }
-    public DbSet<Route> Route { get; set; }
-    public DbSet<Snapshot> Snapshot { get; set; }
-    public DbSet<JunctionClasses.SnapshotCharacter> SnapshotCharacter { get; set; }
-    public DbSet<JunctionClasses.SnapshotArtifact> SnapshotArtifact { get; set; }
-    public DbSet<JunctionClasses.SnapshotEra> SnapshotEra { get; set; }
-    public DbSet<JunctionClasses.SnapshotEvent> SnapshotEvent { get; set; }
-    public DbSet<JunctionClasses.SnapshotFaction> SnapshotFaction { get; set; }
-    public DbSet<JunctionClasses.SnapshotLocation> SnapshotLocation { get; set; }
-    public DbSet<JunctionClasses.SnapshotCharacterRelationship> SnapshotCharacterRelationship { get; set; }
-    public DbSet<LocationLocation> LocationLocation { get; set; }
-    public DbSet<LocationEvent> LocationEvent { get; set; }
-    public DbSet<LanguageLocation> LanguageLocation { get; set; }
+    public DbSet<Character> Characters { get; set; }
+    public DbSet<CharacterRelationship> CharacterRelationships { get; set; }
+    public DbSet<Currency> Currencies { get; set; }
+    public DbSet<Era> Eras { get; set; }
+    public DbSet<Event> Events { get; set; }
+    public DbSet<Faction> Factions { get; set; }
+    public DbSet<Language> Languages { get; set; }
+    public DbSet<Location> Locations { get; set; }
+    public DbSet<PriceExample> PriceExamples { get; set; }
+    public DbSet<River> Rivers { get; set; }
+    public DbSet<Route> Routes { get; set; }
+    public DbSet<Snapshot> Snapshots { get; set; }
+    public DbSet<JunctionClasses.SnapshotCharacter> SnapshotsCharacters { get; set; }
+    public DbSet<JunctionClasses.SnapshotArtifact> SnapshotsArtifacts { get; set; }
+    public DbSet<JunctionClasses.SnapshotEra> SnapshotsEras { get; set; }
+    public DbSet<JunctionClasses.SnapshotEvent> SnapshotsEvents { get; set; }
+    public DbSet<JunctionClasses.SnapshotFaction> SnapshotsFactions { get; set; }
+    public DbSet<JunctionClasses.SnapshotLocation> SnapshotsLocations { get; set; }
+    public DbSet<JunctionClasses.SnapshotCharacterRelationship> SnapshotsCharacterRelationships { get; set; }
+    public DbSet<LanguageLocation> LanguagesLocations { get; set; }
+    public DbSet<PlotPoint> PlotPoints { get; set; }
+    public DbSet<PlotPointCharacter> PlotPointsCharacters { get; set; }
+    public DbSet<PlotPointEvent> PlotPointsEvents { get; set; }
+    public DbSet<PlotPointLocation> PlotPointsLocations { get; set; }
+    public DbSet<PlotPointArtifact> PlotPointsArtifacts { get; set; }
+    public DbSet<PlotPointFaction> PlotPointsFactions { get; set; }
+    public DbSet<PlotPointEra> PlotPointsEras { get; set; }
+    public DbSet<PlotPointCharacterRelationship> PlotPointsCharacterRelationships { get; set; }
+    public DbSet<PlotPointRiver> PlotPointsRivers { get; set; }
+    public DbSet<PlotPointRoute> PlotPointsRoutes { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Artifact
+        ApplyGlobalDeleteBehavior(modelBuilder);
+
+        ConfigureArtifact(modelBuilder);
+        ConfigureCalendar(modelBuilder);
+        ConfigureCharacter(modelBuilder);
+        ConfigureCharacterRelationship(modelBuilder);
+        ConfigureEra(modelBuilder);
+        ConfigureEvent(modelBuilder);
+        ConfigureFaction(modelBuilder);
+        ConfigureRiver(modelBuilder);
+        ConfigureRoute(modelBuilder);
+        ConfigurePriceExample(modelBuilder);
+        ConfigureLanguageLocation(modelBuilder);
+
+
+        ConfigureJoin<SnapshotCharacter>(modelBuilder, x => new { x.SnapshotId, x.CharacterId });
+        ConfigureJoin<SnapshotArtifact>(modelBuilder, x => new { x.SnapshotId, x.ArtifactId });
+        ConfigureJoin<SnapshotEra>(modelBuilder, x => new { x.SnapshotId, x.EraId });
+        ConfigureJoin<SnapshotEvent>(modelBuilder, x => new { x.SnapshotId, x.EventId });
+        ConfigureJoin<SnapshotFaction>(modelBuilder, x => new { x.SnapshotId, x.FactionId });
+        ConfigureJoin<SnapshotLocation>(modelBuilder, x => new { x.SnapshotId, x.LocationId });
+        ConfigureJoin<SnapshotCharacterRelationship>(modelBuilder, x => new { x.SnapshotId, x.CharacterRelationshipId });
+        ConfigureJoin<PlotPointCharacter>(modelBuilder, x => new { x.PlotPointId, x.CharacterId });
+        ConfigureJoin<PlotPointEvent>(modelBuilder, x => new { x.PlotPointId, x.EventId });
+        ConfigureJoin<PlotPointLocation>(modelBuilder, x => new { x.PlotPointId, x.LocationId });
+        ConfigureJoin<PlotPointArtifact>(modelBuilder, x => new { x.PlotPointId, x.ArtifactId });
+        ConfigureJoin<PlotPointFaction>(modelBuilder, x => new { x.PlotPointId, x.FactionId });
+        ConfigureJoin<PlotPointEra>(modelBuilder, x => new { x.PlotPointId, x.EraId });
+        ConfigureJoin<PlotPointCharacterRelationship>(modelBuilder, x => new { x.PlotPointId, x.CharacterRelationshipId });
+        ConfigureJoin<PlotPointRiver>(modelBuilder, x => new { x.PlotPointId, x.RiverId });
+        ConfigureJoin<PlotPointRoute>(modelBuilder, x => new { x.PlotPointId, x.RouteId });
+
+    }
+
+
+    private void ApplyGlobalDeleteBehavior(ModelBuilder modelBuilder)
+    {
+        foreach (var relationship in modelBuilder.Model.GetEntityTypes()
+            .SelectMany(e => e.GetForeignKeys()))
+        {
+            relationship.DeleteBehavior = DeleteBehavior.Restrict;
+        }
+    }
+
+    private void ConfigureJoin<T>(ModelBuilder modelBuilder, Expression<Func<T, object>> keyExpression) where T : class
+    {
+        modelBuilder.Entity<T>().HasKey(keyExpression);
+    }
+
+   
+    private void ConfigureArtifact(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<Artifact>()
             .HasOne(a => a.Owner)
             .WithMany()
@@ -47,11 +106,20 @@ public class AppDbContext : DbContext
             .HasOne(a => a.Snapshot)
             .WithMany()
             .HasForeignKey("SnapshotId");
+    }
 
-        // Calendar
-        modelBuilder.Entity<Calendar>();
 
-        // Character
+    private void ConfigureCalendar(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Calendar>()
+            .HasOne(c => c.Event)
+            .WithMany()
+            .HasForeignKey("EventId");
+    }
+
+
+    private void ConfigureCharacter(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<Character>()
             .HasOne(c => c.Faction)
             .WithMany()
@@ -71,8 +139,11 @@ public class AppDbContext : DbContext
             .HasOne(c => c.Snapshot)
             .WithMany()
             .HasForeignKey("SnapshotId");
+    }
 
-        // CharacterRelationship
+
+    private void ConfigureCharacterRelationship(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<CharacterRelationship>()
             .HasOne(cr => cr.Character1)
             .WithMany()
@@ -87,25 +158,55 @@ public class AppDbContext : DbContext
             .HasOne(cr => cr.Snapshot)
             .WithMany()
             .HasForeignKey("SnapshotId");
+    }
 
-        // Era
+
+    private void ConfigureEra(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<Era>()
             .HasOne(e => e.Snapshot)
             .WithMany()
             .HasForeignKey("SnapshotId");
+    }
 
-        // Event
+
+    private void ConfigureEvent(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<Event>()
             .HasOne(e => e.Location)
-            .WithMany()
-            .HasForeignKey("LocationId");
+            .WithMany(l => l.Events)
+            .HasForeignKey(e => e.LocationId)
+            .OnDelete(DeleteBehavior.SetNull); // or .SetNull if you'd like auto-unlinking
 
         modelBuilder.Entity<Event>()
             .HasOne(e => e.Snapshot)
             .WithMany()
-            .HasForeignKey("SnapshotId");
+            .HasForeignKey(e => e.SnapshotId)
+            .OnDelete(DeleteBehavior.SetNull);
+    }
 
-        // Faction
+
+    private void ConfigureLanguageLocation(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<LanguageLocation>()
+            .HasKey(ll => new { ll.LanguageId, ll.LocationId });
+
+        modelBuilder.Entity<LanguageLocation>()
+            .HasOne(ll => ll.Language)
+            .WithMany(l => l.LanguageLocations)
+            .HasForeignKey(ll => ll.LanguageId)
+            .OnDelete(DeleteBehavior.Restrict); // Avoids cascading delete loops
+
+        modelBuilder.Entity<LanguageLocation>()
+            .HasOne(ll => ll.Location)
+            .WithMany(l => l.LanguageLocations)
+            .HasForeignKey(ll => ll.LocationId)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
+
+
+    private void ConfigureFaction(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<Faction>()
             .HasOne(f => f.Founder)
             .WithMany()
@@ -125,24 +226,10 @@ public class AppDbContext : DbContext
             .HasOne(f => f.Snapshot)
             .WithMany()
             .HasForeignKey("SnapshotId");
+    }
 
-
-        modelBuilder.Entity<Location>()
-            .HasOne(l => l.ParentLocation)
-            .WithMany()
-            .HasForeignKey("ParentLocationId");
-
-        modelBuilder.Entity<Location>()
-            .HasOne(l => l.Language)
-            .WithMany()
-            .HasForeignKey("LanguageId");
-
-        modelBuilder.Entity<Location>()
-            .HasOne(l => l.Snapshot)
-            .WithMany()
-            .HasForeignKey("SnapshotId");
-
-        // River
+    private void ConfigureRiver(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<River>()
             .HasOne(r => r.SourceLocation)
             .WithMany()
@@ -152,8 +239,11 @@ public class AppDbContext : DbContext
             .HasOne(r => r.DestinationLocation)
             .WithMany()
             .HasForeignKey("DestinationLocationId");
+    }
 
-        // Route
+
+    private void ConfigureRoute(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<Route>()
             .HasOne(r => r.From)
             .WithMany()
@@ -163,232 +253,15 @@ public class AppDbContext : DbContext
             .HasOne(r => r.To)
             .WithMany()
             .HasForeignKey("ToId");
+    }
 
-        // PriceExample
+
+    private void ConfigurePriceExample(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<PriceExample>()
             .Property(p => p.Price)
             .HasColumnType("int");
-
-        modelBuilder.Entity<Location>()
-          .HasOne(l => l.ParentLocation)
-          .WithMany()
-          .HasForeignKey(l => l.ParentLocationId);
-
-
-        modelBuilder.Entity<JunctionClasses.SnapshotArtifact>()
-            .HasKey(sa => new { sa.SnapshotId, sa.ArtifactId });
-
-        modelBuilder.Entity<JunctionClasses.SnapshotArtifact>()
-            .HasOne(sa => sa.Snapshot)
-            .WithMany()
-            .HasForeignKey(sa => sa.SnapshotId);
-
-        modelBuilder.Entity<JunctionClasses.SnapshotArtifact>()
-            .HasOne(sa => sa.Artifact)
-            .WithMany()
-            .HasForeignKey(sa => sa.ArtifactId);
-
-        modelBuilder.Entity<JunctionClasses.SnapshotEra>()
-            .HasKey(se => new { se.SnapshotId, se.EraId });
-
-        modelBuilder.Entity<JunctionClasses.SnapshotEra>()
-            .HasOne(se => se.Snapshot)
-            .WithMany()
-            .HasForeignKey(se => se.SnapshotId);
-
-        modelBuilder.Entity<JunctionClasses.SnapshotEra>()
-            .HasOne(se => se.Era)
-            .WithMany()
-            .HasForeignKey(se => se.EraId);
-
-        modelBuilder.Entity<JunctionClasses.SnapshotEvent>()
-            .HasKey(se => new { se.SnapshotId, se.EventId });
-
-        modelBuilder.Entity<JunctionClasses.SnapshotEvent>()
-            .HasOne(se => se.Snapshot)
-            .WithMany()
-            .HasForeignKey(se => se.SnapshotId);
-
-        modelBuilder.Entity<JunctionClasses.SnapshotEvent>()
-            .HasOne(se => se.Event)
-            .WithMany()
-            .HasForeignKey(se => se.EventId);
-
-        modelBuilder.Entity<JunctionClasses.SnapshotFaction>()
-            .HasKey(sf => new { sf.SnapshotId, sf.FactionId });
-
-        modelBuilder.Entity<JunctionClasses.SnapshotFaction>()
-            .HasOne(sf => sf.Snapshot)
-            .WithMany()
-            .HasForeignKey(sf => sf.SnapshotId);
-
-        modelBuilder.Entity<JunctionClasses.SnapshotFaction>()
-            .HasOne(sf => sf.Faction)
-            .WithMany()
-            .HasForeignKey(sf => sf.FactionId);
-
-        modelBuilder.Entity<JunctionClasses.SnapshotLocation>()
-            .HasKey(sl => new { sl.SnapshotId, sl.LocationId });
-
-        modelBuilder.Entity<JunctionClasses.SnapshotLocation>()
-            .HasOne(sl => sl.Snapshot)
-            .WithMany()
-            .HasForeignKey(sl => sl.SnapshotId);
-
-        modelBuilder.Entity<JunctionClasses.SnapshotLocation>()
-            .HasOne(sl => sl.Location)
-            .WithMany()
-            .HasForeignKey(sl => sl.LocationId);
-
-        modelBuilder.Entity<JunctionClasses.SnapshotCharacterRelationship>()
-            .HasKey(scr => new { scr.SnapshotId, scr.CharacterRelationshipId });
-
-        modelBuilder.Entity<JunctionClasses.SnapshotCharacterRelationship>()
-            .HasOne(scr => scr.Snapshot)
-            .WithMany()
-            .HasForeignKey(scr => scr.SnapshotId);
-
-        modelBuilder.Entity<JunctionClasses.SnapshotCharacterRelationship>()
-            .HasOne(scr => scr.CharacterRelationship)
-            .WithMany()
-            .HasForeignKey(scr => scr.CharacterRelationshipId);
-
-        // Junction Table Configurations
-        modelBuilder.Entity<SnapshotCharacter>()
-            .HasKey(sc => new { sc.SnapshotId, sc.CharacterId });
-
-        modelBuilder.Entity<SnapshotCharacter>()
-            .HasOne(sc => sc.Snapshot)
-            .WithMany()
-            .HasForeignKey(sc => sc.SnapshotId);
-
-        modelBuilder.Entity<SnapshotCharacter>()
-            .HasOne(sc => sc.Character)
-            .WithMany()
-            .HasForeignKey(sc => sc.CharacterId);
-
-        modelBuilder.Entity<SnapshotArtifact>()
-            .HasKey(sa => new { sa.SnapshotId, sa.ArtifactId });
-
-        modelBuilder.Entity<SnapshotArtifact>()
-            .HasOne(sa => sa.Snapshot)
-            .WithMany()
-            .HasForeignKey(sa => sa.SnapshotId);
-
-        modelBuilder.Entity<SnapshotArtifact>()
-            .HasOne(sa => sa.Artifact)
-            .WithMany()
-            .HasForeignKey(sa => sa.ArtifactId);
-
-        modelBuilder.Entity<SnapshotEra>()
-            .HasKey(se => new { se.SnapshotId, se.EraId });
-
-        modelBuilder.Entity<SnapshotEra>()
-            .HasOne(se => se.Snapshot)
-            .WithMany()
-            .HasForeignKey(se => se.SnapshotId);
-
-        modelBuilder.Entity<SnapshotEra>()
-            .HasOne(se => se.Era)
-            .WithMany()
-            .HasForeignKey(se => se.EraId);
-
-        modelBuilder.Entity<SnapshotEvent>()
-            .HasKey(se => new { se.SnapshotId, se.EventId });
-
-        modelBuilder.Entity<SnapshotEvent>()
-            .HasOne(se => se.Snapshot)
-            .WithMany()
-            .HasForeignKey(se => se.SnapshotId);
-
-        modelBuilder.Entity<SnapshotEvent>()
-            .HasOne(se => se.Event)
-            .WithMany()
-            .HasForeignKey(se => se.EventId);
-
-        modelBuilder.Entity<SnapshotFaction>()
-            .HasKey(sf => new { sf.SnapshotId, sf.FactionId });
-
-        modelBuilder.Entity<SnapshotFaction>()
-            .HasOne(sf => sf.Snapshot)
-            .WithMany()
-            .HasForeignKey(sf => sf.SnapshotId);
-
-        modelBuilder.Entity<SnapshotFaction>()
-            .HasOne(sf => sf.Faction)
-            .WithMany()
-            .HasForeignKey(sf => sf.FactionId);
-
-        modelBuilder.Entity<SnapshotLocation>()
-            .HasKey(sl => new { sl.SnapshotId, sl.LocationId });
-
-        modelBuilder.Entity<SnapshotLocation>()
-            .HasOne(sl => sl.Snapshot)
-            .WithMany()
-            .HasForeignKey(sl => sl.SnapshotId);
-
-        modelBuilder.Entity<SnapshotLocation>()
-            .HasOne(sl => sl.Location)
-            .WithMany()
-            .HasForeignKey(sl => sl.LocationId);
-
-        modelBuilder.Entity<SnapshotCharacterRelationship>()
-            .HasKey(scr => new { scr.SnapshotId, scr.CharacterRelationshipId });
-
-        modelBuilder.Entity<SnapshotCharacterRelationship>()
-            .HasOne(scr => scr.Snapshot)
-            .WithMany()
-            .HasForeignKey(scr => scr.SnapshotId);
-
-        modelBuilder.Entity<SnapshotCharacterRelationship>()
-            .HasOne(scr => scr.CharacterRelationship)
-            .WithMany()
-            .HasForeignKey(scr => scr.CharacterRelationshipId);
-
-        // Location - Location Junction Table
-        modelBuilder.Entity<LocationLocation>()
-            .HasKey(ll => new { ll.LocationId, ll.ChildLocationId });
-
-        modelBuilder.Entity<LocationLocation>()
-            .HasOne(ll => ll.Location)
-            .WithMany()
-            .HasForeignKey(ll => ll.LocationId)
-            .OnDelete(DeleteBehavior.NoAction);
-
-        modelBuilder.Entity<LocationLocation>()
-            .HasOne(ll => ll.ChildLocation)
-            .WithMany()
-            .HasForeignKey(ll => ll.ChildLocationId)
-            .OnDelete(DeleteBehavior.NoAction);
-
-        // Location - Event Junction Table
-        modelBuilder.Entity<LocationEvent>()
-            .HasKey(le => new { le.LocationId, le.EventId });
-
-        modelBuilder.Entity<LocationEvent>()
-            .HasOne(le => le.Location)
-            .WithMany()
-            .HasForeignKey(le => le.LocationId);
-
-        modelBuilder.Entity<LocationEvent>()
-            .HasOne(le => le.Event)
-            .WithMany()
-            .HasForeignKey(le => le.EventId);
-
-        // Location - Language Junction Table
-        modelBuilder.Entity<LanguageLocation>()
-            .HasKey(ll => new { ll.LocationId, ll.LanguageId });
-
-        modelBuilder.Entity<LanguageLocation>()
-            .HasOne(ll => ll.Location)
-            .WithMany()
-            .HasForeignKey(ll => ll.LocationId);
-
-        modelBuilder.Entity<LanguageLocation>()
-            .HasOne(ll => ll.Language)
-            .WithMany()
-            .HasForeignKey(ll => ll.LanguageId);
-
-        base.OnModelCreating(modelBuilder);
     }
+
+
 }

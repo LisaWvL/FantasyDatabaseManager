@@ -1,0 +1,92 @@
+[
+    {
+        "Id": 1,
+        "Character1Id": 1,
+        "Character2Id": 2,
+        "SnapshotId": null
+    },
+    {
+        "Id": 2,
+        "Character1Id": 2,
+        "Character2Id": 9,
+        "SnapshotId": null
+    },
+    {
+        "Id": 3,
+        "Character1Id": 1,
+        "Character2Id": 8,
+        "SnapshotId": null
+    },
+    {
+        "Id": 4,
+        "Character1Id": 1,
+        "Character2Id": 11,
+        "SnapshotId": null
+    },
+    {
+        "Id": 5,
+        "Character1Id": 1,
+        "Character2Id": 10,
+        "SnapshotId": null
+    },
+    {
+        "Id": 6,
+        "Character1Id": 5,
+        "Character2Id": 4,
+        "SnapshotId": null
+    },
+    {
+        "Id": 7,
+        "Character1Id": 4,
+        "Character2Id": 6,
+        "SnapshotId": null
+    },
+    {
+        "Id": 8,
+        "Character1Id": 5,
+        "Character2Id": 6,
+        "SnapshotId": null
+    },
+    {
+        "Id": 9,
+        "Character1Id": 1,
+        "Character2Id": 4,
+        "SnapshotId": null
+    },
+    {
+        "Id": 10,
+        "Character1Id": 1,
+        "Character2Id": 6,
+        "SnapshotId": null
+    },
+    {
+        "Id": 11,
+        "Character1Id": 1,
+        "Character2Id": 7,
+        "SnapshotId": null
+    },
+    {
+        "Id": 12,
+        "Character1Id": 7,
+        "Character2Id": 6,
+        "SnapshotId": null
+    },
+    {
+        "Id": 13,
+        "Character1Id": 8,
+        "Character2Id": 4,
+        "SnapshotId": null
+    },
+    {
+        "Id": 14,
+        "Character1Id": 1,
+        "Character2Id": 9,
+        "SnapshotId": null
+    },
+    {
+        "Id": 15,
+        "Character1Id": 1,
+        "Character2Id": 10,
+        "SnapshotId": null
+    }
+]

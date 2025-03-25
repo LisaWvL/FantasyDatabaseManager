@@ -1,15 +1,43 @@
-import React from "react";
+// src/components/SnapshotSelector.jsx
+import React, { useEffect, useState } from 'react';
+import { fetchSnapshots } from '../api/SnapshotAPI';
+import { useSnapshot } from '../context/snapshotContext';
 
-export default function SnapshotSelector({ snapshots, selectedSnapshot, onChange }) {
+const SnapshotSelector = () => {
+    const [snapshots, setSnapshots] = useState([]);
+    const { currentSnapshotId, setCurrentSnapshotId, setSnapshotName } = useSnapshot();
+
+    useEffect(() => {
+        const loadSnapshots = async () => {
+            try {
+                const data = await fetchSnapshots();
+                setSnapshots(data);
+            } catch (error) {
+                console.error("Failed to fetch snapshots:", error);
+            }
+        };
+        loadSnapshots();
+    }, []);
+
+
+    const handleChange = (e) => {
+        const selectedId = parseInt(e.target.value);
+        const selectedSnapshot = snapshots.find(s => s.id === selectedId);
+        setCurrentSnapshotId(selectedId);
+        setSnapshotName(selectedSnapshot?.snapshotName || 'Unknown');
+    };
+
     return (
-        <div className="form-group mb-3">
-            <label><strong>Select Snapshot:</strong></label>
-            <select className="form-select" value={selectedSnapshot} onChange={e => onChange(e.target.value)}>
-                <option value="">-- Select Snapshot --</option>
+        <div className="snapshot-selector">
+            <label>Select Snapshot:</label>
+            <select onChange={handleChange} value={currentSnapshotId || ''}>
+                <option value="">-- Choose Snapshot --</option>
                 {snapshots.map(s => (
                     <option key={s.id} value={s.id}>{s.snapshotName}</option>
                 ))}
             </select>
         </div>
     );
-}
+};
+
+export default SnapshotSelector;

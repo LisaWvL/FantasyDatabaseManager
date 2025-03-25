@@ -1,11 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 namespace FantasyDB.Models // ✅ Add this line
 {
 
@@ -18,13 +11,16 @@ namespace FantasyDB.Models // ✅ Add this line
         public string? Month { get; set; }
         public int? Year { get; set; }
         public string? Purpose { get; set; }
+
         public int? SnapshotId { get; set; }
-        public int? LocationId { get; set; }
-        // Navigation Properties
-        [ForeignKey("LocationId")]
-        public virtual Location? Location { get; set; }
-        [ForeignKey("SnapshotId")]
         public virtual Snapshot? Snapshot { get; set; }
+
+        // ✅ FK to Location (1 Event → 1 Location)
+        public int? LocationId { get; set; }
+        public virtual Location? Location { get; set; } = default!;
+
+
     }
+
 }
 

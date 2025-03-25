@@ -1,0 +1,34 @@
+[
+    {
+        "LocationId": 3,
+        "EventId": 1
+    },
+    {
+        "LocationId": 1,
+        "EventId": 2
+    },
+    {
+        "LocationId": 4,
+        "EventId": 3
+    },
+    {
+        "LocationId": 2,
+        "EventId": 4
+    },
+    {
+        "LocationId": 2,
+        "EventId": 5
+    },
+    {
+        "LocationId": 2,
+        "EventId": 6
+    },
+    {
+        "LocationId": 2,
+        "EventId": 7
+    },
+    {
+        "LocationId": 2,
+        "EventId": 8
+    }
+]

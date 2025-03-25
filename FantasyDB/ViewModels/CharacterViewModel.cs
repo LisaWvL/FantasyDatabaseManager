@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FantasyDB.Models;
-using FantasyDB.Services;
+﻿using FantasyDB.Attributes;
+using FantasyDB.Interfaces;
 
 namespace FantasyDB.ViewModels
 {
@@ -16,9 +11,9 @@ namespace FantasyDB.ViewModels
         public string? Name { get; set; } = string.Empty;
         [EditableForSnapshot]
         public string? Alias { get; set; } = string.Empty;
-        public int? BirthDay { get; set; }  
+        public int? BirthDay { get; set; }
         public string? BirthMonth { get; set; } = string.Empty;
-        public int? BirthYear { get; set; } 
+        public int? BirthYear { get; set; }
         public string? Gender { get; set; } = string.Empty;
         [EditableForSnapshot]
         public int? HeightCm { get; set; }
@@ -45,7 +40,7 @@ namespace FantasyDB.ViewModels
         [EditableForSnapshot]
         public string? Weakness { get; set; } = string.Empty;
         [EditableForSnapshot]
-        public string? Motivation { get; set; } = string.Empty;    
+        public string? Motivation { get; set; } = string.Empty;
         [EditableForSnapshot]
         public string? Flaw { get; set; } = string.Empty;
         [EditableForSnapshot]

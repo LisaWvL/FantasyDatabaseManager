@@ -1,0 +1,26 @@
+[
+    {
+        "Name": "The Church of Divine Light",
+        "Alias": "The Holy Order",
+        "FoundingYear": 1023,
+        "Magic": "Divine"
+    },
+    {
+        "Name": "The Monarchy",
+        "Alias": "The Royal Court",
+        "FoundingYear": 1023,
+        "Magic": "Divine"
+    },
+    {
+        "Name": "The Shadows of Dawn",
+        "Alias": "The Hidden Rebellion",
+        "FoundingYear": 1023,
+        "Magic": "Wild"
+    },
+    {
+        "Name": "The Order of Flame",
+        "Alias": "The Purging Fire",
+        "FoundingYear": 750,
+        "Magic": "Divine"
+    }
+]

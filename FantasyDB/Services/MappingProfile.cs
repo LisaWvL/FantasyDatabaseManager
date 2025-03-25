@@ -2,12 +2,40 @@
 using AutoMapper;
 using FantasyDB.Models;
 using FantasyDB.ViewModels;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public class MappingProfile : Profile
 {
     public MappingProfile()
     {
+        // Language
+        CreateMap<Location, LocationViewModel>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.ParentLocationName, opt => opt.MapFrom(src => src.ParentLocation.Name))
+            .ForMember(dest => dest.SnapshotName, opt => opt.MapFrom(src => src.Snapshot.SnapshotName))
+            .ForMember(dest => dest.LanguageIds, opt => opt.MapFrom(src => src.LanguageLocations.Select(ll => ll.LanguageId)))
+            .ForMember(dest => dest.LanguageNames, opt => opt.MapFrom(src => src.LanguageLocations.Select(ll => ll.Language.Name)))
+            .ForMember(dest => dest.EventIds, opt => opt.MapFrom(src => src.Events.Select(e => e.Id)))
+            .ForMember(dest => dest.EventNames, opt => opt.MapFrom(src => src.Events.Select(e => e.Name)));
+
+        CreateMap<LocationViewModel, Location>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.ParentLocationId, opt => opt.MapFrom(src => src.ParentLocationId))
+            .ForMember(dest => dest.SnapshotId, opt => opt.MapFrom(src => src.SnapshotId))
+            .ForMember(dest => dest.LanguageLocations, opt => opt.Ignore()) // you’re setting this manually
+            .ForMember(dest => dest.Events, opt => opt.Ignore()); // don’t let AutoMapper try to match EventIds
+
+
+        CreateMap<Event, EventViewModel>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.LocationName, opt => opt.MapFrom(src => src.Location.Name))
+            .ForMember(dest => dest.SnapshotName, opt => opt.MapFrom(src => src.Snapshot.SnapshotName));
+
+        CreateMap<EventViewModel, Event>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.LocationId, opt => opt.MapFrom(src => src.LocationId))
+            .ForMember(dest => dest.SnapshotId, opt => opt.MapFrom(src => src.SnapshotId));
+
+
         // Artifact
         CreateMap<Artifact, ArtifactViewModel>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
@@ -65,15 +93,6 @@ public class MappingProfile : Profile
                 .ForMember(dest => dest.Id, opt => opt.Ignore()) // <-- 👈 Important!
             .ForMember(dest => dest.SnapshotId, opt => opt.MapFrom(src => src.SnapshotId));
 
-        // Event
-        CreateMap<Event, EventViewModel>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-            .ForMember(dest => dest.LocationName, opt => opt.MapFrom(src => src.Location.Name))
-            .ForMember(dest => dest.SnapshotName, opt => opt.MapFrom(src => src.Snapshot.SnapshotName));
-        CreateMap<EventViewModel, Event>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore()) // <-- 👈 Important!
-            .ForMember(dest => dest.LocationId, opt => opt.MapFrom(src => src.LocationId))
-            .ForMember(dest => dest.SnapshotId, opt => opt.MapFrom(src => src.SnapshotId));
 
         // Faction
         CreateMap<Faction, FactionViewModel>()
@@ -89,30 +108,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.HQLocationId, opt => opt.MapFrom(src => src.HQLocationId))
             .ForMember(dest => dest.SnapshotId, opt => opt.MapFrom(src => src.SnapshotId));
 
-        // Language
-        CreateMap<Language, LanguageViewModel>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
-        CreateMap<LanguageViewModel, Language>()
-                        .ForMember(dest => dest.Id, opt => opt.Ignore()); // 👈 prevent AutoMapper from setting Id
-
-        CreateMap<Language, LanguageViewModel>()
-            .ForMember(dest => dest.LocationIds, opt => opt.MapFrom(src => src.LanguageLocations.Select(ll => ll.LocationId)))
-            .ForMember(dest => dest.LocationNames, opt => opt.MapFrom(src => src.LanguageLocations.Select(ll => ll.Location!.Name)))
-            .ReverseMap()
-            .ForMember(dest => dest.LanguageLocations, opt => opt.Ignore()); // handled manually in controller
-
-        // Location
-        CreateMap<Location, LocationViewModel>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-            .ForMember(dest => dest.ParentLocationName, opt => opt.MapFrom(src => src.ParentLocation.Name))
-            .ForMember(dest => dest.LanguageName, opt => opt.MapFrom(src => src.Language.Name))
-            .ForMember(dest => dest.SnapshotName, opt => opt.MapFrom(src => src.Snapshot.SnapshotName));
-        CreateMap<LocationViewModel, Location>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore()) // <-- 👈 Important!
-            .ForMember(dest => dest.ParentLocationId, opt => opt.MapFrom(src => src.ParentLocationId))
-            .ForMember(dest => dest.LanguageId, opt => opt.MapFrom(src => src.LanguageId))
-            .ForMember(dest => dest.SnapshotId, opt => opt.MapFrom(src => src.SnapshotId));
-
+  
         // PriceExample
         CreateMap<PriceExample, PriceExampleViewModel>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
@@ -145,5 +141,7 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.SnapshotName, opt => opt.MapFrom(src => src.SnapshotName));
         CreateMap<SnapshotViewModel, Snapshot>()
                         .ForMember(dest => dest.Id, opt => opt.Ignore()); // 👈 prevent AutoMapper from setting Id
+
+     
     }
 }

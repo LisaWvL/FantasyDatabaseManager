@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using FantasyDB.Attributes;
-using FantasyDB.Models;
-using FantasyDB.Services;
+using FantasyDB.Interfaces;
 
 namespace FantasyDB.ViewModels
 {
@@ -15,7 +9,7 @@ namespace FantasyDB.ViewModels
         public int Id { get; set; }
         public string? Type { get; set; } = string.Empty;
         public string? Text { get; set; } = string.Empty;
-        public string? Name { get; set; } =string.Empty;
+        public string? Name { get; set; } = string.Empty;
 
         // --------------------------------------------
         // MULTIPLE Locations where this language is spoken 
