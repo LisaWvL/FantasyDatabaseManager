@@ -1,37 +1,68 @@
-﻿import { useState } from 'react'
-import './styles/App.css'
-import React from "react";
-import SnapshotEntityView from "./pages/SnapshotEntityView.jsx";
+﻿// src/App.jsx
+
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import MainLayout from './layout/MainLayout';
+
+// Pages
+import Dashboard from './pages/Dashboard.jsx';
+import CalendarPlotView from './pages/CalendarPlotView.jsx';
+import SnapshotEntityView from './pages/SnapshotEntityView.jsx';
+
+import CharactersPage from './pages/CharactersPage.jsx';
+import CharacterRelationshipsPage from './pages/CharacterRelationshipsPage.jsx';
+import FactionsPage from './pages/FactionsPage.jsx';
+import LanguagesPage from './pages/LanguagesPage.jsx';
+
+import ErasPage from './pages/ErasPage.jsx';
+import EventsPage from './pages/EventsPage.jsx';
+import PlotPointsPage from './pages/PlotPointsPage.jsx';
+import SnapshotsPage from './pages/SnapshotsPage.jsx';
+
+import ItemsPage from './pages/ItemsPage.jsx';
+import PriceExamplesPage from './pages/PriceExamplesPage.jsx';
+
+import LocationsPage from './pages/LocationsPage.jsx';
+import RiversPage from './pages/RiversPage.jsx';
+import RoutesPage from './pages/RoutesPage.jsx';
+
 
 function App() {
-  const [count, setCount] = useState(0)
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<MainLayout />}>
+                    {/* Default Dashboard or Timeline View */}
+                    <Route index element={<CalendarPlotView />} />
 
-  return (
-      <>
-          <div className="App">
-              <h1 className="my-4 text-center">Worldbuilder Timeline Viewer</h1>
-              <SnapshotEntityView />
-          </div>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-        </a>
-        <a href="https://react.dev" target="_blank">
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+                    {/* Core Pages */}
+                    <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="calendar" element={<CalendarPlotView />} />
+                    <Route path="snapshots" element={<SnapshotEntityView />} />
+
+                    {/* Characters & Relations */}
+                    <Route path="characters" element={<CharactersPage />} />
+                    <Route path="character-relationships" element={<CharacterRelationshipsPage />} />
+                    <Route path="factions" element={<FactionsPage />} />
+                    <Route path="languages" element={<LanguagesPage />} />
+
+                    {/* Timeline */}
+                    <Route path="eras" element={<ErasPage />} />
+                    <Route path="events" element={<EventsPage />} />
+                    <Route path="plotpoints" element={<PlotPointsPage />} />
+                    <Route path="snapshots-overview" element={<SnapshotsPage />} />
+
+                    {/* Items */}
+                    <Route path="items" element={<ItemsPage />} />
+                    <Route path="price-examples" element={<PriceExamplesPage />} />
+
+                    {/* Geography */}
+                    <Route path="locations" element={<LocationsPage />} />
+                    <Route path="rivers" element={<RiversPage />} />
+                    <Route path="routes" element={<RoutesPage />} />
+                </Route>
+            </Routes>
+        </Router>
+    );
 }
 
-export default App
+export default App;

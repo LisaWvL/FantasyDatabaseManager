@@ -2,25 +2,27 @@ import React, { useState, useEffect } from "react";
 import SnapshotSelector from "../components/SnapshotSelector.jsx";
 import EntitySelector from "../components/EntitySelector.jsx";
 import EntityTable from "../components/EntityTable.jsx";
+import { fetchSnapshots } from "../api/snapshotApi.js"; // ✅ use wrapper
 
 export default function SnapshotEntityView() {
     const [snapshots, setSnapshots] = useState([]);
     const [selectedSnapshot, setSelectedSnapshot] = useState("");
-    const [entityTypes] = useState(["Character", "Location", "Event", "Faction", "Artifact"]);
+    const [entityTypes] = useState(["Character", "Location", "Event", "Faction", "Item"]);
     const [selectedEntity, setSelectedEntity] = useState("");
     const [entities, setEntities] = useState([]);
 
     useEffect(() => {
-        fetch("/api/snapshot")
-            .then(res => res.json())
-            .then(setSnapshots);
+        fetchSnapshots()
+            .then(setSnapshots)
+            .catch((err) => console.error("Snapshot load failed", err));
     }, []);
 
     useEffect(() => {
         if (selectedSnapshot && selectedEntity) {
             fetch(`/api/${selectedEntity.toLowerCase()}?snapshotId=${selectedSnapshot}`)
                 .then(res => res.json())
-                .then(setEntities);
+                .then(setEntities)
+                .catch(err => console.error(`Failed to fetch ${selectedEntity}:`, err));
         } else {
             setEntities([]);
         }
@@ -28,7 +30,6 @@ export default function SnapshotEntityView() {
 
     const handleEdit = id => {
         alert(`Edit ${selectedEntity} with ID ${id}`);
-        // Navigate to or open edit view
     };
 
     const handleDelete = async id => {
