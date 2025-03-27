@@ -9,7 +9,7 @@ public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-    public DbSet<Artifact> Artifacts { get; set; }
+    public DbSet<Item> Items { get; set; }
     public DbSet<Calendar> Calendar { get; set; }
     public DbSet<Character> Characters { get; set; }
     public DbSet<CharacterRelationship> CharacterRelationships { get; set; }
@@ -24,7 +24,7 @@ public class AppDbContext : DbContext
     public DbSet<Route> Routes { get; set; }
     public DbSet<Snapshot> Snapshots { get; set; }
     public DbSet<JunctionClasses.SnapshotCharacter> SnapshotsCharacters { get; set; }
-    public DbSet<JunctionClasses.SnapshotArtifact> SnapshotsArtifacts { get; set; }
+    public DbSet<JunctionClasses.SnapshotItem> SnapshotsItems { get; set; }
     public DbSet<JunctionClasses.SnapshotEra> SnapshotsEras { get; set; }
     public DbSet<JunctionClasses.SnapshotEvent> SnapshotsEvents { get; set; }
     public DbSet<JunctionClasses.SnapshotFaction> SnapshotsFactions { get; set; }
@@ -35,7 +35,7 @@ public class AppDbContext : DbContext
     public DbSet<PlotPointCharacter> PlotPointsCharacters { get; set; }
     public DbSet<PlotPointEvent> PlotPointsEvents { get; set; }
     public DbSet<PlotPointLocation> PlotPointsLocations { get; set; }
-    public DbSet<PlotPointArtifact> PlotPointsArtifacts { get; set; }
+    public DbSet<PlotPointItem> PlotPointsItems { get; set; }
     public DbSet<PlotPointFaction> PlotPointsFactions { get; set; }
     public DbSet<PlotPointEra> PlotPointsEras { get; set; }
     public DbSet<PlotPointCharacterRelationship> PlotPointsCharacterRelationships { get; set; }
@@ -47,7 +47,7 @@ public class AppDbContext : DbContext
     {
         ApplyGlobalDeleteBehavior(modelBuilder);
 
-        ConfigureArtifact(modelBuilder);
+        ConfigureItem(modelBuilder);
         ConfigureCalendar(modelBuilder);
         ConfigureCharacter(modelBuilder);
         ConfigureCharacterRelationship(modelBuilder);
@@ -61,7 +61,7 @@ public class AppDbContext : DbContext
 
 
         ConfigureJoin<SnapshotCharacter>(modelBuilder, x => new { x.SnapshotId, x.CharacterId });
-        ConfigureJoin<SnapshotArtifact>(modelBuilder, x => new { x.SnapshotId, x.ArtifactId });
+        ConfigureJoin<SnapshotItem>(modelBuilder, x => new { x.SnapshotId, x.ItemId });
         ConfigureJoin<SnapshotEra>(modelBuilder, x => new { x.SnapshotId, x.EraId });
         ConfigureJoin<SnapshotEvent>(modelBuilder, x => new { x.SnapshotId, x.EventId });
         ConfigureJoin<SnapshotFaction>(modelBuilder, x => new { x.SnapshotId, x.FactionId });
@@ -70,7 +70,7 @@ public class AppDbContext : DbContext
         ConfigureJoin<PlotPointCharacter>(modelBuilder, x => new { x.PlotPointId, x.CharacterId });
         ConfigureJoin<PlotPointEvent>(modelBuilder, x => new { x.PlotPointId, x.EventId });
         ConfigureJoin<PlotPointLocation>(modelBuilder, x => new { x.PlotPointId, x.LocationId });
-        ConfigureJoin<PlotPointArtifact>(modelBuilder, x => new { x.PlotPointId, x.ArtifactId });
+        ConfigureJoin<PlotPointItem>(modelBuilder, x => new { x.PlotPointId, x.ItemId });
         ConfigureJoin<PlotPointFaction>(modelBuilder, x => new { x.PlotPointId, x.FactionId });
         ConfigureJoin<PlotPointEra>(modelBuilder, x => new { x.PlotPointId, x.EraId });
         ConfigureJoin<PlotPointCharacterRelationship>(modelBuilder, x => new { x.PlotPointId, x.CharacterRelationshipId });
@@ -95,14 +95,14 @@ public class AppDbContext : DbContext
     }
 
    
-    private void ConfigureArtifact(ModelBuilder modelBuilder)
+    private void ConfigureItem(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Artifact>()
+        modelBuilder.Entity<Item>()
             .HasOne(a => a.Owner)
             .WithMany()
             .HasForeignKey("OwnerId");
 
-        modelBuilder.Entity<Artifact>()
+        modelBuilder.Entity<Item>()
             .HasOne(a => a.Snapshot)
             .WithMany()
             .HasForeignKey("SnapshotId");

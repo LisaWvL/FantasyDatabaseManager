@@ -33,7 +33,7 @@ namespace FantasyDB
                 Seed<Location>("Locations.json");
                 Seed<Character>("Characters.json");
                 Seed<Faction>("Factions.json");
-                Seed<Artifact>("Artifacts.json");
+                Seed<Item>("Items.json");
                 Seed<Calendar>("Calendar.json");
                 Seed<Event>("Events.json");
                 Seed<Era>("Eras.json");
@@ -46,7 +46,7 @@ namespace FantasyDB
                 Seed<LanguageLocation>("LanguagesLocations.json");
 
                 Seed<SnapshotCharacter>("SnapshotsCharacters.json");
-                Seed<SnapshotArtifact>("SnapshotsArtifacts.json");
+                Seed<SnapshotItem>("SnapshotsItems.json");
                 Seed<SnapshotEra>("SnapshotsEras.json");
                 Seed<SnapshotEvent>("SnapshotsEvents.json");
                 Seed<SnapshotFaction>("SnapshotsFactions.json");
@@ -59,7 +59,7 @@ namespace FantasyDB
                 Seed<PlotPointLocation>("PlotPointsLocations.json");
                 Seed<PlotPointEvent>("PlotPointsEvents.json");
                 Seed<PlotPointFaction>("PlotPointsFactions.json");
-                Seed<PlotPointArtifact>("PlotPointsArtifacts.json");
+                Seed<PlotPointItem>("PlotPointsItems.json");
                 Seed<PlotPointEra>("PlotPointsEras.json");
                 Seed<PlotPointCharacterRelationship>("PlotPointsCharacterRelationships.json");
                 Seed<PlotPointRiver>("PlotPointsRivers.json");

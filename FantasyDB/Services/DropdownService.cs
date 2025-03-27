@@ -52,8 +52,8 @@ namespace FantasyDB.Services
                 .Select(s => new SimpleItem(s.Id, s.Name))
                 .ToListAsync();
 
-        public async Task<List<SimpleItem>> GetArtifactsAsync() =>
-            await _context.Artifacts.AsNoTracking()
+        public async Task<List<SimpleItem>> GetItemsAsync() =>
+            await _context.Items.AsNoTracking()
                 .Select(a => new SimpleItem(a.Id, a.Name))
                 .ToListAsync();
 

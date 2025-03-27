@@ -494,7 +494,7 @@ namespace FantasyDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Artifacts",
+                name: "Items",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -507,9 +507,9 @@ namespace FantasyDB.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Artifacts", x => x.Id);
+                    table.PrimaryKey("PK_Items", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Artifacts_Snapshots_SnapshotId",
+                        name: "FK_Items_Snapshots_SnapshotId",
                         column: x => x.SnapshotId,
                         principalTable: "Snapshots",
                         principalColumn: "Id",
@@ -517,23 +517,23 @@ namespace FantasyDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PlotPointsArtifacts",
+                name: "PlotPointsItems",
                 columns: table => new
                 {
                     PlotPointId = table.Column<int>(type: "int", nullable: false),
-                    ArtifactId = table.Column<int>(type: "int", nullable: false)
+                    ItemId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PlotPointsArtifacts", x => new { x.PlotPointId, x.ArtifactId });
+                    table.PrimaryKey("PK_PlotPointsItems", x => new { x.PlotPointId, x.ItemId });
                     table.ForeignKey(
-                        name: "FK_PlotPointsArtifacts_Artifacts_ArtifactId",
-                        column: x => x.ArtifactId,
-                        principalTable: "Artifacts",
+                        name: "FK_PlotPointsItems_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PlotPointsArtifacts_PlotPoints_PlotPointId",
+                        name: "FK_PlotPointsItems_PlotPoints_PlotPointId",
                         column: x => x.PlotPointId,
                         principalTable: "PlotPoints",
                         principalColumn: "Id",
@@ -541,23 +541,23 @@ namespace FantasyDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SnapshotsArtifacts",
+                name: "SnapshotsItems",
                 columns: table => new
                 {
                     SnapshotId = table.Column<int>(type: "int", nullable: false),
-                    ArtifactId = table.Column<int>(type: "int", nullable: false)
+                    ItemId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SnapshotsArtifacts", x => new { x.SnapshotId, x.ArtifactId });
+                    table.PrimaryKey("PK_SnapshotsItems", x => new { x.SnapshotId, x.ItemId });
                     table.ForeignKey(
-                        name: "FK_SnapshotsArtifacts_Artifacts_ArtifactId",
-                        column: x => x.ArtifactId,
-                        principalTable: "Artifacts",
+                        name: "FK_SnapshotsItems_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SnapshotsArtifacts_Snapshots_SnapshotId",
+                        name: "FK_SnapshotsItems_Snapshots_SnapshotId",
                         column: x => x.SnapshotId,
                         principalTable: "Snapshots",
                         principalColumn: "Id",
@@ -830,13 +830,13 @@ namespace FantasyDB.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Artifacts_OwnerId",
-                table: "Artifacts",
+                name: "IX_Items_OwnerId",
+                table: "Items",
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Artifacts_SnapshotId",
-                table: "Artifacts",
+                name: "IX_Items_SnapshotId",
+                table: "Items",
                 column: "SnapshotId");
 
             migrationBuilder.CreateIndex(
@@ -940,9 +940,9 @@ namespace FantasyDB.Migrations
                 column: "SnapshotId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlotPointsArtifacts_ArtifactId",
-                table: "PlotPointsArtifacts",
-                column: "ArtifactId");
+                name: "IX_PlotPointsItems_ItemId",
+                table: "PlotPointsItems",
+                column: "ItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PlotPointsCharacterRelationships_CharacterRelationshipId",
@@ -1005,9 +1005,9 @@ namespace FantasyDB.Migrations
                 column: "ToId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SnapshotsArtifacts_ArtifactId",
-                table: "SnapshotsArtifacts",
-                column: "ArtifactId");
+                name: "IX_SnapshotsItems_ItemId",
+                table: "SnapshotsItems",
+                column: "ItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SnapshotsCharacterRelationships_CharacterRelationshipId",
@@ -1040,8 +1040,8 @@ namespace FantasyDB.Migrations
                 column: "LocationId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Artifacts_Characters_OwnerId",
-                table: "Artifacts",
+                name: "FK_Items_Characters_OwnerId",
+                table: "Items",
                 column: "OwnerId",
                 principalTable: "Characters",
                 principalColumn: "Id",
@@ -1089,7 +1089,7 @@ namespace FantasyDB.Migrations
                 name: "LanguagesLocations");
 
             migrationBuilder.DropTable(
-                name: "PlotPointsArtifacts");
+                name: "PlotPointsItems");
 
             migrationBuilder.DropTable(
                 name: "PlotPointsCharacterRelationships");
@@ -1119,7 +1119,7 @@ namespace FantasyDB.Migrations
                 name: "PriceExamples");
 
             migrationBuilder.DropTable(
-                name: "SnapshotsArtifacts");
+                name: "SnapshotsItems");
 
             migrationBuilder.DropTable(
                 name: "SnapshotsCharacterRelationships");
@@ -1149,7 +1149,7 @@ namespace FantasyDB.Migrations
                 name: "Routes");
 
             migrationBuilder.DropTable(
-                name: "Artifacts");
+                name: "Items");
 
             migrationBuilder.DropTable(
                 name: "CharacterRelationships");

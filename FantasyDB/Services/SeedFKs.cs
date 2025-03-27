@@ -28,7 +28,7 @@ namespace FantasyDB.Services
             Update<Location>(basePath + "Locations.json");
             Update<Character>(basePath + "Characters.json");
             Update<Faction>(basePath + "Factions.json");
-            Update<Artifact>(basePath + "Artifacts.json");
+            Update<Item>(basePath + "Items.json");
             Update<Calendar>(basePath + "Calendar.json");
             Update<Event>(basePath + "Events.json");
             Update<Era>(basePath + "Eras.json");
@@ -41,7 +41,7 @@ namespace FantasyDB.Services
             Update<LanguageLocation>(basePath + "LanguagesLocations.json");
 
             Update<SnapshotCharacter>(basePath + "SnapshotsCharacters.json");
-            Update<SnapshotArtifact>(basePath + "SnapshotsArtifacts.json");
+            Update<SnapshotItem>(basePath + "SnapshotsItems.json");
             Update<SnapshotEra>(basePath + "SnapshotsEras.json");
             Update<SnapshotEvent>(basePath + "SnapshotsEvents.json");
             Update<SnapshotFaction>(basePath + "SnapshotsFactions.json");
@@ -54,7 +54,7 @@ namespace FantasyDB.Services
             Update<PlotPointLocation>(basePath + "PlotPointsLocations.json");
             Update<PlotPointEvent>(basePath + "PlotPointsEvents.json");
             Update<PlotPointFaction>(basePath + "PlotPointsFactions.json");
-            Update<PlotPointArtifact>(basePath + "PlotPointsArtifacts.json");
+            Update<PlotPointItem>(basePath + "PlotPointsItems.json");
             Update<PlotPointEra>(basePath + "PlotPointsEras.json");
             Update<PlotPointCharacterRelationship>(basePath + "PlotPointsCharacterRelationships.json");
             Update<PlotPointRiver>(basePath + "PlotPointsRivers.json");
@@ -170,34 +170,5 @@ namespace FantasyDB.Services
                 return null;
             }
         }
-
-
-        //private object? ConvertJsonValue(object input, Type targetType)
-        //{
-        //    if (input is JsonElement jsonElement)
-        //    {
-        //        if (jsonElement.ValueKind == JsonValueKind.Null)
-        //            return null;
-
-        //        try
-        //        {
-        //            if (targetType == typeof(string)) return jsonElement.GetString();
-        //            if (targetType == typeof(int)) return jsonElement.GetInt32();
-        //            if (targetType == typeof(int?)) return jsonElement.ValueKind == JsonValueKind.Null ? null : jsonElement.GetInt32();
-        //            if (targetType == typeof(bool)) return jsonElement.GetBoolean();
-        //            if (targetType == typeof(DateTime)) return jsonElement.GetDateTime();
-
-        //            // For other types, try deserializing generically
-        //            return JsonSerializer.Deserialize(jsonElement.GetRawText(), targetType);
-        //        }
-        //        catch
-        //        {
-        //            Console.WriteLine($"⚠️ Warning: Failed to convert {jsonElement} to {targetType.Name}");
-        //            return null;
-        //        }
-        //    }
-
-        //    return Convert.ChangeType(input, targetType);
-        //}
     }
 }

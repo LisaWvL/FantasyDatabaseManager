@@ -9,7 +9,7 @@ public class EntityRegistryService : IEntityRegistryService
     {
         { "Character", (typeof(Character), typeof(CharacterViewModel)) },
         { "Faction", (typeof(Faction), typeof(FactionViewModel)) },
-        { "Artifact", (typeof(Artifact), typeof(ArtifactViewModel)) },
+        { "Item", (typeof(Item), typeof(ItemViewModel)) },
         { "CharacterRelationship", (typeof(CharacterRelationship), typeof(CharacterRelationshipViewModel)) },
         { "Event", (typeof(Event), typeof(EventViewModel)) },
         { "Era", (typeof(Era), typeof(EraViewModel)) },

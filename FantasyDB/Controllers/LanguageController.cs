@@ -23,9 +23,10 @@ namespace FantasyDB.Controllers
         protected override IQueryable<Language> GetQueryable()
         {
             return _context.Languages
-                .Include(l => l.LanguageLocations)
-                    .ThenInclude(ll => ll.LanguageId);
+                .Include(l => l.LanguageLocations) // this is enough!
+                    .ThenInclude(ll => ll.Location);   // optionally include the related Location data
         }
+
 
         public override async Task<ActionResult<List<LanguageViewModel>>> Index()
         {

@@ -35,14 +35,14 @@ namespace FantasyDB.Models
             public Character Character { get; set; }
         }
 
-        public class SnapshotArtifact
+        public class SnapshotItem
         {
             public int SnapshotId { get; set; }
             public Snapshot Snapshot { get; set; }
 
-            public int ArtifactId { get; set; }
+            public int ItemId { get; set; }
 
-            public Artifact Artifact { get; set; }
+            public Item Item { get; set; }
         }
 
         public class SnapshotEra
@@ -132,13 +132,13 @@ namespace FantasyDB.Models
             public Faction Faction { get; set; }
         }
 
-        public class PlotPointArtifact
+        public class PlotPointItem
         {
             public int PlotPointId { get; set; }
             public PlotPoint PlotPoint { get; set; }
 
-            public int ArtifactId { get; set; }
-            public Artifact Artifact { get; set; }
+            public int ItemId { get; set; }
+            public Item Item { get; set; }
         }
 
         public class PlotPointCharacterRelationship

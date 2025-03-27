@@ -20,19 +20,18 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 // Dependency Injection
 builder.Services.AddScoped<IDropdownService, DropdownService>();
-builder.Services.AddTransient<DatabaseResetService>();
 
 
-// CORS for React
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowWorldbuilderApp", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins("http://localhost:56507")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
+
 
 
 // Controllers

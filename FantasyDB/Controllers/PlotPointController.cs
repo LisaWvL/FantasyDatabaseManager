@@ -90,4 +90,25 @@ public class PlotPointController : BaseEntityController<PlotPoint, PlotPointView
         var vms = _mapper.Map<List<PlotPointViewModel>>(plotPoints);
         return Ok(vms);
     }
+
+    [HttpGet("by-calendar/{calendarId}")]
+    public async Task<ActionResult<List<PlotPointViewModel>>> ByCalendar(int calendarId)
+    {
+        var plotPoints = await _context.PlotPoints
+            .Where(p => p.CalendarId == calendarId)
+            .ToListAsync();
+        var vms = _mapper.Map<List<PlotPointViewModel>>(plotPoints);
+        return Ok(vms);
+    }
+
+    [HttpGet("by-snapshot/{snapshotId}")]
+    public async Task<ActionResult<List<PlotPointViewModel>>> BySnapshot(int snapshotId)
+    {
+        var plotPoints = await _context.PlotPoints
+            .Where(p => p.SnapshotId == snapshotId)
+            .ToListAsync();
+        var vms = _mapper.Map<List<PlotPointViewModel>>(plotPoints);
+        return Ok(vms);
+    }
+
 }

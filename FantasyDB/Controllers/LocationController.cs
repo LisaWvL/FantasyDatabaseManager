@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FantasyDB.Interfaces;
@@ -22,10 +23,18 @@ namespace FantasyDB.Controllers
             return _context.Locations
                 .Include(l => l.ParentLocation)
                 .Include(l => l.Snapshot)
-                .Include(l => l.LanguageLocations)
-                .Include(l => l.Events)
-                    .ThenInclude(le => le.Id);
+                .Include(l => l.LanguageLocations).ThenInclude(ll => ll.Language)
+                .Include(l => l.Events);
         }
+
+
+        public override async Task<ActionResult<List<LocationViewModel>>> Index()
+        {
+            var locations = await GetQueryable().AsNoTracking().ToListAsync();
+            var viewModels = _mapper.Map<List<LocationViewModel>>(locations);
+            return Ok(viewModels);
+        }
+
 
         [HttpPost("create")]
         public override async Task<ActionResult<LocationViewModel>> Create([FromBody] LocationViewModel viewModel)

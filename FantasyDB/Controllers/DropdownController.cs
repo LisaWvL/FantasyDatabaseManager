@@ -45,9 +45,9 @@ namespace FantasyDB.Controllers
         public async Task<ActionResult<List<SimpleItem>>> GetEras() =>
             Ok(await _dropdownService.GetErasAsync());
 
-        [HttpGet("artifacts")]
-        public async Task<ActionResult<List<SimpleItem>>> GetArtifacts() =>
-            Ok(await _dropdownService.GetArtifactsAsync());
+        [HttpGet("Items")]
+        public async Task<ActionResult<List<SimpleItem>>> GetItems() =>
+            Ok(await _dropdownService.GetItemsAsync());
 
         [HttpGet("routes")]
         public async Task<ActionResult<List<SimpleItem>>> GetRoutes() =>

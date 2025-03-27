@@ -20,38 +20,6 @@ namespace FantasyDB.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("FantasyDB.Models.Artifact", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Effects")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Origin")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("OwnerId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SnapshotId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
-
-                    b.HasIndex("SnapshotId");
-
-                    b.ToTable("Artifacts");
-                });
-
             modelBuilder.Entity("FantasyDB.Models.Calendar", b =>
                 {
                     b.Property<int>("Id")
@@ -359,6 +327,38 @@ namespace FantasyDB.Migrations
                     b.ToTable("Factions");
                 });
 
+            modelBuilder.Entity("FantasyDB.Models.Item", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Effects")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Origin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("OwnerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SnapshotId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.HasIndex("SnapshotId");
+
+                    b.ToTable("Items");
+                });
+
             modelBuilder.Entity("FantasyDB.Models.JunctionClasses+LanguageLocation", b =>
                 {
                     b.Property<int>("LanguageId")
@@ -372,21 +372,6 @@ namespace FantasyDB.Migrations
                     b.HasIndex("LocationId");
 
                     b.ToTable("LanguagesLocations");
-                });
-
-            modelBuilder.Entity("FantasyDB.Models.JunctionClasses+PlotPointArtifact", b =>
-                {
-                    b.Property<int>("PlotPointId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ArtifactId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PlotPointId", "ArtifactId");
-
-                    b.HasIndex("ArtifactId");
-
-                    b.ToTable("PlotPointsArtifacts");
                 });
 
             modelBuilder.Entity("FantasyDB.Models.JunctionClasses+PlotPointCharacter", b =>
@@ -464,6 +449,21 @@ namespace FantasyDB.Migrations
                     b.ToTable("PlotPointsFactions");
                 });
 
+            modelBuilder.Entity("FantasyDB.Models.JunctionClasses+PlotPointItem", b =>
+                {
+                    b.Property<int>("PlotPointId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlotPointId", "ItemId");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("PlotPointsItems");
+                });
+
             modelBuilder.Entity("FantasyDB.Models.JunctionClasses+PlotPointLocation", b =>
                 {
                     b.Property<int>("PlotPointId")
@@ -507,21 +507,6 @@ namespace FantasyDB.Migrations
                     b.HasIndex("RouteId");
 
                     b.ToTable("PlotPointsRoutes");
-                });
-
-            modelBuilder.Entity("FantasyDB.Models.JunctionClasses+SnapshotArtifact", b =>
-                {
-                    b.Property<int>("SnapshotId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ArtifactId")
-                        .HasColumnType("int");
-
-                    b.HasKey("SnapshotId", "ArtifactId");
-
-                    b.HasIndex("ArtifactId");
-
-                    b.ToTable("SnapshotsArtifacts");
                 });
 
             modelBuilder.Entity("FantasyDB.Models.JunctionClasses+SnapshotCharacter", b =>
@@ -597,6 +582,21 @@ namespace FantasyDB.Migrations
                     b.HasIndex("FactionId");
 
                     b.ToTable("SnapshotsFactions");
+                });
+
+            modelBuilder.Entity("FantasyDB.Models.JunctionClasses+SnapshotItem", b =>
+                {
+                    b.Property<int>("SnapshotId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SnapshotId", "ItemId");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("SnapshotsItems");
                 });
 
             modelBuilder.Entity("FantasyDB.Models.JunctionClasses+SnapshotLocation", b =>
@@ -829,7 +829,6 @@ namespace FantasyDB.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Book")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Chapter")
@@ -841,23 +840,6 @@ namespace FantasyDB.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Snapshots");
-                });
-
-            modelBuilder.Entity("FantasyDB.Models.Artifact", b =>
-                {
-                    b.HasOne("FantasyDB.Models.Character", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("FantasyDB.Models.Snapshot", "Snapshot")
-                        .WithMany()
-                        .HasForeignKey("SnapshotId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Owner");
-
-                    b.Navigation("Snapshot");
                 });
 
             modelBuilder.Entity("FantasyDB.Models.Calendar", b =>
@@ -980,6 +962,23 @@ namespace FantasyDB.Migrations
                     b.Navigation("Snapshot");
                 });
 
+            modelBuilder.Entity("FantasyDB.Models.Item", b =>
+                {
+                    b.HasOne("FantasyDB.Models.Character", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("FantasyDB.Models.Snapshot", "Snapshot")
+                        .WithMany()
+                        .HasForeignKey("SnapshotId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Owner");
+
+                    b.Navigation("Snapshot");
+                });
+
             modelBuilder.Entity("FantasyDB.Models.JunctionClasses+LanguageLocation", b =>
                 {
                     b.HasOne("FantasyDB.Models.Language", "Language")
@@ -997,25 +996,6 @@ namespace FantasyDB.Migrations
                     b.Navigation("Language");
 
                     b.Navigation("Location");
-                });
-
-            modelBuilder.Entity("FantasyDB.Models.JunctionClasses+PlotPointArtifact", b =>
-                {
-                    b.HasOne("FantasyDB.Models.Artifact", "Artifact")
-                        .WithMany()
-                        .HasForeignKey("ArtifactId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("FantasyDB.Models.PlotPoint", "PlotPoint")
-                        .WithMany("PlotPointArtifacts")
-                        .HasForeignKey("PlotPointId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Artifact");
-
-                    b.Navigation("PlotPoint");
                 });
 
             modelBuilder.Entity("FantasyDB.Models.JunctionClasses+PlotPointCharacter", b =>
@@ -1113,6 +1093,25 @@ namespace FantasyDB.Migrations
                     b.Navigation("PlotPoint");
                 });
 
+            modelBuilder.Entity("FantasyDB.Models.JunctionClasses+PlotPointItem", b =>
+                {
+                    b.HasOne("FantasyDB.Models.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FantasyDB.Models.PlotPoint", "PlotPoint")
+                        .WithMany("PlotPointItems")
+                        .HasForeignKey("PlotPointId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("PlotPoint");
+                });
+
             modelBuilder.Entity("FantasyDB.Models.JunctionClasses+PlotPointLocation", b =>
                 {
                     b.HasOne("FantasyDB.Models.Location", "Location")
@@ -1168,25 +1167,6 @@ namespace FantasyDB.Migrations
                     b.Navigation("PlotPoint");
 
                     b.Navigation("Route");
-                });
-
-            modelBuilder.Entity("FantasyDB.Models.JunctionClasses+SnapshotArtifact", b =>
-                {
-                    b.HasOne("FantasyDB.Models.Artifact", "Artifact")
-                        .WithMany()
-                        .HasForeignKey("ArtifactId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("FantasyDB.Models.Snapshot", "Snapshot")
-                        .WithMany()
-                        .HasForeignKey("SnapshotId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Artifact");
-
-                    b.Navigation("Snapshot");
                 });
 
             modelBuilder.Entity("FantasyDB.Models.JunctionClasses+SnapshotCharacter", b =>
@@ -1280,6 +1260,25 @@ namespace FantasyDB.Migrations
                         .IsRequired();
 
                     b.Navigation("Faction");
+
+                    b.Navigation("Snapshot");
+                });
+
+            modelBuilder.Entity("FantasyDB.Models.JunctionClasses+SnapshotItem", b =>
+                {
+                    b.HasOne("FantasyDB.Models.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FantasyDB.Models.Snapshot", "Snapshot")
+                        .WithMany()
+                        .HasForeignKey("SnapshotId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Item");
 
                     b.Navigation("Snapshot");
                 });
@@ -1385,8 +1384,6 @@ namespace FantasyDB.Migrations
 
             modelBuilder.Entity("FantasyDB.Models.PlotPoint", b =>
                 {
-                    b.Navigation("PlotPointArtifacts");
-
                     b.Navigation("PlotPointCharacterRelationships");
 
                     b.Navigation("PlotPointCharacters");
@@ -1396,6 +1393,8 @@ namespace FantasyDB.Migrations
                     b.Navigation("PlotPointEvents");
 
                     b.Navigation("PlotPointFactions");
+
+                    b.Navigation("PlotPointItems");
 
                     b.Navigation("PlotPointLocations");
 

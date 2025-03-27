@@ -46,9 +46,9 @@ namespace FantasyDB.ViewModels
         public List<int> FactionIds { get; set; } = new();
         public List<string> FactionNames { get; set; } = new();
 
-        [HandlesJunction("PlotPointArtifact", "PlotPointId", "ArtifactId")]
-        public List<int> ArtifactIds { get; set; } = new();
-        public List<string> ArtifactNames { get; set; } = new();
+        [HandlesJunction("PlotPointItem", "PlotPointId", "ItemId")]
+        public List<int> ItemIds { get; set; } = new();
+        public List<string> ItemNames { get; set; } = new();
 
         [HandlesJunction("PlotPointCharacterRelationship", "PlotPointId", "CharacterRelationshipId")]
         public List<int> CharacterRelationshipIds { get; set; } = new();

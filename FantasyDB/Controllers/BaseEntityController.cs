@@ -87,7 +87,7 @@ public abstract class BaseEntityController<TModel, TViewModel> : ControllerBase
 
     // ========== 🔁 Handle Junctions ==========
 
-    public async Task HandleJunctions(TModel entity, TViewModel viewModel, bool isUpdate)
+    protected async Task HandleJunctions(TModel entity, TViewModel viewModel, bool isUpdate)
     {
         var entityId = (int)(typeof(TModel).GetProperty("Id")?.GetValue(entity) ?? 0);
 
@@ -137,7 +137,7 @@ public abstract class BaseEntityController<TModel, TViewModel> : ControllerBase
         await _context.SaveChangesAsync();
     }
 
-    public async Task HandleSnapshotLinks(TModel entity, TViewModel viewModel, int entityId)
+    protected async Task HandleSnapshotLinks(TModel entity, TViewModel viewModel, int entityId)
     {
         var snapshotProp = typeof(TViewModel).GetProperty("SnapshotId");
         if (snapshotProp == null) return;
@@ -147,8 +147,8 @@ public abstract class BaseEntityController<TModel, TViewModel> : ControllerBase
 
         if (typeof(TModel) == typeof(Character))
             _context.SnapshotsCharacters.Add(new SnapshotCharacter { CharacterId = entityId, SnapshotId = snapshotId.Value });
-        else if (typeof(TModel) == typeof(Artifact))
-            _context.SnapshotsArtifacts.Add(new SnapshotArtifact { ArtifactId = entityId, SnapshotId = snapshotId.Value });
+        else if (typeof(TModel) == typeof(Item))
+            _context.SnapshotsItems.Add(new SnapshotItem { ItemId = entityId, SnapshotId = snapshotId.Value });
         else if (typeof(TModel) == typeof(Location))
             _context.SnapshotsLocations.Add(new SnapshotLocation { LocationId = entityId, SnapshotId = snapshotId.Value });
         else if (typeof(TModel) == typeof(Faction))

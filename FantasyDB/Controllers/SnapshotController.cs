@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -24,12 +25,29 @@ namespace FantasyDB.Controllers
             return _context.Snapshots;
         }
 
+
         public override async Task<ActionResult<List<SnapshotViewModel>>> Index()
         {
-            var snapshots = await GetQueryable().AsNoTracking().ToListAsync();
-            var viewModels = _mapper.Map<List<SnapshotViewModel>>(snapshots);
-            return Ok(viewModels);
+            try
+            {
+                var snapshots = await GetQueryable().AsNoTracking().ToListAsync();
+                Console.WriteLine($"[SnapshotController] Fetched {snapshots.Count} snapshot(s)");
+
+                var viewModels = _mapper.Map<List<SnapshotViewModel>>(snapshots);
+                Console.WriteLine($"[SnapshotController] Mapped {viewModels.Count} snapshot view models");
+
+                return Ok(viewModels);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ SnapshotController.Index failed: {ex.Message}");
+                if (ex.InnerException != null)
+                    Console.WriteLine($"🔎 Inner: {ex.InnerException.Message}");
+                return StatusCode(500, "Snapshot fetch failed.");
+            }
         }
+
+
 
         [HttpPost("create")]
         public override async Task<ActionResult<SnapshotViewModel>> Create([FromBody] SnapshotViewModel viewModel)
