@@ -1,6 +1,21 @@
+//TODO
+//SnapshotSelector.jsx
+// Enable timeline grouping(show Book > Act > Chapter visually)
+// Add search and sort capabilities
+// Add �Create New Snapshot� button
+// Add �Delete Snapshot� button
+// Add �Duplicate Snapshot� button
+// Add �Edit Snapshot� button
+// Add �Show All Related� button
+// Add �Copy to Snapshot� button
+// Add �Pin� button
+// Add �Show PlotPoints for Current Snapshot Only� toggle
+
+
+
 // src/components/SnapshotSelector.jsx
 import React, { useEffect, useState } from 'react';
-import { fetchSnapshots } from '../api/SnapshotAPI';
+import { fetchSnapshots } from '../api/SnapshotApi';
 import { useSnapshot } from '../context/snapshotContext';
 
 const SnapshotSelector = () => {

@@ -96,69 +96,6 @@ namespace FantasyDB.Models
             public CharacterRelationship CharacterRelationship { get; set; }
         }
 
-        public class PlotPointCharacter
-        {
-            public int PlotPointId { get; set; }
-            public PlotPoint PlotPoint { get; set; }
-
-            public int CharacterId { get; set; }
-            public Character Character { get; set; }
-        }
-
-        public class PlotPointLocation
-        {
-            public int PlotPointId { get; set; }
-            public PlotPoint PlotPoint { get; set; }
-
-            public int LocationId { get; set; }
-            public Location Location { get; set; }
-        }
-
-        public class PlotPointEvent
-        {
-            public int PlotPointId { get; set; }
-            public PlotPoint PlotPoint { get; set; }
-
-            public int EventId { get; set; }
-            public Event Event { get; set; }
-        }
-
-        public class PlotPointFaction
-        {
-            public int PlotPointId { get; set; }
-            public PlotPoint PlotPoint { get; set; }
-
-            public int FactionId { get; set; }
-            public Faction Faction { get; set; }
-        }
-
-        public class PlotPointItem
-        {
-            public int PlotPointId { get; set; }
-            public PlotPoint PlotPoint { get; set; }
-
-            public int ItemId { get; set; }
-            public Item Item { get; set; }
-        }
-
-        public class PlotPointCharacterRelationship
-        {
-            public int PlotPointId { get; set; }
-            public PlotPoint PlotPoint { get; set; }
-
-            public int CharacterRelationshipId { get; set; }
-            public CharacterRelationship CharacterRelationship { get; set; }
-        }
-
-        public class PlotPointEra
-        {
-            public int PlotPointId { get; set; }
-            public PlotPoint PlotPoint { get; set; }
-
-            public int EraId { get; set; }
-            public Era Era { get; set; }
-        }
-
         public class PlotPointRiver
         {
             public int PlotPointId { get; set; }
@@ -176,7 +113,5 @@ namespace FantasyDB.Models
             public int RouteId { get; set; }
             public Models.Route Route { get; set; }
         }
-
-
     }
 }

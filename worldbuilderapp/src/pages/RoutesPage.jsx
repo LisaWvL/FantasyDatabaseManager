@@ -5,8 +5,7 @@ import {
     createRoute,
     //updateRoute,
     deleteRoute,
-} from "../api/routeApi";
-
+} from '../api/RouteApi';
 export default function RoutePage() {
     const [routes, setRoutes] = useState([]);
     const [newRoute, setNewRoute] = useState({ name: "", startLocationId: null, endLocationId: null });

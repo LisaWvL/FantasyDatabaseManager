@@ -1,10 +1,11 @@
 ﻿// src/pages/PlotPointsPage.jsx
 import React, { useEffect, useState } from 'react';
+//import { fetchSnapshots } from '../api/SnapshotApi';
 import {
     fetchPlotPoints,
     deletePlotPoint,
     fetchForNewSnapshot
-} from '../api/plotPointApi';
+} from '../api/PlotPointApi';
 import EntityTable from '../components/EntityTable';
 import { useNavigate } from 'react-router-dom';
 

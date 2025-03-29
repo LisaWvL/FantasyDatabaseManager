@@ -1,3 +1,11 @@
+//TODO this is my main layout,
+//it has a sidebar on the left which can be folded in and out
+// add a main content area where different pages are shown
+//add a header part, which adapts depending on the content of the content part
+//in the top right corner add a search bar which is present at all times
+//add a footer to the bottom of the page
+
+
 // src/layout/MainLayout.jsx
 import { useState } from 'react';
 import Sidebar from '../components/Sidebar.jsx';

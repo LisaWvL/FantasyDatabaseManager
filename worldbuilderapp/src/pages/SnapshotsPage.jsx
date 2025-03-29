@@ -6,7 +6,7 @@ import {
     //updateSnapshot,
     deleteSnapshot,
     duplicateSnapshot,
-} from "../api/snapshotApi";
+} from '../api/SnapshotApi';
 
 export default function SnapshotPage() {
     const [snapshots, setSnapshots] = useState([]);

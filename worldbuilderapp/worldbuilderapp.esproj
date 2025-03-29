@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="public\" />
+    <Folder Include="src\assets\" />
     <Folder Include="src\data\" />
     <Folder Include="src\services\" />
     <Folder Include="src\state\" />

@@ -55,13 +55,6 @@ namespace FantasyDB
 
                 Seed<CharacterRelationship>("CharacterRelationships.json");
                 Seed<PlotPoint>("PlotPoints.json");
-                Seed<PlotPointCharacter>("PlotPointsCharacters.json");
-                Seed<PlotPointLocation>("PlotPointsLocations.json");
-                Seed<PlotPointEvent>("PlotPointsEvents.json");
-                Seed<PlotPointFaction>("PlotPointsFactions.json");
-                Seed<PlotPointItem>("PlotPointsItems.json");
-                Seed<PlotPointEra>("PlotPointsEras.json");
-                Seed<PlotPointCharacterRelationship>("PlotPointsCharacterRelationships.json");
                 Seed<PlotPointRiver>("PlotPointsRivers.json");
                 Seed<PlotPointRoute>("PlotPointsRoutes.json");
 

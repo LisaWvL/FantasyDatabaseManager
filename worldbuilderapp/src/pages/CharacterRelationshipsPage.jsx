@@ -4,7 +4,7 @@ import {
     fetchCharacterRelationships,
     deleteCharacterRelationship,
     getNewSnapshotViewModel
-} from '../api/characterRelationshipApi';
+} from '../api/CharacterRelationshipApi';
 import EntityTable from '../components/EntityTable';
 
 export default function CharacterRelationshipPage() {

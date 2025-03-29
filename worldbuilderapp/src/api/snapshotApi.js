@@ -1,4 +1,4 @@
-﻿// src/api/snapshotApi.js
+﻿// src/api/SnapshotApi.js
 import axiosInstance from './axiosInstance';
 
 export const fetchSnapshots = async () => {

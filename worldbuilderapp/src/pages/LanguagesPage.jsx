@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import {
     fetchLanguages,
     deleteLanguage
-} from "../api/languageApi";
+} from '../api/LanguageApi';
 import EntityTable from "../components/EntityTable";
 import { useNavigate } from "react-router-dom";
 

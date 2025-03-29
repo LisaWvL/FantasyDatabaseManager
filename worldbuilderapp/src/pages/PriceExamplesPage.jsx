@@ -5,7 +5,7 @@ import {
     createPriceExample,
     updatePriceExample,
     deletePriceExample,
-} from "../api/priceExampleApi";
+} from '../api/PriceExampleApi';
 
 export default function PriceExamplePage() {
     const [examples, setExamples] = useState([]);

@@ -5,7 +5,7 @@ import {
     createRiver,
     //updateRiver,
     deleteRiver,
-} from "../api/riverApi";
+} from '../api/RiverApi';
 
 export default function RiverPage() {
     const [rivers, setRivers] = useState([]);

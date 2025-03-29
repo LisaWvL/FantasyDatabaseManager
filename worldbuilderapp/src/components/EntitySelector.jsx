@@ -1,3 +1,9 @@
+﻿//TODO: Implement EntitySelector component
+// ✅ Create a new file named EntitySelector.jsx in the components folder
+// ✅ Copy the code snippet below and paste it into EntitySelector.jsx
+// src/components/EntitySelector.jsx
+
+
 import React from "react";
 
 export default function EntitySelector({ entityTypes, selectedEntity, onChange }) {

@@ -17,6 +17,8 @@ import ErasPage from './pages/ErasPage.jsx';
 import EventsPage from './pages/EventsPage.jsx';
 import PlotPointsPage from './pages/PlotPointsPage.jsx';
 import SnapshotsPage from './pages/SnapshotsPage.jsx';
+import TimelineStoryView from './pages/TimelineStoryView';
+
 
 import ItemsPage from './pages/ItemsPage.jsx';
 import PriceExamplesPage from './pages/PriceExamplesPage.jsx';
@@ -50,6 +52,7 @@ function App() {
                     <Route path="events" element={<EventsPage />} />
                     <Route path="plotpoints" element={<PlotPointsPage />} />
                     <Route path="snapshots-overview" element={<SnapshotsPage />} />
+                    <Route path="/timelinestoryview" element={<TimelineStoryView />} />
 
                     {/* Items */}
                     <Route path="items" element={<ItemsPage />} />

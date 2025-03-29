@@ -1,4 +1,21 @@
-import React from "react";
+//TODO
+//EntityTable.jsx
+// Add inline filtering by snapshot
+// Enable tag - based filtering(after TagManager is added)
+// Add export button for table content
+// Add import button for table content
+// Add “Create New Entity” button
+// Add “Delete All Entities” button
+// Add “Edit All Entities” button
+// Add “Copy Entity” button
+// Add “Show All Related” button
+// Add “Copy to Snapshot” button
+// Add “Pin” button
+// Add “Show PlotPoints for Current Snapshot Only” toggle
+// Add “Show All Snapshots” toggle
+ 
+
+ import React from "react";
 
 export default function EntityTable({ data, onEdit, onDelete, onSnapshot }) {
     if (!data || data.length === 0) return <p>No data available.</p>;

@@ -163,31 +163,21 @@ public class MappingProfile : Profile
 
 
         CreateMap<PlotPoint, PlotPointViewModel>()
-    .ForMember(dest => dest.CharacterIds, opt =>
-        opt.MapFrom(src => src.PlotPointCharacters.Select(pc => pc.CharacterId)))
-    .ForMember(dest => dest.LocationIds, opt =>
-        opt.MapFrom(src => src.PlotPointLocations.Select(pl => pl.LocationId)))
-    .ForMember(dest => dest.EventIds, opt =>
-        opt.MapFrom(src => src.PlotPointEvents.Select(pe => pe.EventId)))
-    .ForMember(dest => dest.FactionIds, opt =>
-        opt.MapFrom(src => src.PlotPointFactions.Select(pf => pf.FactionId)))
-    .ForMember(dest => dest.ItemIds, opt =>
-        opt.MapFrom(src => src.PlotPointItems.Select(pa => pa.ItemId)))
-    .ForMember(dest => dest.CharacterRelationshipIds, opt =>
-        opt.MapFrom(src => src.PlotPointCharacterRelationships.Select(pr => pr.CharacterRelationshipId)))
-    .ForMember(dest => dest.EraIds, opt =>
-        opt.MapFrom(src => src.PlotPointEras.Select(pe => pe.EraId)))
-    .ForMember(dest => dest.RiverIds, opt =>
-        opt.MapFrom(src => src.PlotPointRivers.Select(pr => pr.RiverId)))
-    .ForMember(dest => dest.RouteIds, opt =>
-        opt.MapFrom(src => src.PlotPointRoutes.Select(pr => pr.RouteId)))
-    .ForMember(dest => dest.CalendarLabel, opt => opt.Ignore()) // You assign this manually later
-    .ForMember(dest => dest.CharacterNames, opt => opt.Ignore())
-    .ForMember(dest => dest.LocationNames, opt => opt.Ignore())
-    .ForMember(dest => dest.EventNames, opt => opt.Ignore())
-    .ForMember(dest => dest.FactionNames, opt => opt.Ignore());
+            .ForMember(dest => dest.RiverIds,
+                opt => opt.MapFrom(src => src.PlotPointRivers.Select(pr => pr.RiverId)))
+            .ForMember(dest => dest.RouteIds,
+                opt => opt.MapFrom(src => src.PlotPointRoutes.Select(pr => pr.RouteId)))
 
+            // ✅ Direct mapping of scalar foreign key IDs
+            .ForMember(dest => dest.StartDateId, opt => opt.MapFrom(src => src.startDateId))
+            .ForMember(dest => dest.EndDateId, opt => opt.MapFrom(src => src.endDateId))
+            .ForMember(dest => dest.SnapshotId, opt => opt.MapFrom(src => src.SnapshotId))
 
+            // ✅ You construct these manually later
+            .ForMember(dest => dest.StartDateName, opt => opt.Ignore())
+            .ForMember(dest => dest.EndDateName, opt => opt.Ignore())
+
+            .ForMember(dest => dest.SnapshotName, opt => opt.Ignore());
 
     }
 }

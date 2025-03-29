@@ -6,7 +6,7 @@ import {
     //updateLocation,
     deleteLocation,
     fetchLocationSnapshot
-} from '../api/locationApi';
+} from '../api/LocationApi';
 import EntityTable from '../components/EntityTable';
 
 export default function LocationPage() {

@@ -6,7 +6,7 @@ import {
     updateEvent,
     deleteEvent,
     //fetchDuplicateForSnapshot
-} from '../api/eventApi';
+} from '../api/EventApi';
 
 export default function EventsPage() {
     const [events, setEvents] = useState([]);

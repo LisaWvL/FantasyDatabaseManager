@@ -2,7 +2,7 @@
 import SnapshotSelector from "../components/SnapshotSelector.jsx";
 import EntitySelector from "../components/EntitySelector.jsx";
 import EntityTable from "../components/EntityTable.jsx";
-import { fetchSnapshots } from "../api/snapshotApi.js"; // ✅ use wrapper
+import { fetchSnapshots } from '../api/SnapshotApi'; // ✅ use wrapper
 
 export default function SnapshotEntityView() {
     const [snapshots, setSnapshots] = useState([]);

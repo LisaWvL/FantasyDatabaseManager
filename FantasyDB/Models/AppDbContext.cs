@@ -32,13 +32,6 @@ public class AppDbContext : DbContext
     public DbSet<JunctionClasses.SnapshotCharacterRelationship> SnapshotsCharacterRelationships { get; set; }
     public DbSet<LanguageLocation> LanguagesLocations { get; set; }
     public DbSet<PlotPoint> PlotPoints { get; set; }
-    public DbSet<PlotPointCharacter> PlotPointsCharacters { get; set; }
-    public DbSet<PlotPointEvent> PlotPointsEvents { get; set; }
-    public DbSet<PlotPointLocation> PlotPointsLocations { get; set; }
-    public DbSet<PlotPointItem> PlotPointsItems { get; set; }
-    public DbSet<PlotPointFaction> PlotPointsFactions { get; set; }
-    public DbSet<PlotPointEra> PlotPointsEras { get; set; }
-    public DbSet<PlotPointCharacterRelationship> PlotPointsCharacterRelationships { get; set; }
     public DbSet<PlotPointRiver> PlotPointsRivers { get; set; }
     public DbSet<PlotPointRoute> PlotPointsRoutes { get; set; }
 
@@ -67,13 +60,6 @@ public class AppDbContext : DbContext
         ConfigureJoin<SnapshotFaction>(modelBuilder, x => new { x.SnapshotId, x.FactionId });
         ConfigureJoin<SnapshotLocation>(modelBuilder, x => new { x.SnapshotId, x.LocationId });
         ConfigureJoin<SnapshotCharacterRelationship>(modelBuilder, x => new { x.SnapshotId, x.CharacterRelationshipId });
-        ConfigureJoin<PlotPointCharacter>(modelBuilder, x => new { x.PlotPointId, x.CharacterId });
-        ConfigureJoin<PlotPointEvent>(modelBuilder, x => new { x.PlotPointId, x.EventId });
-        ConfigureJoin<PlotPointLocation>(modelBuilder, x => new { x.PlotPointId, x.LocationId });
-        ConfigureJoin<PlotPointItem>(modelBuilder, x => new { x.PlotPointId, x.ItemId });
-        ConfigureJoin<PlotPointFaction>(modelBuilder, x => new { x.PlotPointId, x.FactionId });
-        ConfigureJoin<PlotPointEra>(modelBuilder, x => new { x.PlotPointId, x.EraId });
-        ConfigureJoin<PlotPointCharacterRelationship>(modelBuilder, x => new { x.PlotPointId, x.CharacterRelationshipId });
         ConfigureJoin<PlotPointRiver>(modelBuilder, x => new { x.PlotPointId, x.RiverId });
         ConfigureJoin<PlotPointRoute>(modelBuilder, x => new { x.PlotPointId, x.RouteId });
 

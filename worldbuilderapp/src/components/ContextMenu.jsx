@@ -1,3 +1,6 @@
+﻿//TODO - Add the following code to the ContextMenu.jsx file:
+// ✅ This is the ContextMenu component that displays the right-click options
+
 // src/components/ContextMenu.jsx
 import React, { useEffect, useRef } from "react";
 import "../styles/ContextMenu.css";

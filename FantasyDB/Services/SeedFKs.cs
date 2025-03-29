@@ -50,13 +50,6 @@ namespace FantasyDB.Services
 
             Update<CharacterRelationship>(basePath + "CharacterRelationships.json");
             Update<PlotPoint>(basePath + "PlotPoints.json");
-            Update<PlotPointCharacter>(basePath + "PlotPointsCharacters.json");
-            Update<PlotPointLocation>(basePath + "PlotPointsLocations.json");
-            Update<PlotPointEvent>(basePath + "PlotPointsEvents.json");
-            Update<PlotPointFaction>(basePath + "PlotPointsFactions.json");
-            Update<PlotPointItem>(basePath + "PlotPointsItems.json");
-            Update<PlotPointEra>(basePath + "PlotPointsEras.json");
-            Update<PlotPointCharacterRelationship>(basePath + "PlotPointsCharacterRelationships.json");
             Update<PlotPointRiver>(basePath + "PlotPointsRivers.json");
             Update<PlotPointRoute>(basePath + "PlotPointsRoutes.json");
 

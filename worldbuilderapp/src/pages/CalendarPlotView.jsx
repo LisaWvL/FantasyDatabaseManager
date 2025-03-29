@@ -1,29 +1,82 @@
-﻿// Path: src/pages/CalendarPlotView.jsx
+﻿//TODO
+//CalendarPlotView.jsx
+//Enable “Create Snapshot for Entity” via right - click on a plotpoint
+// Support multiple plotpoints on the same day
+// Add calendar highlight for “Jespen” (the extra day)
+// Enable toggle: “Show PlotPoints for Current Snapshot Only”
+// Implement vertical timeline view toggle
+// Add context menu logic to day cells
+// Add context menu logic to plotpoints
+// Add context menu logic to month headers
+// Add context menu logic to calendar header
+// Add context menu logic to plotpoint cards
+// Add context menu logic to snapshot cards
+// Add context menu logic to relationship graph
+// Add context menu logic to character cards
+// Add context menu logic to location cards
+// Add context menu logic to faction cards
+// Add context menu logic to language cards
+// Add context menu logic to event cards
+// Add context menu logic to timeline cards
+// Add context menu logic to snapshot selector
+// Add context menu logic to character selector
+// Add context menu logic to location selector
+// Add context menu logic to faction selector
+// Add context menu logic to language selector
+// Add context menu logic to event selector
+// Add context menu logic to timeline selector
+// Add context menu logic to relationship graph selector
 
-import React, { useState, useEffect } from "react";
+
+import React, { useState, useEffect, useCallback } from "react";
 import DraggablePlotPointCard from "../components/DraggablePlotPointCard";
-import { fetchCalendarGrid } from "../api/calendarApi";
-import { fetchPlotPoints } from "../api/plotPointApi";
+import { fetchCalendarGrid } from '../api/CalendarApi';
+import { fetchPlotPoints } from '../api/PlotPointApi';
 import "../styles/CalendarPlotView.css";
 
 export default function CalendarPlotView() {
     const [calendar, setCalendar] = useState([]);
     const [plotPoints, setPlotPoints] = useState([]);
     const [collapsedMonths, setCollapsedMonths] = useState({});
+    const [, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        const loadData = async () => {
-            const cal = await fetchCalendarGrid();
-            const points = await fetchPlotPoints();
-            setCalendar(cal || []);
-            setPlotPoints(points || []);
-        };
+    // ✅ loadData only defined once here:
+    const loadData = useCallback(async (retry = 0) => {
+        try {
+            setIsLoading(true);
+            const [calendarData, plotData] = await Promise.all([
+                fetchCalendarGrid(),
+                fetchPlotPoints()
+            ]);
 
-        loadData();
-        console.log("Calendar view mounted")
+            if (!Array.isArray(calendarData)) {
+                console.error("❌ Invalid calendar format", calendarData);
+                setCalendar([]);
+            } else {
+                setCalendar(calendarData);
+            }
+
+            setPlotPoints(plotData || []);
+        } catch (err) {
+            console.error(`❌ Failed to load data. Attempt ${retry + 1}/5`, err);
+            if (retry < 4) {
+                setTimeout(() => loadData(retry + 1), 1000);
+            }
+        } finally {
+            setIsLoading(false);
+        }
     }, []);
 
+    // ✅ Trigger load once after mount
+    useEffect(() => {
+        loadData();
+    }, [loadData]);
 
+    // ...rest of the component (grouping months, rendering days)
+
+    // ----------------------
+    // ✅ Collapse/Expand logic
+    // ----------------------
     const toggleMonth = (month) => {
         setCollapsedMonths(prev => ({
             ...prev,
@@ -39,12 +92,14 @@ export default function CalendarPlotView() {
         }, {})
         : {};
 
-    if (calendar.length === 0 && plotPoints.length === 0) {
-        return <div className="calendar-main">Loading timeline...</div>;
-    }
-
+    // ----------------------
+    // ✅ Render
+    // ----------------------
     return (
         <div className="calendar-main">
+            {/* Optional Refresh Button for testing */}
+            {/* <button onClick={forceRefresh}>🔁 Reload</button> */}
+
             {Object.entries(groupedByMonth).map(([month, days]) => (
                 <div key={month} className="month-block">
                     <div className="month-header sticky">
@@ -52,7 +107,6 @@ export default function CalendarPlotView() {
                             {collapsedMonths[month] ? "▶" : "▼"} {month}
                         </button>
                     </div>
-
                     {!collapsedMonths[month] && (
                         <div className="calendar-grid">
                             {days.map(day => (
@@ -60,14 +114,13 @@ export default function CalendarPlotView() {
                                     <div className="calendar-day-label">
                                         {day.day} {day.weekday}
                                     </div>
-
                                     {plotPoints
                                         .filter(pp => pp.calendarId === day.id)
                                         .map(pp => (
                                             <DraggablePlotPointCard
                                                 key={pp.id}
                                                 plotPoint={pp}
-                                                onContextMenu={() => { /* implement if needed */ }}
+                                                onContextMenu={() => { }}
                                             />
                                         ))}
                                 </div>

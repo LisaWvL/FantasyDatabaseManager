@@ -15,8 +15,11 @@ namespace FantasyDB.Models
         public string Title { get; set; } = string.Empty;
         public string? Description { get; set; }
 
-        public int? CalendarId { get; set; }
-        public virtual Calendar? Calendar { get; set; }
+        public int? startDateId { get; set; }
+        public virtual Calendar? StartDate { get; set; }
+
+        public int? endDateId { get; set; }
+        public virtual Calendar? endDate { get; set; }
 
         public int? SnapshotId { get; set; }
         public virtual Snapshot? Snapshot { get; set; }
@@ -26,13 +29,6 @@ namespace FantasyDB.Models
         public string? ChapterOverride { get; set; }
 
         // Junctions
-        public List<PlotPointCharacter> PlotPointCharacters { get; set; } = new();
-        public List<PlotPointLocation> PlotPointLocations { get; set; } = new();
-        public List<PlotPointEvent> PlotPointEvents { get; set; } = new();
-        public List<PlotPointFaction> PlotPointFactions { get; set; } = new();
-        public List<PlotPointItem> PlotPointItems { get; set; } = new();
-        public List<PlotPointCharacterRelationship> PlotPointCharacterRelationships { get; set; } = new();
-        public List<PlotPointEra> PlotPointEras { get; set; } = new();
         public List<PlotPointRiver> PlotPointRivers { get; set; } = new();
         public List<PlotPointRoute> PlotPointRoutes { get; set; } = new();
 

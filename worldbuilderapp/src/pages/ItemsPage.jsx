@@ -5,7 +5,7 @@ import {
     deleteItem,
     //fetchItemSnapshot,
     //fetchItemDuplicate
-} from "../api/itemApi";
+} from '../api/ItemApi';
 import EntityTable from "../components/EntityTable";
 import { useNavigate } from "react-router-dom";
 

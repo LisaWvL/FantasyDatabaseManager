@@ -23,31 +23,30 @@ public class PlotPointController : BaseEntityController<PlotPoint, PlotPointView
     protected override IQueryable<PlotPoint> GetQueryable()
     {
         return _context.PlotPoints
-            .Include(p => p.Calendar)
-            .Include(p => p.Snapshot)
-            .Include(p => p.PlotPointCharacters).ThenInclude(pc => pc.Character)
-            .Include(p => p.PlotPointLocations).ThenInclude(pl => pl.Location)
-            .Include(p => p.PlotPointEvents).ThenInclude(pe => pe.Event)
-            .Include(p => p.PlotPointFactions).ThenInclude(pf => pf.Faction);
+            .Include(p => p.StartDate)
+            .Include(p => p.endDate)
+            .Include(p => p.Snapshot);
     }
 
     public override async Task<ActionResult<List<PlotPointViewModel>>> Index()
     {
         var entities = await GetQueryable().AsNoTracking().ToListAsync();
         var viewModels = _mapper.Map<List<PlotPointViewModel>>(entities);
+        var calendarDict = _context.Calendar.ToDictionary(c => c.Id, c => c);
+
 
         // Fill readable names
         foreach (var vm in viewModels)
         {
-            vm.CalendarLabel = _context.Calendar.FirstOrDefault(c => c.Id == vm.CalendarId)?.Month + " " + _context.Calendar.FirstOrDefault(c => c.Id == vm.CalendarId)?.Day;
-            vm.CharacterNames = _context.Characters.Where(c => vm.CharacterIds.Contains(c.Id)).Select(c => c.Name).ToList();
-            vm.LocationNames = _context.Locations.Where(l => vm.LocationIds.Contains(l.Id)).Select(l => l.Name).ToList();
-            vm.EventNames = _context.Events.Where(e => vm.EventIds.Contains(e.Id)).Select(e => e.Name).ToList();
-            vm.FactionNames = _context.Factions.Where(f => vm.FactionIds.Contains(f.Id)).Select(f => f.Name).ToList();
+            vm.StartDateName = calendarDict.TryGetValue(vm.StartDateId ?? -1, out var start)
+                ? $"{start.Month} {start.Day}" : null;
+            vm.EndDateName = calendarDict.TryGetValue(vm.EndDateId ?? -1, out var end)
+                ? $"{end.Month} {end.Day}" : null;
         }
 
         return Ok(viewModels);
     }
+
 
     [HttpPost("create")]
     public override async Task<ActionResult<PlotPointViewModel>> Create([FromBody] PlotPointViewModel viewModel)
@@ -91,15 +90,27 @@ public class PlotPointController : BaseEntityController<PlotPoint, PlotPointView
         return Ok(vms);
     }
 
-    [HttpGet("by-calendar/{calendarId}")]
-    public async Task<ActionResult<List<PlotPointViewModel>>> ByCalendar(int calendarId)
+    [HttpGet("by-calendar/{startDateId}")]
+    public async Task<ActionResult<List<PlotPointViewModel>>> ByCalendar(int startDateId)
     {
         var plotPoints = await _context.PlotPoints
-            .Where(p => p.CalendarId == calendarId)
+            .Where(p => p.startDateId == startDateId)
             .ToListAsync();
         var vms = _mapper.Map<List<PlotPointViewModel>>(plotPoints);
         return Ok(vms);
     }
+
+    [HttpGet("by-calendar-range")]
+    public async Task<ActionResult<List<PlotPointViewModel>>> ByCalendarRange(int startDateId, int endDateId)
+    {
+        var plotPoints = await _context.PlotPoints
+            .Where(p => p.startDateId == startDateId && p.endDateId == endDateId)
+            .ToListAsync();
+        var vms = _mapper.Map<List<PlotPointViewModel>>(plotPoints);
+        return Ok(vms);
+    }
+
+
 
     [HttpGet("by-snapshot/{snapshotId}")]
     public async Task<ActionResult<List<PlotPointViewModel>>> BySnapshot(int snapshotId)

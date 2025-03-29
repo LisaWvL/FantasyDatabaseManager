@@ -1,4 +1,4 @@
-﻿// src/api/characterRelationshipApi.js
+﻿// src/api/CharacterRelationshipApi.js
 import axiosInstance from './axiosInstance';
 
 export const fetchCharacterRelationships = async () => {

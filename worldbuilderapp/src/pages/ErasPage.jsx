@@ -6,7 +6,7 @@ import {
   //  updateEra,
     deleteEra,
     fetchNewSnapshotEra
-} from "../api/eraApi";
+} from '../api/EraApi';
 
 export default function EraPage() {
     const [eras, setEras] = useState([]);

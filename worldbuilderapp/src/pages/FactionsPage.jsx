@@ -4,7 +4,7 @@ import {
     fetchFactions,
     deleteFaction,
     fetchNewSnapshot
-} from '../api/factionApi';
+} from '../api/FactionApi';
 
 export default function FactionPage() {
     const [factions, setFactions] = useState([]);
