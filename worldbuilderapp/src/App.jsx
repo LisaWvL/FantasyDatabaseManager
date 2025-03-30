@@ -17,7 +17,7 @@ import ErasPage from './pages/ErasPage.jsx';
 import EventsPage from './pages/EventsPage.jsx';
 import PlotPointsPage from './pages/PlotPointsPage.jsx';
 import SnapshotsPage from './pages/SnapshotsPage.jsx';
-import TimelineStoryView from './pages/TimelineStoryView';
+import TimelineStoryView from './pages/TimelineStoryView.jsx';
 
 
 import ItemsPage from './pages/ItemsPage.jsx';
@@ -26,6 +26,7 @@ import PriceExamplesPage from './pages/PriceExamplesPage.jsx';
 import LocationsPage from './pages/LocationsPage.jsx';
 import RiversPage from './pages/RiversPage.jsx';
 import RoutesPage from './pages/RoutesPage.jsx';
+import AssistantPage from './pages/AssistantPage.jsx';
 
 
 function App() {
@@ -62,6 +63,9 @@ function App() {
                     <Route path="locations" element={<LocationsPage />} />
                     <Route path="rivers" element={<RiversPage />} />
                     <Route path="routes" element={<RoutesPage />} />
+
+                    {/* AI Assistant */}
+                    <Route path="/assistant" element={<AssistantPage />} />
                 </Route>
             </Routes>
         </Router>

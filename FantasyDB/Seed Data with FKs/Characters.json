@@ -1,79 +1,93 @@
 [
     {
         "Id": 1,
-        "LanguageId": 3,
         "FactionId": null,
-        "SnapshotId": null,
+        "SnapshotId": 6,
+        "LanguageId": 3,
         "LocationId": 2
     },
     {
         "Id": 2,
-        "LanguageId": 4,
         "FactionId": null,
-        "SnapshotId": null,
+        "SnapshotId": 5,
+        "LanguageId": 4,
         "LocationId": 2
     },
     {
         "Id": 3,
-        "LanguageId": null,
         "FactionId": null,
-        "SnapshotId": null,
+        "SnapshotId": 4,
+        "LanguageId": null,
         "LocationId": 2
     },
     {
         "Id": 4,
-        "LanguageId": 5,
         "FactionId": null,
-        "SnapshotId": null,
+        "SnapshotId": 6,
+        "LanguageId": 5,
         "LocationId": 3
     },
     {
         "Id": 5,
-        "LanguageId": null,
         "FactionId": null,
-        "SnapshotId": null,
+        "SnapshotId": 5,
+        "LanguageId": null,
         "LocationId": 3
     },
     {
         "Id": 6,
-        "LanguageId": null,
         "FactionId": null,
-        "SnapshotId": null,
+        "SnapshotId": 2,
+        "LanguageId": null,
         "LocationId": 2
     },
     {
         "Id": 7,
-        "LanguageId": null,
         "FactionId": null,
-        "SnapshotId": null,
+        "SnapshotId": 1,
+        "LanguageId": null,
         "LocationId": 2
     },
     {
         "Id": 8,
-        "LanguageId": null,
         "FactionId": null,
-        "SnapshotId": null,
+        "SnapshotId": 6,
+        "LanguageId": null,
         "LocationId": 2
     },
     {
         "Id": 9,
-        "LanguageId": null,
         "FactionId": null,
-        "SnapshotId": null,
+        "SnapshotId": 6,
+        "LanguageId": null,
         "LocationId": 2
     },
     {
         "Id": 10,
-        "LanguageId": null,
         "FactionId": null,
-        "SnapshotId": null,
+        "SnapshotId": 2,
+        "LanguageId": null,
         "LocationId": 3
     },
     {
         "Id": 11,
-        "LanguageId": 6,
         "FactionId": null,
-        "SnapshotId": null,
+        "SnapshotId": 5,
+        "LanguageId": 6,
+        "LocationId": 2
+    },
+    {
+        "Id": 12,
+        "FactionId": null,
+        "SnapshotId": 6,
+        "LanguageId": 6,
+        "LocationId": 2
+    },
+    {
+        "Id": 13,
+        "FactionId": null,
+        "SnapshotId": 5,
+        "LanguageId": 3,
         "LocationId": 2
     }
 ]

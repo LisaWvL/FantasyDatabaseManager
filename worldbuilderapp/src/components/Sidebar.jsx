@@ -57,6 +57,11 @@ export default function Sidebar({ show, toggle }) {
                     <SidebarLink to="/rivers">Rivers</SidebarLink>
                     <SidebarLink to="/routes">Routes</SidebarLink>
                 </SidebarGroup>
+
+                <SidebarGroup title="AI Assistant">
+                    <SidebarLink to="/assistant">Writing Assistant</SidebarLink>
+
+                </SidebarGroup>
             </nav>
         </div>
     );

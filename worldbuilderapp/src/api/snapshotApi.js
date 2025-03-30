@@ -79,3 +79,13 @@ export const getNewSnapshotVersion = async (id) => {
         throw error;
     }
 };
+
+export const fetchSnapshotEntities = async (snapshotId) => {
+    try {
+        const response = await axiosInstance.get(`/snapshot/${snapshotId}/entities`);
+    return response.data;
+    } catch (error) {
+        console.error("Failed to fetch snapshot entities", error);
+        throw error;
+    }
+};

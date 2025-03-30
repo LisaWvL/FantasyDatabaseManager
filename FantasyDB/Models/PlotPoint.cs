@@ -24,10 +24,6 @@ namespace FantasyDB.Models
         public int? SnapshotId { get; set; }
         public virtual Snapshot? Snapshot { get; set; }
 
-        // Optional chapter override
-        public string? BookOverride { get; set; }
-        public string? ChapterOverride { get; set; }
-
         // Junctions
         public List<PlotPointRiver> PlotPointRivers { get; set; } = new();
         public List<PlotPointRoute> PlotPointRoutes { get; set; } = new();

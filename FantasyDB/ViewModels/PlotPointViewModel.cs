@@ -30,10 +30,6 @@ namespace FantasyDB.ViewModels
         public int? SnapshotId { get; set; }
         public string? SnapshotName { get; set; } = string.Empty;
 
-        // Optional overrides (e.g. visual grouping)
-        public string? BookOverride { get; set; }
-        public string? ChapterOverride { get; set; }
-
 
         // Junction References
 

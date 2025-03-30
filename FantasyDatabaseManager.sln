@@ -11,6 +11,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasyDB.API", "FantasyDB.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasyDB.Seeder", "FantasyDB.Seeder\FantasyDB.Seeder.csproj", "{3CF2BBA0-533B-421A-AA23-712AC8191429}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		run_assistant.bat = run_assistant.bat
+	EndProjectSection
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FantasyAssistant", "FantasyAssistant\FantasyAssistant.pyproj", "{C6381189-F420-43B8-868D-D8E8D0C74058}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +82,12 @@ Global
 		{3CF2BBA0-533B-421A-AA23-712AC8191429}.Release|x64.Build.0 = Release|Any CPU
 		{3CF2BBA0-533B-421A-AA23-712AC8191429}.Release|x86.ActiveCfg = Release|Any CPU
 		{3CF2BBA0-533B-421A-AA23-712AC8191429}.Release|x86.Build.0 = Release|Any CPU
+		{C6381189-F420-43B8-868D-D8E8D0C74058}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6381189-F420-43B8-868D-D8E8D0C74058}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C6381189-F420-43B8-868D-D8E8D0C74058}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C6381189-F420-43B8-868D-D8E8D0C74058}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6381189-F420-43B8-868D-D8E8D0C74058}.Release|x64.ActiveCfg = Release|Any CPU
+		{C6381189-F420-43B8-868D-D8E8D0C74058}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

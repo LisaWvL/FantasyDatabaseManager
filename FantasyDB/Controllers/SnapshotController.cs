@@ -25,7 +25,6 @@ namespace FantasyDB.Controllers
             return _context.Snapshots;
         }
 
-
         public override async Task<ActionResult<List<SnapshotViewModel>>> Index()
         {
             try
@@ -47,8 +46,6 @@ namespace FantasyDB.Controllers
             }
         }
 
-
-
         [HttpPost("create")]
         public override async Task<ActionResult<SnapshotViewModel>> Create([FromBody] SnapshotViewModel viewModel)
         {
@@ -65,6 +62,65 @@ namespace FantasyDB.Controllers
         public override async Task<IActionResult> Delete(int id)
         {
             return await base.Delete(id);
+        }
+
+        // ✅ NEW ENDPOINT: All connected entities for a Snapshot
+        [HttpGet("{id}/entities")]
+        public async Task<IActionResult> GetSnapshotEntities(int id)
+        {
+            var characters = await _context.Characters
+                .Where(c => c.SnapshotId == id)
+                .Include(c => c.Faction)
+                .Include(c => c.Location)
+                .Include(c => c.Language)
+                .ToListAsync();
+
+            var items = await _context.SnapshotsItems
+                .Where(si => si.SnapshotId == id)
+                .Include(si => si.Item)
+                .Select(si => si.Item)
+                .ToListAsync();
+
+            var locations = await _context.SnapshotsLocations
+                .Where(sl => sl.SnapshotId == id)
+                .Include(sl => sl.Location)
+                .Select(sl => sl.Location)
+                .ToListAsync();
+
+            var eventsList = await _context.SnapshotsEvents
+                .Where(se => se.SnapshotId == id)
+                .Include(se => se.Event)
+                .Select(se => se.Event)
+                .ToListAsync();
+
+            var factions = await _context.SnapshotsFactions
+                .Where(sf => sf.SnapshotId == id)
+                .Include(sf => sf.Faction)
+                .Select(sf => sf.Faction)
+                .ToListAsync();
+
+            var relationships = await _context.SnapshotsCharacterRelationships
+                .Where(scr => scr.SnapshotId == id)
+                .Include(scr => scr.CharacterRelationship)
+                .Select(scr => scr.CharacterRelationship)
+                .ToListAsync();
+
+            var eras = await _context.SnapshotsEras
+                .Where(se => se.SnapshotId == id)
+                .Include(se => se.Era)
+                .Select(se => se.Era)
+                .ToListAsync();
+
+            return Ok(new
+            {
+                Characters = characters,
+                Items = items,
+                Locations = locations,
+                Events = eventsList,
+                Factions = factions,
+                Relationships = relationships,
+                Eras = eras
+            });
         }
     }
 }
