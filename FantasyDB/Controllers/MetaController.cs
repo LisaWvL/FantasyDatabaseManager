@@ -1,27 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FantasyDB.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
-[Route("api/meta")]
-[ApiController]
-public class MetaController : ControllerBase
+namespace FantasyDB.Controllers
 {
-    private readonly IEntityRegistryService _registry;
-
-    public MetaController(IEntityRegistryService registry)
+    [Route("api/meta")]
+    [ApiController]
+    public class MetaController(IEntityRegistryService registry) : ControllerBase
     {
-        _registry = registry;
-    }
+        private readonly IEntityRegistryService _registry = registry;
 
-    [HttpGet("entities")]
-    public IActionResult GetEntities()
-    {
-        var result = _registry.GetEntityMap()
-            .ToDictionary(kvp => kvp.Key, kvp => new
-            {
-                ModelType = kvp.Value.Item1.Name,
-                ViewModelType = kvp.Value.Item2.Name
-            });
+        [HttpGet("entities")]
+        public IActionResult GetEntities()
+        {
+            var result = _registry.GetEntityMap()
+                .ToDictionary(kvp => kvp.Key, kvp => new
+                {
+                    ModelType = kvp.Value.ModelType.Name,
+                    ViewModelType = kvp.Value.ViewModelType.Name
+                });
 
-        return Ok(result);
+            return Ok(result);
+        }
     }
 }

@@ -34,7 +34,7 @@ export const fetchGroupedCharacters = async () => {
     return response.data;
 };
 
-export const fetchNewSnapshotForCharacter = async (id) => {
-    const response = await axiosInstance.get(`/character/${id}/new-snapshot`);
+export const fetchNewChapterForCharacter = async (id) => {
+    const response = await axiosInstance.get(`/character/${id}/new-chapter`);
     return response.data;
 };

@@ -50,12 +50,12 @@ export const deleteLanguage = async (id) => {
     }
 };
 
-export const fetchLanguageSnapshot = async (id) => {
+export const fetchLanguageChapter = async (id) => {
     try {
-        const res = await axiosInstance.get(`/language/${id}/new-snapshot`);
+        const res = await axiosInstance.get(`/language/${id}/new-chapter`);
         return res.data;
     } catch (err) {
-        console.error(`❌ Failed to fetch snapshot for language ${id}:`, err);
+        console.error(`❌ Failed to fetch chapter for language ${id}:`, err);
         throw err;
     }
 };

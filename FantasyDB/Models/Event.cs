@@ -12,11 +12,13 @@ namespace FantasyDB.Models // ✅ Add this line
         public int? Year { get; set; }
         public string? Purpose { get; set; }
 
-        public int? SnapshotId { get; set; }
-        public virtual Snapshot? Snapshot { get; set; }
+        public int? ChapterId { get; set; }
+        [ForeignKey("ChapterId")]
+        public virtual Chapter? Chapter { get; set; }
 
         // ✅ FK to Location (1 Event → 1 Location)
         public int? LocationId { get; set; }
+        [ForeignKey("LocationId")]
         public virtual Location? Location { get; set; } = default!;
 
 

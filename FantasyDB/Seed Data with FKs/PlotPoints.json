@@ -1,14 +1,14 @@
 [
     {
         "Id": 1,
-        "SnapshotId": 6,
-        "startDateId": 67,
-        "endDateId": 84
+        "endDateId": null,
+        "startDateId": null,
+        "ChapterId": null
     },
     {
         "Id": 2,
-        "SnapshotId": 5,
-        "startDateId": 25,
-        "endDateId": 36
+        "endDateId": null,
+        "startDateId": null,
+        "ChapterId": null
     }
 ]

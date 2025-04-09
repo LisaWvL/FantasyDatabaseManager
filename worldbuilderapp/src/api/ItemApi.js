@@ -60,12 +60,12 @@ export const fetchItemDuplicate = async (id) => {
     }
 };
 
-export const fetchItemSnapshot = async (id) => {
+export const fetchItemChapter = async (id) => {
     try {
-        const res = await axiosInstance.get(`/item/${id}/new-snapshot`);
+        const res = await axiosInstance.get(`/item/${id}/new-chapter`);
         return res.data;
     } catch (err) {
-        console.error(`❌ Failed to prepare snapshot for item ${id}:`, err);
+        console.error(`❌ Failed to prepare chapter for item ${id}:`, err);
         throw err;
     }
 };

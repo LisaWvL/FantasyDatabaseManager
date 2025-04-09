@@ -1,10 +1,10 @@
-import SnapshotSelector from '../components/SnapshotSelector';
+import ChapterSelector from '../components/ChapterSelector';
 
 const Dashboard = () => {
     return (
         <div className="dashboard">
             <h1>Worldbuilder Dashboard</h1>
-            <SnapshotSelector />
+            <ChapterSelector />
         </div>
     );
 };

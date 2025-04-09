@@ -1,23 +1,56 @@
-# generation_session.py (in scenes/)
+# embeddings/loader.py
 
-from embeddings.loader import embed_seed_data
-from models.ollama_client import chat_with_ollama
-from models.snapshot_prompt_engine import build_snapshot_prompt_from_plotpoint
-from utils.usage_logger import log_usage
+import requests
+import json
+from sentence_transformers import SentenceTransformer
+import chromadb
+from utils import config
 
-import time
+model = SentenceTransformer('all-MiniLM-L6-v2')
+chroma_client = chromadb.PersistentClient(path=config.VECTOR_DB_PATH)
+collection = chroma_client.get_or_create_collection(name="fantasy_lore")
 
-def generate_scene(plotpoint_id=None):
-    embed_seed_data()
-    user_prompt = input("Enter your scene prompt: ")
+API_BASE = "http://localhost:5000/api"
 
-    context_prompt = build_snapshot_prompt_from_plotpoint(plotpoint_id) if plotpoint_id else "[System] No PlotPoint context loaded."
-    full_prompt = f"{context_prompt}\n\n{user_prompt}"
+def embed_seed_data(plotpoint_id):
+    print(f"[Embedding] Fetching chapter-linked data for PlotPoint {plotpoint_id}...")
 
-    start = time.time()
-    result = chat_with_ollama(full_prompt)
-    end = time.time()
+    # Step 1: Get all connected chapter data
+    chapter_page = requests.get(f"{API_BASE}/plotpoint/{plotpoint_id}/new-chapter-page")
+    if not chapter_page.ok:
+        print(f"[Error] Could not fetch chapter data for plotpoint {plotpoint_id}")
+        return
 
-    print("\n--- Generated Scene ---\n")
-    print(result)
-    log_usage(tokens_in=len(full_prompt.split()), tokens_out=len(result.split()), time_taken=end - start)
+    data = chapter_page.json()
+    chapter = data.get("newChapter", {})
+
+    embedded_count = 0
+
+    # Step 2: Embed each entity in chapter
+    for entity_type, entity_data in chapter.items():
+        if isinstance(entity_data, dict):
+            # single entity (like one POVCharacter)
+            label = entity_data.get("Name") or entity_data.get("Title") or f"Unnamed {entity_type}"
+            text = f"{entity_type}:\n{json.dumps(entity_data, indent=2, ensure_ascii=False)}"
+            embedding = model.encode(text).tolist()
+            collection.add(
+                documents=[text],
+                embeddings=[embedding],
+                ids=[f"{entity_type}_{entity_data.get('Id', embedded_count)}"]
+            )
+            embedded_count += 1
+        elif isinstance(entity_data, list):
+            # list of entities
+            for ent in entity_data:
+                label = ent.get("Name") or ent.get("Title") or ent.get("Alias") or f"Unnamed {entity_type}"
+                text = f"{entity_type} Entry:\n{json.dumps(ent, indent=2, ensure_ascii=False)}"
+                embedding = model.encode(text).tolist()
+                collection.add(
+                    documents=[text],
+                    embeddings=[embedding],
+                    ids=[f"{entity_type}_{ent.get('Id', embedded_count)}"]
+                )
+                embedded_count += 1
+
+    chroma_client.persist()
+    print(f"[Embedding] Added {embedded_count} embedded entries to ChromaDB for plotpoint {plotpoint_id}.")

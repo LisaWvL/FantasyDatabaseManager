@@ -1,7 +1,7 @@
 const API_BASE = 'https://localhost:63752/api';
 
-export async function fetchEntities(entityType, snapshotId = null) {
-    const url = snapshotId ? `${API_BASE}/${entityType}?snapshotId=${snapshotId}` : `${API_BASE}/${entityType}`;
+export async function fetchEntities(entityType, chapterId = null) {
+    const url = chapterId ? `${API_BASE}/${entityType}?chapterId=${chapterId}` : `${API_BASE}/${entityType}`;
     const response = await fetch(url);
     if (!response.ok) throw new Error(`Failed to load ${entityType}`);
     return await response.json();

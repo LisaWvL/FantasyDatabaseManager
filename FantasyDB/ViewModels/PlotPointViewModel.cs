@@ -13,33 +13,33 @@ namespace FantasyDB.ViewModels
     {
         public int Id { get; set; }
 
-        [EditableForSnapshot]
+        [EditableForChapter]
         public string Title { get; set; } = string.Empty;
-        [EditableForSnapshot]
+        [EditableForChapter]
         public string? Description { get; set; }
 
-        [EditableForSnapshot]
+        [EditableForChapter]
         public int? StartDateId { get; set; }
-        [EditableForSnapshot]
+        [EditableForChapter]
         public int? EndDateId { get; set; }
         public string? StartDateName { get; set; }
         public string? EndDateName { get; set; }
 
 
-        [EditableForSnapshot]
-        public int? SnapshotId { get; set; }
-        public string? SnapshotName { get; set; } = string.Empty;
+        [EditableForChapter]
+        public int? ChapterId { get; set; }
+        public int? ChapterNumber { get; set; } = 0;
 
 
         // Junction References
 
         [HandlesJunction("PlotPointRiver", "PlotPointId", "RiverId")]
-        public List<int> RiverIds { get; set; } = new();
-        public List<string> RiverNames { get; set; } = new();
+        public List<int> RiverIds { get; set; } = [];
+        public List<string> RiverNames { get; set; } = [];
 
         [HandlesJunction("PlotPointRoute", "PlotPointId", "RouteId")]
-        public List<int> RouteIds { get; set; } = new();
-        public List<string> RouteNames { get; set; } = new();
+        public List<int> RouteIds { get; set; } = [];
+        public List<string> RouteNames { get; set; } = [];
 
     }
 }

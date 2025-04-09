@@ -27,7 +27,7 @@ namespace FantasyDB.Models // ✅ Add this line
         public string? Motivation { get; set; }
         public string? Flaw { get; set; }
         public string? Misbelief { get; set; }
-        public int? SnapshotId { get; set; }
+        public int? ChapterId { get; set; }
         public int? FactionId { get; set; }
         public int? LocationId { get; set; }
         public int? LanguageId { get; set; }
@@ -39,8 +39,7 @@ namespace FantasyDB.Models // ✅ Add this line
         public virtual Location? Location { get; set; }
         [ForeignKey("LanguageId")]
         public virtual Language? Language { get; set; }
-        [ForeignKey("SnapshotId")]
-        public virtual Snapshot? Snapshot { get; set; }
+        public virtual Chapter? Chapter { get; set; }
     }
 
 }

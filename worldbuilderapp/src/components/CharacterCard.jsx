@@ -1,104 +1,250 @@
-﻿//TODO
-//CharacterCard.jsx
-// Context menu options: “Show All Related”, “Pin”, “Copy to Snapshot”
-// Refactor into generic EntityCard with props for different entity types
-// Add snapshot creation functionality
-// Add snapshot comparison functionality
-// Add snapshot diff display
-// Add snapshot deletion functionality
-// Add snapshot pinning functionality
+﻿// src/components/CharacterCard.jsx
+import React, { useState, useEffect } from "react";
+import { fetchFactionById } from "../api/FactionApi";
+import { fetchLocationById } from "../api/LocationApi";
+import { fetchLanguageById } from "../api/LanguageApi";
+import { fetchFactions, fetchLocations, fetchLanguages } from "../api/DropdownApi"; // Assuming these are used for dropdowns
+import { createCharacter, updateCharacter, deleteCharacter } from "../api/CharacterApi"; // Import APIs
 
-
-// src/components/CharacterCard.jsx
-import React, { useState } from 'react';
-import '../styles/CharacterCard.css';
-
-
-export default function CharacterCard({ snapshots, onEdit, onDelete, onCreateSnapshot }) {
+export default function CharacterCard({ chapters, onSaveNewVersion, onDelete }) {
     const [showDetails, setShowDetails] = useState(false);
-    const [showSnapshots, setShowSnapshots] = useState(false);
+    const [showVersions, setShowVersions] = useState(false);
+    const [faction, setFaction] = useState(null);
+    const [location, setLocation] = useState(null);
+    const [language, setLanguage] = useState(null);
+    const [factionsList, setFactionsList] = useState([]);
+    const [locationsList, setLocationsList] = useState([]);
+    const [languagesList, setLanguagesList] = useState([]);
+    const [isEditMode, setIsEditMode] = useState(false);
 
-    // The base snapshot is the newest one (highest Book, Act, Chapter)
-    const sortedSnapshots = [...snapshots].sort((a, b) => {
-        if (b.book !== a.book) return b.book - a.book;
-        if (b.act !== a.act) return b.act - a.act;
-        return b.chapter - a.chapter;
+    const sortedChapters = [...chapters].sort((a, b) => {
+        const bBook = b.BookNumber || 0;
+        const aBook = a.BookNumber || 0;
+        if (bBook !== aBook) return bBook - aBook;
+
+        const bAct = b.ActNumber || 0;
+        const aAct = a.ActNumber || 0;
+        if (bAct !== aAct) return bAct - aAct;
+
+        return (b.ChapterNumber || 0) - (a.ChapterNumber || 0);
     });
 
-    const baseSnapshot = sortedSnapshots[0];
-    const extraSnapshots = sortedSnapshots.slice(1);
+    const baseCharacter = sortedChapters[0];
+    const versions = sortedChapters.slice(1);
+
+    useEffect(() => {
+        if (baseCharacter?.FactionId) fetchFactionById(baseCharacter.FactionId).then(setFaction);
+        if (baseCharacter?.LocationId) fetchLocationById(baseCharacter.LocationId).then(setLocation);
+        if (baseCharacter?.LanguageId) fetchLanguageById(baseCharacter.LanguageId).then(setLanguage);
+        loadDropdowns();
+    }, [baseCharacter]);
 
     const toggleDetails = () => setShowDetails(prev => !prev);
-    const toggleSnapshots = () => setShowSnapshots(prev => !prev);
+    const toggleVersions = () => setShowVersions(prev => !prev);
+
+    const loadDropdowns = async () => {
+        try {
+            const [factionsData, locationsData, languagesData] = await Promise.all([
+                fetchFactions(),
+                fetchLocations(),
+                fetchLanguages(),
+            ]);
+            setFactionsList(factionsData);
+            setLocationsList(locationsData);
+            setLanguagesList(languagesData);
+        } catch (err) {
+            console.error("❌ Failed to load dropdowns", err);
+        }
+    };
+
+    // Handle creating a new version
+    const handleCreateNewVersion = async () => {
+        const newCharacter = {
+            ...baseCharacter,
+            id: undefined, // Set ID to undefined to indicate this is a new version (database will handle the ID)
+            ChapterId: baseCharacter.ChapterId, // Retain ChapterId for the new version
+            isBaseCharacter: false, // Mark this as a new version of the character
+        };
+
+        try {
+            await createCharacter(newCharacter); // Save the new version
+            setIsEditMode(false); // Exit edit mode after saving
+            if (onSaveNewVersion) onSaveNewVersion(newCharacter); // Optionally call the parent function to handle saved version
+        } catch (err) {
+            console.error("❌ Failed to create character version", err);
+        }
+    };
+
+    // Handle updating an existing character
+    const handleUpdateCharacter = async () => {
+        const updatedCharacter = {
+            ...baseCharacter,
+            // Include any changes made in edit mode here (e.g., changes to faction, location, language, etc.)
+        };
+
+        try {
+            await updateCharacter(baseCharacter.Id, updatedCharacter); // Update the character via API
+            setIsEditMode(false); // Exit edit mode after saving
+        } catch (err) {
+            console.error("❌ Failed to update character", err);
+        }
+    };
+
+    // Handle deleting a character
+    const handleDelete = async () => {
+        if (window.confirm("Are you sure you want to delete this character?")) {
+            try {
+                await deleteCharacter(baseCharacter.Id); // Delete character
+                if (onDelete) onDelete(baseCharacter.Id); // Optionally call the parent function to handle character deletion
+            } catch (err) {
+                console.error("❌ Failed to delete character", err);
+            }
+        }
+    };
+
+    // Group versions by chapter
+    const groupedByChapter = versions.reduce((acc, version) => {
+        const key = `${version.BookNumber}-${version.ActNumber}-${version.ChapterNumber}`;
+        if (!acc[key]) acc[key] = [];
+        acc[key].push(version);
+        return acc;
+    }, {});
 
     return (
-        <div className={`character-card ${showSnapshots ? 'with-snapshots' : ''}`}>
+        <div className="character-card">
             <div className="card-header">
-                {extraSnapshots.length > 0 && (
-                    <button className="snapshot-toggle" onClick={toggleSnapshots}>
-                        {showSnapshots ? '▼' : '▶'}
+                {versions.length > 0 && (
+                    <button className="chapter-toggle" onClick={toggleVersions}>
+                        {showVersions ? "▼" : "▶"}
                     </button>
                 )}
-                <h3>{baseSnapshot.name}</h3>
+                <h3>{baseCharacter.Name} {baseCharacter.Alias && `(${baseCharacter.Alias})`}</h3>
                 <div className="card-actions">
-                    <button onClick={() => onCreateSnapshot(baseSnapshot)}>📸</button>
-                    <button onClick={() => onEdit(baseSnapshot)}>✏️</button>
-                    <button onClick={() => onDelete(baseSnapshot)}>🗑️</button>
+                    <button onClick={() => setIsEditMode(true)}>✏️ Edit</button>
+                    <button onClick={handleCreateNewVersion}>➕ Create New Version</button>
+                    <button onClick={handleDelete}>🗑️ Delete</button>
                 </div>
             </div>
 
             <div className="card-summary">
-                <div className="attribute-box"><span className="label">Role: </span><span className="value">{baseSnapshot.role}</span></div>
-                <div className="attribute-box"><span className="label">Faction: </span><span className="value">{baseSnapshot.factionName}</span></div>
-                <div className="attribute-box"><span className="label">Location: </span><span className="value">{baseSnapshot.locationName}</span></div>
-                <div className="attribute-box"><span className="label">Personality: </span><span className="value">{baseSnapshot.personality}</span></div>
-                <div className="attribute-box"><span className="label">Motivation: </span><span className="value">{baseSnapshot.motivation}</span></div>
-                <div className="attribute-box"><span className="label">Desire: </span><span className="value">{baseSnapshot.desire}</span></div>
-                <div className="attribute-box"><span className="label">Fear: </span><span className="value">{baseSnapshot.fear}</span></div>
-                <div className="attribute-box"><span className="label">Weakness: </span><span className="value">{baseSnapshot.weakness}</span></div>
-                <div className="attribute-box"><span className="label">Flaw: </span><span className="value">{baseSnapshot.flaw}</span></div>
-                <div className="attribute-box"><span className="label">Misbelief: </span><span className="value">{baseSnapshot.misbelief}</span></div>
+                <div className="attribute-box">
+                    Role: <span>{baseCharacter.Role}</span>
+                </div>
+                <div className="attribute-box">
+                    Magic: <span>{baseCharacter.Magic}</span>
+                </div>
+                <div className="attribute-box">
+                    Personality: <span>{baseCharacter.Personality}</span>
+                </div>
+
+                <div className="attribute-box linked">
+                    Faction:{" "}
+                    {isEditMode ? (
+                        <select
+                            value={faction?.Id || ""}
+                            onChange={(e) => setFaction(factionsList.find((f) => f.Id === e.target.value))}
+                            onBlur={handleUpdateCharacter} // Trigger update on blur (when the user finishes editing)
+                        >
+                            {factionsList.map((faction) => (
+                                <option key={faction.Id} value={faction.Id}>
+                                    {faction.Name}
+                                </option>
+                            ))}
+                        </select>
+                    ) : (
+                        <span title={faction?.Description || ""}>{faction?.Name || baseCharacter.FactionName}</span>
+                    )}
+                </div>
+
+                <div className="attribute-box linked">
+                    Location:{" "}
+                    {isEditMode ? (
+                        <select
+                            value={location?.Id || ""}
+                            onChange={(e) => setLocation(locationsList.find((l) => l.Id === e.target.value))}
+                            onBlur={handleUpdateCharacter} // Trigger update on blur (when the user finishes editing)
+                        >
+                            {locationsList.map((location) => (
+                                <option key={location.Id} value={location.Id}>
+                                    {location.Name}
+                                </option>
+                            ))}
+                        </select>
+                    ) : (
+                        <span title={location?.Description || ""}>{location?.Name || baseCharacter.LocationName}</span>
+                    )}
+                </div>
+
+                <div className="attribute-box linked">
+                    Language:{" "}
+                    {isEditMode ? (
+                        <select
+                            value={language?.Id || ""}
+                            onChange={(e) => setLanguage(languagesList.find((l) => l.Id === e.target.value))}
+                            onBlur={handleUpdateCharacter} // Trigger update on blur (when the user finishes editing)
+                        >
+                            {languagesList.map((language) => (
+                                <option key={language.Id} value={language.Id}>
+                                    {language.Name}
+                                </option>
+                            ))}
+                        </select>
+                    ) : (
+                        <span title={language?.Description || ""}>{language?.Name || baseCharacter.LanguageName}</span>
+                    )}
+                </div>
 
                 <button className="details-toggle" onClick={toggleDetails}>
-                    {showDetails ? 'Hide Details' : 'Show More'}
+                    {showDetails ? "Hide Details" : "Show More"}
                 </button>
             </div>
 
             {showDetails && (
                 <div className="card-details">
-                    <div className="attribute-box"><span className="label">Alias: </span><span className="value">{baseSnapshot.alias}</span></div>
-                    <div className="attribute-box"><span className="label">Birth: </span><span className="value">{baseSnapshot.birthDay} {baseSnapshot.birthMonth} {baseSnapshot.birthYear}</span></div>
-                    <div className="attribute-box"><span className="label">Gender: </span><span className="value">{baseSnapshot.gender}</span></div>
-                    <div className="attribute-box"><span className="label">Height: </span><span className="value">{baseSnapshot.heightCm} cm</span></div>
-                    <div className="attribute-box"><span className="label">Build: </span><span className="value">{baseSnapshot.build}</span></div>
-                    <div className="attribute-box"><span className="label">Hair: </span><span className="value">{baseSnapshot.hair}</span></div>
-                    <div className="attribute-box"><span className="label">Eyes: </span><span className="value">{baseSnapshot.eyes}</span></div>
-                    <div className="attribute-box"><span className="label">Defining Features: </span><span className="value">{baseSnapshot.definingFeatures}</span></div>
-                    <div className="attribute-box"><span className="label">Magic: </span><span className="value">{baseSnapshot.magic}</span></div>
-                    <div className="attribute-box"><span className="label">Social Status: </span><span className="value">{baseSnapshot.socialStatus}</span></div>
-                    <div className="attribute-box"><span className="label">Occupation: </span><span className="value">{baseSnapshot.occupation}</span></div>
-                    <div className="attribute-box"><span className="label">Language: </span><span className="value">{baseSnapshot.languageName}</span></div>
+                    {[["Birth", `${baseCharacter.BirthDay} ${baseCharacter.BirthMonth} ${baseCharacter.BirthYear}`],
+                    ["Gender", baseCharacter.Gender],
+                    ["Height", `${baseCharacter.HeightCm} cm`],
+                    ["Build", baseCharacter.Build],
+                    ["Hair", baseCharacter.Hair],
+                    ["Eyes", baseCharacter.Eyes],
+                    ["Defining Features", baseCharacter.DefiningFeatures],
+                    ["Social Status", baseCharacter.SocialStatus],
+                    ["Occupation", baseCharacter.Occupation],
+                    ["Motivation", baseCharacter.Motivation],
+                    ["Desire", baseCharacter.Desire],
+                    ["Fear", baseCharacter.Fear],
+                    ["Weakness", baseCharacter.Weakness],
+                    ["Flaw", baseCharacter.Flaw],
+                    ["Misbelief", baseCharacter.Misbelief],].map(([label, value], i) => (
+                        <div key={i} className="attribute-box">
+                            {label}: <span>{value}</span>
+                        </div>
+                    ))}
                 </div>
             )}
-
-
-            {showSnapshots && extraSnapshots.length > 0 && (
-                <div className="snapshot-diff-container">
-                    <h4>Snapshot diffs</h4>
-                    <div className="snapshot-diff-list">
-                        {extraSnapshots.map((snap, index) => {
-                            const diffKeys = Object.keys(snap).filter(
-                                key => snap[key] !== baseSnapshot[key] && !['id', 'snapshotId'].includes(key)
-                            );
-
+            {showVersions && (
+                <div className="chapter-diff-container">
+                    <h4>Version Differences</h4>
+                    <div className="chapter-diff-list">
+                        {Object.entries(groupedByChapter).map(([chapterKey, entries]) => {
+                            const { BookNumber, ActNumber, ChapterNumber } = entries[0];
                             return (
-                                <div key={index} className="snapshot-card">
-                                    <h5>Version: Book {snap.book}, Act {snap.act}, Chapter {snap.chapter}</h5>
-                                    {diffKeys.map((key) => (
-                                        <p key={key}>
-                                            <strong>{key}:</strong> {snap[key]}
-                                        </p>
-                                    ))}
+                                <div key={chapterKey} className="chapter-group">
+                                    <h5>📘 Book {BookNumber} • 🗂 Act {ActNumber} • 📄 Chapter {ChapterNumber}</h5>
+                                    {entries.map((snap, i) => {
+                                        const diff = Object.keys(snap).filter(
+                                            (key) => snap[key] !== baseCharacter[key] && !["Id", "ChapterId"].includes(key)
+                                        );
+                                        return (
+                                            <div key={i} className="chapter-card">
+                                                {diff.map((key) => (
+                                                    <p key={key}>
+                                                        <strong>{key}:</strong> {snap[key]}
+                                                    </p>
+                                                ))}
+                                            </div>
+                                        );
+                                    })}
                                 </div>
                             );
                         })}

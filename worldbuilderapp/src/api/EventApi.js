@@ -25,8 +25,8 @@ export const deleteEvent = async (id) => {
     await axiosInstance.delete(`/event/${id}`);
 };
 
-export const fetchDuplicateForSnapshot = async (id) => {
-    const res = await axiosInstance.get(`/event/${id}/new-snapshot`);
+export const fetchDuplicateForChapter = async (id) => {
+    const res = await axiosInstance.get(`/event/${id}/new-chapter`);
     return res.data;
 };
 

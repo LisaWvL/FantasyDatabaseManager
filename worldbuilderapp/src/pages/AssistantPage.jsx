@@ -1,27 +1,50 @@
-﻿import { useEffect, useRef, useState } from 'react';
+﻿// Updated AssistantPage.jsx with summary toggle, faded styling, and memory-aware message tracking
+
+import { useEffect, useRef, useState } from 'react';
 import {
     fetchPlotPoints,
-    fetchPlotPointById
+    fetchPlotPointById,
+    fetchPlotPointEntities
 } from '../api/PlotPointApi';
-import { fetchSnapshotById, fetchSnapshotEntities } from '../api/SnapshotApi';
-import "../styles/AssistantPage.css";
-import EntityCard from '../components/EntityCard'; // we'll define this
+import {
+    fetchChapterById,
+    fetchChapterEntities
+} from '../api/ChapterApi';
+import {
+    fetchConversationHistory,
+    sendChatTurn,
+    requestSummaryTurn
+} from '../api/ConversationTurnApi';
 
+import "../styles/AssistantPage.css";
+import EntityCard from '../components/EntityCard';
 
 export default function AssistantPage() {
     const [plotpoints, setPlotpoints] = useState([]);
     const [selectedId, setSelectedId] = useState('');
-    const [selectedPlotPoint, setSelectedPlotPoint] = useState(null);
-    const [snapshotInfo, setSnapshotInfo] = useState(null);
-    const [entitySummary, setEntitySummary] = useState('');
+    const [entitySummary, setEntitySummary] = useState({});
     const [prompt, setPrompt] = useState('');
-    const [danMode, _setDanMode] = useState(false);
-    const [response, setResponse] = useState('');
+    const [danMode, setDanMode] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [conversationHistory, setConversationHistory] = useState([]);
+    const [expandedEntity, setExpandedEntity] = useState(null);
     const responseRef = useRef(null);
-    const [highlightedEntities, setHighlightedEntities] = useState([]);
-    const [expandedEntity, setExpandedEntity] = useState(null); // holds the entity and its type
 
+    const extractDisplayName = (entity, type) => {
+        if (!entity || typeof entity !== 'object') return '[Unnamed]';
+        switch (type.toLowerCase()) {
+            case 'characters': return entity.name || '[Unnamed Character]';
+            case 'items': return `${entity.name || '[Unnamed Item]'} (${entity.owner?.name || 'none'})`;
+            case 'eras': return `${entity.name || '[Unnamed Era]'} (${entity.magicStatus || 'Magic Unknown'})`;
+            case 'events': return entity.name || '[Unnamed Event]';
+            case 'locations': return `${entity.name || '[Unnamed Location]'} (${entity.type || 'unknown'})`;
+            case 'factions': return entity.name || '[Unnamed Faction]';
+            case 'relationships': return `${entity.character1?.name || '[?]'} > ${entity.relationshipType || 'Unknown'} < ${entity.character2?.name || '[?]'}`;
+            case 'rivers':
+            case 'routes': return entity.name || '[Unnamed]';
+            default: return entity.name || entity.title || entity.alias || '[Unnamed]';
+        }
+    };
 
     useEffect(() => {
         fetchPlotPoints().then(setPlotpoints);
@@ -30,156 +53,154 @@ export default function AssistantPage() {
     useEffect(() => {
         if (!selectedId) return;
 
-        fetchPlotPointById(selectedId).then(pp => {
-            setSelectedPlotPoint(pp);
+        const loadPlotPointDetails = async () => {
+            setLoading(true);
 
-            if (pp.snapshotId) {
-                fetchSnapshotById(pp.snapshotId).then(setSnapshotInfo);
+            try {
+                const plotPointId = parseInt(selectedId);
+                const plotPoint = await fetchPlotPointById(plotPointId);
 
-                fetchSnapshotEntities(pp.snapshotId).then(entityData => {
-                    const entityMap = {};
-                    const entityNames = new Set();
+                const [_chapter, chapterEntities, plotpointEntities, history] = await Promise.all([
+                    fetchChapterById(plotPoint.chapterId),
+                    fetchChapterEntities(plotPoint.chapterId),
+                    fetchPlotPointEntities(plotPointId),
+                    fetchConversationHistory(plotPointId)
+                ]);
 
-                    for (const [type, list] of Object.entries(entityData)) {
-                        if (Array.isArray(list)) {
-                            entityMap[type] = list;
-                            list.forEach(ent => {
-                                const name = ent.Name || ent.Title || ent.Alias;
-                                if (name) entityNames.add(name);
-                            });
-                        }
-                    }
+                const combined = { ...chapterEntities };
 
-                    setEntitySummary(entityMap);
-                    setHighlightedEntities([...entityNames]);
-                });
+                if (plotpointEntities.routes?.length)
+                    combined.routes = [...(combined.routes || []), ...plotpointEntities.routes];
+
+                if (plotpointEntities.rivers?.length)
+                    combined.rivers = [...(combined.rivers || []), ...plotpointEntities.rivers];
+
+                combined.startDate = plotpointEntities.startDate;
+                combined.endDate = plotpointEntities.endDate;
+
+                setEntitySummary(combined);
+                setConversationHistory(history);
+            } catch (err) {
+                console.error("❌ Failed to load plot point context:", err);
             }
-        });
+
+            setLoading(false);
+        };
+
+        loadPlotPointDetails();
     }, [selectedId]);
 
-    useEffect(() => {
-        if (responseRef.current) {
-            responseRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [response]);
-
-    const sendPrompt = async (customPrompt) => {
+    const handleSubmit = async () => {
+        if (!selectedId || !prompt) return;
         setLoading(true);
-        setResponse('');
+
         try {
-            const res = await fetch('http://localhost:8000/generate-scene', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    plotpointId: parseInt(selectedId),
-                    prompt: customPrompt,
-                    danMode,
-                }),
+            const response = await sendChatTurn({
+                plotpointId: parseInt(selectedId),
+                history: [...conversationHistory, { role: 'user', content: prompt }],
+                danMode
             });
-            const data = await res.json();
-            setResponse(data.response);
+
+            setConversationHistory(prev => [
+                ...prev,
+                { role: 'user', content: prompt },
+                { role: 'assistant', content: response.reply }
+            ]);
+
+            setPrompt('');
         } catch (err) {
-            setResponse('❌ Error generating scene.');
-            console.error(err);
-        } finally {
-            setLoading(false);
+            console.error("❌ Failed to generate response:", err);
+        }
+
+        setLoading(false);
+
+        if (responseRef.current) {
+            setTimeout(() => {
+                responseRef.current.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
         }
     };
 
-    const handleSubmit = () => sendPrompt(prompt);
-    const handleRegenerate = () => sendPrompt(prompt);
-    const handleContinue = () => sendPrompt(`${prompt}\n\nContinue the scene from where you left off.`);
+    const handleSummarize = async () => {
+        try {
+            const latestTurns = conversationHistory.slice(0, -4); // summarize all but last few
+            const textToSummarize = latestTurns.map(t => `${t.role}: ${t.content}`).join('\n');
+            const summary = await requestSummaryTurn({
+                prompt: textToSummarize,
+                response: "[ChapterSummary to follow]",
+                plotPointId: parseInt(selectedId),
+                isSummary: true
+            });
 
-    const highlightText = (text) => {
-        if (!highlightedEntities.length) return text;
-        const escaped = highlightedEntities.map(e => e.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-        const regex = new RegExp(`\\b(${escaped.join('|')})\\b`, 'gi');
-        return text.split(regex).map((part, i) =>
-            regex.test(part)
-                ? <mark key={i} className="bg-yellow-200 px-1 rounded">{part}</mark>
-                : part
-        );
+            setConversationHistory(prev => [
+                summary,
+                ...prev.slice(latestTurns.length)
+            ]);
+        } catch (err) {
+            console.error("❌ Failed to summarize:", err);
+        }
     };
 
     return (
-        <div className="assistant-layout">
-            <aside className="assistant-sidebar">
-                <h2>Select PlotPoint</h2>
-                <select
-                    className="dropdown"
-                    value={selectedId}
-                    onChange={(e) => setSelectedId(e.target.value)}
-                >
-                    <option value="">-- Choose PlotPoint --</option>
-                    {plotpoints.map(pp => (
-                        <option key={pp.id} value={pp.id}>
-                            {pp.title}
-                        </option>
+        <div className="assistant-page">
+            <div className="entity-sidebar">
+                <h3>Select PlotPoint</h3>
+                <select value={selectedId} onChange={e => setSelectedId(e.target.value)}>
+                    <option value="">-- Select --</option>
+                    {plotpoints.map(p => (
+                        <option key={p.id} value={p.id}>{p.title} ({p.startDateName})</option>
                     ))}
                 </select>
 
-                {selectedPlotPoint && (
-                    <div className="plotpoint-info">
-                        <div><strong>Snapshot:</strong> {snapshotInfo?.snapshotName}</div>
-                        <div><strong>Start:</strong> {selectedPlotPoint.startDateName}</div>
-                        <div><strong>End:</strong> {selectedPlotPoint.endDateName}</div>
-                        <div className="description">{selectedPlotPoint.description}</div>
-                    </div>
-                )}
-
-                {entitySummary && (
-                    <div className="entity-summary">
-                        <h3>🔗 Connected Entities</h3>
-                        {Object.entries(entitySummary).map(([type, entities]) => (
-                            <div key={type}>
-                                <h4>{type}</h4>
-                                <ul>
-                                    {entities.map((ent, idx) => (
-                                        <li key={idx}>
-                                            <button className="entity-link" onClick={() => setExpandedEntity({ type, entity: ent })}>
-                                                {ent.name || ent.title || ent.alias || '[Unnamed]'}
-                                            </button>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </aside>
-
-            <main className="assistant-main">
-                <div className="assistant-response">
-                    <h3>📜 Assistant Output</h3>
-                    <div ref={responseRef}>
-                        {response ? highlightText(response) : <span className="placeholder">Waiting for your prompt...</span>}
-                    </div>
+                <div className="toggle-dan">
+                    <label>
+                        <input type="checkbox" checked={danMode} onChange={() => setDanMode(!danMode)} /> Enable DAN Mode
+                    </label>
                 </div>
 
-                <div className="prompt-section">
-                    <label>Your Prompt</label>
+                <button className="summarize-btn" onClick={handleSummarize}>Summarize earlier turns</button>
+
+                {Object.entries(entitySummary).map(([type, list]) => (
+                    Array.isArray(list) && list.length > 0 && (
+                        <div key={type}>
+                            <h4>{type}</h4>
+                            {list.map(e => (
+                                <div key={e.id} className="entity-label" onClick={() => setExpandedEntity(e)}>
+                                    {extractDisplayName(e, type)}
+                                </div>
+                            ))}
+                        </div>
+                    )
+                ))}
+            </div>
+
+            <div className="chat-section">
+                <div className="chat-history">
+                    {conversationHistory.map((msg, i) => (
+                        <div key={i} className={`chat-bubble ${msg.role}${msg.isSummary ? ' summary' : ''}`}>
+                            {msg.content}
+                        </div>
+                    ))}
+                    <div ref={responseRef}></div>
+                </div>
+
+                <div className="chat-input">
                     <textarea
                         value={prompt}
                         onChange={(e) => setPrompt(e.target.value)}
-                        placeholder="Describe what you want to write..."
+                        rows={3}
+                        placeholder="Ask something..."
                     />
-                    <div className="response-buttons">
-                        <button onClick={handleSubmit} disabled={!prompt || loading}>
-                            {loading ? 'Generating...' : 'Send'}
-                        </button>
-                        <button onClick={handleRegenerate} disabled={!prompt || loading}>🔄 Regenerate</button>
-                        <button onClick={handleContinue} disabled={!response || loading}>➕ Continue</button>
-                    </div>
+                    <button disabled={loading} onClick={handleSubmit}>Send</button>
                 </div>
-            </main>
+            </div>
+
             {expandedEntity && (
                 <EntityCard
-                    type={expandedEntity.type}
-                    entity={expandedEntity.entity}
+                    entity={expandedEntity}
                     onClose={() => setExpandedEntity(null)}
                 />
             )}
-
         </div>
     );
 }

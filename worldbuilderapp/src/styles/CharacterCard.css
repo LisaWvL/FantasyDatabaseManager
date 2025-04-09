@@ -1,4 +1,4 @@
-/* src/components/CharacterCard.css */
+﻿/* src/components/CharacterCard.css */
 
 .character-grid {
     display: flex;
@@ -20,65 +20,37 @@
     position: relative;
     transition: all 0.3s ease-in-out;
 }
-.character-card .label {
-    font-family: 'Cinzel', serif;
-    font-weight: bold;
-    font-size: 0.9rem;
-    color: #d4c4b8;
-}
+
+    .character-card.with-versions {
+        margin-right: 380px; /* Reserve space for version foldout */
+    }
+
+    .character-card .label {
+        font-family: 'Cinzel', serif;
+        font-weight: bold;
+        font-size: 0.9rem;
+        color: #d4c4b8;
+    }
 
     .character-card .value {
-        font-family: 'Inter', sans-serif; /* Or try 'Lato', 'Roboto', or 'Open Sans' */
+        font-family: 'Inter', sans-serif;
         font-size: 0.9rem;
         color: #f6ede1;
-    }
-
-    .character-card.with-snapshots {
-        margin-right: 380px; /* Reserve space for snapshot foldout */
-    }
-    .character-card p {
-        margin: 0.3rem 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        padding-bottom: 0.2rem;
-    }
-    .card-summary, .card-details {
-        margin-bottom: 1rem;
-        border-top: 1px solid #444;
-        padding-top: 0.5rem;
-    }
-    .snapshot-card {
-        font-family: 'Inter', sans-serif; /* Or try 'Lato', 'Roboto', or 'Open Sans' */
     }
 
 .attribute-box {
     display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.25rem;
-    border: 1px solid #c8b16b; /* goldish but softer */
-    background-color: rgba(28, 20, 18, 0.9); /* match card bg for less aggression */
-    padding: 0.5rem 0.75rem;
-    border-radius: 6px;
-    margin-bottom: 0.5rem;
+    justify-content: space-between;
+    font-size: 0.92rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid #c8b16b;
+    margin: 0 0.2rem;
 }
 
-    .attribute-box:hover {
-        background-color: rgba(40, 30, 22, 0.95);
+    .attribute-box:last-child {
+        border-bottom: none;
     }
-
-.label {
-    font-family: 'Cinzel', serif;
-    font-size: 0.92rem;
-    font-weight: 600;
-    color: #f6e6c6;
-}
-
-.value {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.92rem;
-    color: #fefaf3;
-}
-
 
 .card-header {
     display: flex;
@@ -107,8 +79,20 @@
         color: var(--accent);
     }
 
-.card-summary p {
-    margin: 0.2rem 0;
+.card-summary {
+    margin-bottom: 1rem;
+    border-top: 1px solid #444;
+    padding-top: 0.5rem;
+}
+
+    .card-summary .attribute-box {
+        margin-bottom: 0.2rem;
+    }
+
+.card-details {
+    margin-top: 1rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #444;
 }
 
 .details-toggle {
@@ -119,15 +103,10 @@
     padding: 0.3rem 0.8rem;
     border-radius: 6px;
     font-size: 0.9rem;
+    cursor: pointer;
 }
 
-.card-details {
-    margin-top: 1rem;
-    border-top: 1px solid #444;
-    padding-top: 1rem;
-}
-
-.snapshot-toggle {
+.chapter-toggle {
     background: none;
     border: none;
     color: var(--accent);
@@ -136,7 +115,7 @@
     cursor: pointer;
 }
 
-.snapshot-diff-container {
+.chapter-diff-container {
     position: absolute;
     top: 0;
     right: -370px;
@@ -148,7 +127,7 @@
     box-shadow: 0 0 10px rgba(200, 100, 255, 0.2);
 }
 
-    .snapshot-diff-container h4 {
+    .chapter-diff-container h4 {
         margin-top: 0;
         color: #ddaaff;
         font-size: 1.2rem;
@@ -156,10 +135,46 @@
         padding-bottom: 0.5rem;
     }
 
-.snapshot-card p {
+.chapter-card p {
     margin: 0.4rem 0;
     font-size: 0.9rem;
     line-height: 1.4;
 }
 
+/* Dropdowns only shown in edit mode */
+.version-dropdowns {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    gap: 0.5rem;
+}
 
+    .version-dropdowns select {
+        padding: 0.4rem 0.6rem;
+        background-color: #1e1612;
+        color: #f6ede1;
+        border: 1px solid #7c5b39;
+        border-radius: 6px;
+        font-size: 0.9rem;
+    }
+
+        .version-dropdowns select:focus {
+            outline: none;
+            border-color: #ddaaff;
+            box-shadow: 0 0 4px #ddaaff55;
+        }
+
+    .version-dropdowns button {
+        margin-top: 0.5rem;
+        background-color: #3c2c21;
+        color: #f0e4d6;
+        border: 1px solid #7c5b39;
+        border-radius: 6px;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+        cursor: pointer;
+    }
+
+        .version-dropdowns button:hover {
+            background-color: #50372a;
+        }

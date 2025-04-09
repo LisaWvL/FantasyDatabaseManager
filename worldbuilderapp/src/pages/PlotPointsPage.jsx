@@ -1,10 +1,10 @@
 ﻿// src/pages/PlotPointsPage.jsx
 import React, { useEffect, useState } from 'react';
-//import { fetchSnapshots } from '../api/SnapshotApi';
+//import { fetchChapters } from '../api/ChapterApi';
 import {
     fetchPlotPoints,
     deletePlotPoint,
-    fetchForNewSnapshot
+    fetchForNewChapter
 } from '../api/PlotPointApi';
 import EntityTable from '../components/EntityTable';
 import { useNavigate } from 'react-router-dom';
@@ -30,12 +30,12 @@ export default function PlotPointsPage() {
         navigate(`/plotpoint/${id}`);
     };
 
-    const handleSnapshot = async (id) => {
+    const handleChapter = async (id) => {
         try {
-            const snapshotVm = await fetchForNewSnapshot(id);
-            navigate(`/plotpoint/${id}/snapshot`, { state: { snapshotVm } });
+            const chapterVm = await fetchForNewChapter(id);
+            navigate(`/plotpoint/${id}/chapter`, { state: { chapterVm } });
         } catch (err) {
-            console.error("Failed to fetch new snapshot", err);
+            console.error("Failed to fetch new chapter", err);
         }
     };
 
@@ -53,7 +53,7 @@ export default function PlotPointsPage() {
                 data={plotPoints}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
-                onSnapshot={handleSnapshot}
+                onChapter={handleChapter}
             />
         </div>
     );

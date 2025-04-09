@@ -1,16 +1,16 @@
 ﻿//TODO
 //CalendarPlotView.jsx
-//Enable “Create Snapshot for Entity” via right - click on a plotpoint
+//Enable “Create Chapter for Entity” via right - click on a plotpoint
 // Support multiple plotpoints on the same day
 // Add calendar highlight for “Jespen” (the extra day)
-// Enable toggle: “Show PlotPoints for Current Snapshot Only”
+// Enable toggle: “Show PlotPoints for Current Chapter Only”
 // Implement vertical timeline view toggle
 // Add context menu logic to day cells
 // Add context menu logic to plotpoints
 // Add context menu logic to month headers
 // Add context menu logic to calendar header
 // Add context menu logic to plotpoint cards
-// Add context menu logic to snapshot cards
+// Add context menu logic to chapter cards
 // Add context menu logic to relationship graph
 // Add context menu logic to character cards
 // Add context menu logic to location cards
@@ -18,7 +18,7 @@
 // Add context menu logic to language cards
 // Add context menu logic to event cards
 // Add context menu logic to timeline cards
-// Add context menu logic to snapshot selector
+// Add context menu logic to chapter selector
 // Add context menu logic to character selector
 // Add context menu logic to location selector
 // Add context menu logic to faction selector
@@ -72,6 +72,13 @@ export default function CalendarPlotView() {
         loadData();
     }, [loadData]);
 
+    useEffect(() => {
+        const grim = localStorage.getItem('grimTheme') === '1';
+        if (grim) {
+            document.documentElement.classList.add('grim');
+            document.body.classList.add('grim');
+        }
+    }, []);
     // ...rest of the component (grouping months, rendering days)
 
     // ----------------------

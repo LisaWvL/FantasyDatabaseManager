@@ -22,7 +22,15 @@ export const fetchRoutes = async () => {
     const res = await axiosInstance.get("/dropdown/routes");
     return res.data;
 };
-export const fetchSnapshots = async () => {
-    const res = await axiosInstance.get("/dropdown/snapshots");
+export const fetchChapters = async () => {
+    const res = await axiosInstance.get("/dropdown/chapters");
+    return res.data;
+};
+export const fetchBooks = async () => {
+    const res = await axiosInstance.get("/dropdown/books");
+    return res.data;
+};
+export const fetchActs = async () => {
+    const res = await axiosInstance.get("/dropdown/acts");
     return res.data;
 };

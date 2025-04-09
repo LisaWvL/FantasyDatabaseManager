@@ -17,7 +17,7 @@
     gap: 2rem;
 }
 
-.plotpoints-column, .snapshots-column {
+.plotpoints-column, .chapters-column {
     flex: 1;
     background-color: #231a16;
     padding: 1rem;
@@ -25,7 +25,7 @@
     box-shadow: 0 0 8px rgba(255, 220, 140, 0.1);
 }
 
-.plotpoint, .snapshot {
+.plotpoint, .chapter {
     margin: 0.6rem 0;
     padding: 0.6rem;
     background-color: #31261f;
@@ -35,6 +35,6 @@
     transition: background 0.2s;
 }
 
-    .plotpoint:hover, .snapshot:hover {
+    .plotpoint:hover, .chapter:hover {
         background-color: #3d2e26;
     }

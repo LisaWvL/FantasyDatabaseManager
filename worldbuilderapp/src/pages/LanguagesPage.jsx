@@ -25,7 +25,7 @@ export default function LanguagePage() {
     };
 
     const handleEdit = (id) => navigate(`/language/edit/${id}`);
-    const handleSnapshot = (id) => navigate(`/language/${id}/new-snapshot-page`);
+    //const handleChapter = (id) => navigate(`/language/${id}/new-chapter-page`);
     const handleDelete = async (id) => {
         if (confirm("Delete this language?")) {
             await deleteLanguage(id);
@@ -40,7 +40,7 @@ export default function LanguagePage() {
                 data={languages}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
-                onSnapshot={handleSnapshot}
+              /*  onChapter={handleChapter}*/
             />
         </div>
     );

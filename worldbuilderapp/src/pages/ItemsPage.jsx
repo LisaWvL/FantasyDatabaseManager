@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import {
     fetchItems,
     deleteItem,
-    //fetchItemSnapshot,
+    //fetchItemChapter,
     //fetchItemDuplicate
 } from '../api/ItemApi';
 import EntityTable from "../components/EntityTable";
@@ -34,7 +34,7 @@ export default function ItemPage() {
     };
 
     const handleEdit = (id) => navigate(`/item/edit/${id}`);
-    const handleSnapshot = async (id) => navigate(`/item/${id}/new-snapshot-page`);
+    const handleChapter = async (id) => navigate(`/item/${id}/new-chapter-page`);
 
     return (
         <div className="container">
@@ -43,7 +43,7 @@ export default function ItemPage() {
                 data={items}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
-                onSnapshot={handleSnapshot}
+                onChapter={handleChapter}
             />
         </div>
     );

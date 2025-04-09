@@ -1,0 +1,108 @@
+/* General page layout for the CharacterPage */
+.character-page {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+/* Chapter section container with improved spacing and styling */
+.chapter-section {
+    background-color: rgba(22, 16, 14, 0.85);
+    border: 1px solid #544138;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 0 15px rgba(180, 130, 255, 0.1);
+    margin-bottom: 2rem; /* Space between sections */
+}
+
+/* Chapter section header styling */
+.chapter-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1rem; /* Space below header */
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #705956; /* Divider under the chapter header */
+}
+
+    .chapter-header h2 {
+        font-family: 'Cinzel', serif;
+        color: #f3e6d5;
+        font-size: 1.8rem; /* Larger title size */
+        margin: 0;
+        text-align: left;
+    }
+
+    .chapter-header .meta {
+        font-size: 1rem;
+        color: #d2bfae;
+        font-style: italic;
+        text-align: left;
+    }
+
+/* Soft golden thin divider line */
+hr {
+    border: 0;
+    border-top: 1px solid #d4af37;
+    margin: 1.5rem 0;
+}
+
+/* Styling for book/act/chapter display */
+.chapter-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.6rem;
+    color: #f6e6c6;
+    margin-bottom: 1.5rem; /* Space below the title */
+    font-weight: bold;
+}
+
+/* Flex layout for character cards inside a chapter section */
+.character-card-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: flex-start;
+    justify-content: flex-start; /* Ensure the cards are aligned properly */
+}
+
+/* Grid layout for chapter card list */
+.chapter-card-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 1.5rem; /* Add some space from the chapter title */
+}
+
+/* Styling for each character card */
+.character-card {
+    background-color: #2e2a24;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 0 10px rgba(180, 130, 255, 0.1);
+    width: 100%;
+    max-width: 300px; /* Limit width of character cards */
+}
+
+    .character-card h3 {
+        font-family: 'Cinzel', serif;
+        color: #f3e6d5;
+        font-size: 1.25rem;
+        margin: 0 0 1rem 0;
+    }
+
+    .character-card .attribute-box {
+        color: #f6e6c6;
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+/* Ensure chapter content (text, summary, etc.) is styled properly */
+.chapter-text, .chapter-summary {
+    font-family: 'Cinzel', serif;
+    color: #f3e6d5;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Optional: Title and character sections can be expanded with more detailed styles as needed */

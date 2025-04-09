@@ -8,59 +8,84 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FantasyDB.Services
 {
-    public class DropdownService : IDropdownService
+    public class DropdownService(AppDbContext context) : IDropdownService
     {
-        private readonly AppDbContext _context;
 
-        public DropdownService(AppDbContext context)
-        {
-            _context = context;
-        }
-
+#pragma warning disable CS8604 // Possible null reference argument.
         public async Task<List<SimpleItem>> GetFactionsAsync() =>
-            await _context.Factions.AsNoTracking()
+            await context.Factions.AsNoTracking()
                 .Select(f => new SimpleItem(f.Id, f.Name))
                 .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
 
+#pragma warning disable CS8604 // Possible null reference argument.
         public async Task<List<SimpleItem>> GetCharactersAsync() =>
-            await _context.Characters.AsNoTracking()
+            await context.Characters.AsNoTracking()
                 .Select(c => new SimpleItem(c.Id, c.Name))
                 .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
 
+#pragma warning disable CS8604 // Possible null reference argument.
         public async Task<List<SimpleItem>> GetLocationsAsync() =>
-            await _context.Locations.AsNoTracking()
+            await context.Locations.AsNoTracking()
                 .Select(l => new SimpleItem(l.Id, l.Name))
                 .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
 
+#pragma warning disable CS8604 // Possible null reference argument.
         public async Task<List<SimpleItem>> GetLanguagesAsync() =>
-            await _context.Languages.AsNoTracking()
+            await context.Languages.AsNoTracking()
                 .Select(l => new SimpleItem(l.Id, l.Name))
                 .ToListAsync();
 
-        public async Task<List<SimpleItem>> GetSnapshotsAsync() =>
-            await _context.Snapshots.AsNoTracking()
-                .Select(s => new SimpleItem(s.Id, s.SnapshotName))
+        public async Task<List<SimpleItem>> GetBooksAsync() =>
+            await context.Languages.AsNoTracking()
+                .Select(l => new SimpleItem(l.Id, l.Name))
                 .ToListAsync();
 
+        public async Task<List<SimpleItem>> GetActsAsync() =>
+            await context.Languages.AsNoTracking()
+                .Select(l => new SimpleItem(l.Id, l.Name))
+                .ToListAsync();
+
+        public async Task<List<SimpleItem>> GetScenesAsync() =>
+            await context.Languages.AsNoTracking()
+                .Select(l => new SimpleItem(l.Id, l.Name))
+                .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
+
+#pragma warning disable CS8604 // Possible null reference argument.
+        public async Task<List<SimpleItem>> GetChaptersAsync() =>
+            await context.Chapters.AsNoTracking()
+                .Select(s => new SimpleItem(s.Id, s.ChapterTitle))
+                .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
+
+#pragma warning disable CS8604 // Possible null reference argument.
         public async Task<List<SimpleItem>> GetEventsAsync() =>
-            await _context.Events.AsNoTracking()
+            await context.Events.AsNoTracking()
                 .Select(e => new SimpleItem(e.Id, e.Name))
                 .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
 
+#pragma warning disable CS8604 // Possible null reference argument.
         public async Task<List<SimpleItem>> GetErasAsync() =>
-            await _context.Eras.AsNoTracking()
+            await context.Eras.AsNoTracking()
                 .Select(s => new SimpleItem(s.Id, s.Name))
                 .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
 
+#pragma warning disable CS8604 // Possible null reference argument.
         public async Task<List<SimpleItem>> GetItemsAsync() =>
-            await _context.Items.AsNoTracking()
+            await context.Items.AsNoTracking()
                 .Select(a => new SimpleItem(a.Id, a.Name))
                 .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
 
 
         public async Task<List<SimpleItem>> GetCharacterRelationshipsForCharacterAsync(int characterId)
         {
-            return await _context.CharacterRelationships.AsNoTracking()
+            return await context.CharacterRelationships.AsNoTracking()
                 .Where(cr => cr.Character1Id == characterId || cr.Character2Id == characterId)
                 .Select(cr => new SimpleItem(
                     cr.Id,
@@ -69,43 +94,49 @@ namespace FantasyDB.Services
                 .ToListAsync();
         }
 
+#pragma warning disable CS8604 // Possible null reference argument.
         public async Task<List<SimpleItem>> GetRoutesAsync() =>
-            await _context.Routes.AsNoTracking()
+            await context.Routes.AsNoTracking()
                 .Select(r => new SimpleItem(r.Id, r.Name))
                 .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
 
+#pragma warning disable CS8604 // Possible null reference argument.
         public async Task<List<SimpleItem>> GetRiversAsync() =>
-            await _context.Rivers.AsNoTracking()
+            await context.Rivers.AsNoTracking()
                 .Select(r => new SimpleItem(r.Id, r.Name))
                 .ToListAsync();
+#pragma warning restore CS8604 // Possible null reference argument.
 
-
-        public async Task<List<SimpleItem>> GetMonthsAsync()
-        {
-            return await _context.Calendar
-                .AsNoTracking()
-                .Where(c => !string.IsNullOrEmpty(c.Month))
-                .Select(c => c.Month!)
-                .Distinct()
-                .OrderBy(m => m) // Optional: alphabetically or keep a fixed order if needed
-                .Select((month, index) => new SimpleItem(index + 1, month))
-                .ToListAsync();
-        }
 
         public async Task<List<SimpleItem>> GetWeekdaysAsync()
         {
-            return await _context.Calendar
+            var weekdays = await context.Dates
                 .AsNoTracking()
                 .Where(c => !string.IsNullOrEmpty(c.Weekday))
                 .Select(c => c.Weekday!)
                 .Distinct()
                 .OrderBy(w => w)
-                .Select((weekday, index) => new SimpleItem(index + 1, weekday))
+                .ToListAsync(); // <-- force query to execute here
+
+            return [.. weekdays.Select((weekday, index) => new SimpleItem(index + 1, weekday))];
+        }
+
+        public async Task<List<SimpleItem>> GetMonthsAsync()
+        {
+            var months = await context.Dates
+                .AsNoTracking()
+                .Where(c => !string.IsNullOrEmpty(c.Month))
+                .Select(c => c.Month!)
+                .Distinct()
+                .OrderBy(m => m)
                 .ToListAsync();
+
+            return [.. months.Select((month, index) => new SimpleItem(index + 1, month))];
         }
 
         public async Task<List<SimpleItem>> GetCharacterRelationshipsAsync() =>
-            await _context.CharacterRelationships.AsNoTracking()
+            await context.CharacterRelationships.AsNoTracking()
                 .Select(r => new SimpleItem(
                     r.Id,
                     (r.Character1 != null ? r.Character1.Name : "??")
@@ -115,17 +146,17 @@ namespace FantasyDB.Services
                 .ToListAsync();
 
         public async Task<List<SimpleItem>> GetCalendarsAsync() =>
-    await _context.Calendar.AsNoTracking()
+    await context.Dates.AsNoTracking()
         .Select(c => new SimpleItem(c.Id, $"Day {c.Day} - {c.Month} ({c.Weekday})"))
         .ToListAsync();
 
         public async Task<List<SimpleItem>> GetPriceExamplesAsync() =>
-    await _context.PriceExamples.AsNoTracking()
+    await context.PriceExamples.AsNoTracking()
         .Select(p => new SimpleItem(p.Id, p.Name ?? $"Unnamed ({p.Category})"))
         .ToListAsync();
 
         public async Task<List<SimpleItem>> GetPlotPointsAsync() =>
-    await _context.PlotPoints.AsNoTracking()
+    await context.PlotPoints.AsNoTracking()
         .Select(p => new SimpleItem(p.Id, p.Title))
         .ToListAsync();
 

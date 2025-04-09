@@ -23,7 +23,7 @@ namespace FantasyDB.Controllers
         {
             return _context.Items
                 .Include(a => a.Owner)
-                .Include(a => a.Snapshot);
+                .Include(a => a.Chapter);
         }
 
         // ✅ Electron-compatible: Full list of Items with includes
@@ -31,7 +31,7 @@ namespace FantasyDB.Controllers
         {
             var Items = await _context.Items
                 .Include(a => a.Owner)
-                .Include(a => a.Snapshot)
+                .Include(a => a.Chapter)
                 .AsNoTracking()
                 .ToListAsync();
 
@@ -60,17 +60,17 @@ namespace FantasyDB.Controllers
             return await base.Delete(id);
         }
 
-        // ✅ Optional: Use for snapshot duplication logic
-        [HttpGet("{id}/new-snapshot")]
-        public override async Task<IActionResult> CreateNewSnapshot(int id)
+        // ✅ Optional: Use for chapter duplication logic
+        [HttpGet("{id}/new-chapter")]
+        public override async Task<IActionResult> CreateNewChapter(int id)
         {
-            return await base.CreateNewSnapshot(id);
+            return await base.CreateNewChapter(id);
         }
 
-        [HttpGet("{id}/new-snapshot-page")]
-        public override async Task<IActionResult> CreateNewSnapshotPage(int id)
+        [HttpGet("{id}/new-chapter-page")]
+        public override async Task<IActionResult> CreateNewWritingAssistantPage(int id)
         {
-            return await base.CreateNewSnapshotPage(id);
+            return await base.CreateNewWritingAssistantPage(id);
         }
     }
 }

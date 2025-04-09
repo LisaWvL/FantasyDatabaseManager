@@ -5,7 +5,7 @@ import {
     createEvent,
     updateEvent,
     deleteEvent,
-    //fetchDuplicateForSnapshot
+    //fetchDuplicateForChapter
 } from '../api/EventApi';
 
 export default function EventsPage() {
@@ -71,7 +71,7 @@ export default function EventsPage() {
                     <tr>
                         <th>Name</th>
                         <th>Description</th>
-                        <th>Snapshot</th>
+                        <th>Chapter</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -86,14 +86,14 @@ export default function EventsPage() {
                                 ? <input value={editingEvent.description} onChange={ev => setEditingEvent({ ...editingEvent, description: ev.target.value })} />
                                 : e.description}
                             </td>
-                            <td>{e.snapshotName || '-'}</td>
+                            <td>{e.chapterName || '-'}</td>
                             <td>
                                 {editingEvent?.id === e.id ? (
                                     <button onClick={handleUpdate}>💾 Save</button>
                                 ) : (
                                     <>
                                         <button onClick={() => handleEdit(e.id)}>✏️ Edit</button>
-                                        <button onClick={() => handleCreate(e.id)}>🌀 New Snapshot</button>
+                                        <button onClick={() => handleCreate(e.id)}>🌀 New Chapter</button>
                                         <button onClick={() => handleDelete(e.id)}>🗑️</button>
                                     </>
                                 )}

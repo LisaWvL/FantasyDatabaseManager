@@ -61,12 +61,12 @@ export const fetchRelationshipsByCharacter = async (characterId) => {
     }
 };
 
-export const getNewSnapshotViewModel = async (id) => {
+export const getNewChapterViewModel = async (id) => {
     try {
-        const response = await axiosInstance.get(`/characterrelationship/${id}/new-snapshot`);
+        const response = await axiosInstance.get(`/characterrelationship/${id}/new-chapter`);
         return response.data;
     } catch (error) {
-        console.error(`❌ Failed to prepare new snapshot for character relationship ${id}:`, error);
+        console.error(`❌ Failed to prepare new chapter for character relationship ${id}:`, error);
         throw error;
     }
 };

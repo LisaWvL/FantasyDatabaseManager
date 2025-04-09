@@ -50,12 +50,12 @@ export const deleteLocation = async (id) => {
     }
 };
 
-export const fetchLocationSnapshot = async (id) => {
+export const fetchLocationChapter = async (id) => {
     try {
-        const response = await axiosInstance.get(`/location/${id}/new-snapshot`);
+        const response = await axiosInstance.get(`/location/${id}/new-chapter`);
         return response.data;
     } catch (error) {
-        console.error(`❌ Failed to load snapshot draft for location ${id}:`, error);
+        console.error(`❌ Failed to load chapter draft for location ${id}:`, error);
         throw error;
     }
 };

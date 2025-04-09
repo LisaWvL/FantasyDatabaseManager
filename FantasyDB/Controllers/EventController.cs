@@ -13,18 +13,13 @@ namespace FantasyDB.Controllers
 {
     [Route("api/event")]
     [ApiController]
-    public class EventController : BaseEntityController<Event, EventViewModel>
+    public class EventController(AppDbContext context, IMapper mapper, IDropdownService dropdownService) : BaseEntityController<Event, EventViewModel>(context, mapper, dropdownService)
     {
-        public EventController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
-            : base(context, mapper, dropdownService)
-        {
-        }
-
         protected override IQueryable<Event> GetQueryable()
         {
             return _context.Events
                 .Include(e => e.Location)
-                .Include(e => e.Snapshot);
+                .Include(e => e.Chapter);
         }
 
         // GET: api/event
@@ -41,7 +36,7 @@ namespace FantasyDB.Controllers
         {
             var ev = await _context.Events
                 .Include(e => e.Location)
-                .Include(e => e.Snapshot)
+                .Include(e => e.Chapter)
                 .FirstOrDefaultAsync(e => e.Id == id);
 
             if (ev == null)
@@ -99,18 +94,18 @@ namespace FantasyDB.Controllers
             return Ok(new { message = "Event deleted" });
         }
 
-        // GET: api/event/5/new-snapshot
-        [HttpGet("{id}/new-snapshot")]
-        public override async Task<IActionResult> CreateNewSnapshot(int id)
+        // GET: api/event/5/new-chapter
+        [HttpGet("{id}/new-chapter")]
+        public override async Task<IActionResult> CreateNewChapter(int id)
         {
-            return await base.CreateNewSnapshot(id);
+            return await base.CreateNewChapter(id);
         }
 
-        // GET: api/event/5/new-snapshot-page
-        [HttpGet("{id}/new-snapshot-page")]
-        public override async Task<IActionResult> CreateNewSnapshotPage(int id)
+        // GET: api/event/5/new-chapter-page
+        [HttpGet("{id}/new-chapter-page")]
+        public override async Task<IActionResult> CreateNewWritingAssistantPage(int id)
         {
-            return await base.CreateNewSnapshotPage(id);
+            return await base.CreateNewWritingAssistantPage(id);
         }
     }
 }

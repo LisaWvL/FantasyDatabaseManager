@@ -16,13 +16,16 @@ namespace FantasyDB.Models
         public string? Description { get; set; }
 
         public int? startDateId { get; set; }
+        [ForeignKey("startDateId")]
         public virtual Calendar? StartDate { get; set; }
 
         public int? endDateId { get; set; }
+        [ForeignKey("endDateId")]
         public virtual Calendar? endDate { get; set; }
 
-        public int? SnapshotId { get; set; }
-        public virtual Snapshot? Snapshot { get; set; }
+        public int? ChapterId { get; set; }
+        [ForeignKey("ChapterId")]
+        public virtual Chapter? Chapter { get; set; }
 
         // Junctions
         public List<PlotPointRiver> PlotPointRivers { get; set; } = new();

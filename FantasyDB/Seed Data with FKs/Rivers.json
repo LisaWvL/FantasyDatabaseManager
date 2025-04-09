@@ -1,57 +1,57 @@
 [
     {
         "Id": 1,
-        "SourceLocationId": null,
-        "DestinationLocationId": null
+        "DestinationLocationId": null,
+        "SourceLocationId": null
     },
     {
         "Id": 2,
-        "SourceLocationId": null,
-        "DestinationLocationId": null
+        "DestinationLocationId": null,
+        "SourceLocationId": null
     },
     {
         "Id": 3,
-        "SourceLocationId": null,
-        "DestinationLocationId": null
+        "DestinationLocationId": null,
+        "SourceLocationId": null
     },
     {
         "Id": 4,
-        "SourceLocationId": null,
-        "DestinationLocationId": null
+        "DestinationLocationId": null,
+        "SourceLocationId": null
     },
     {
         "Id": 5,
-        "SourceLocationId": null,
-        "DestinationLocationId": null
+        "DestinationLocationId": null,
+        "SourceLocationId": null
     },
     {
         "Id": 6,
-        "SourceLocationId": null,
-        "DestinationLocationId": null
+        "DestinationLocationId": null,
+        "SourceLocationId": null
     },
     {
         "Id": 7,
-        "SourceLocationId": null,
-        "DestinationLocationId": null
+        "DestinationLocationId": null,
+        "SourceLocationId": null
     },
     {
         "Id": 8,
-        "SourceLocationId": null,
-        "DestinationLocationId": null
+        "DestinationLocationId": null,
+        "SourceLocationId": null
     },
     {
         "Id": 9,
-        "SourceLocationId": null,
-        "DestinationLocationId": null
+        "DestinationLocationId": null,
+        "SourceLocationId": null
     },
     {
         "Id": 10,
-        "SourceLocationId": null,
-        "DestinationLocationId": null
+        "DestinationLocationId": null,
+        "SourceLocationId": null
     },
     {
         "Id": 11,
-        "SourceLocationId": 3,
-        "DestinationLocationId": 2
+        "DestinationLocationId": null,
+        "SourceLocationId": null
     }
 ]

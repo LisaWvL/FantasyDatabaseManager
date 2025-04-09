@@ -5,7 +5,7 @@ import {
     //createLocation,
     //updateLocation,
     deleteLocation,
-    fetchLocationSnapshot
+    fetchLocationChapter
 } from '../api/LocationApi';
 import EntityTable from '../components/EntityTable';
 
@@ -37,10 +37,10 @@ export default function LocationPage() {
         }
     };
 
-    const handleSnapshot = async (id) => {
-        const snapshotDraft = await fetchLocationSnapshot(id);
-        console.log('New location snapshot draft:', snapshotDraft);
-        // TODO: Open snapshot editing view
+    const handleChapter = async (id) => {
+        const chapterDraft = await fetchLocationChapter(id);
+        console.log('New location chapter draft:', chapterDraft);
+        // TODO: Open chapter editing view
     };
 
     return (
@@ -50,7 +50,7 @@ export default function LocationPage() {
                 data={locations}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
-                onSnapshot={handleSnapshot}
+                onChapter={handleChapter}
             />
         </div>
     );

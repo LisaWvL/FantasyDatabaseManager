@@ -1,47 +1,103 @@
-//TODO
-//EntityTable.jsx
-// Add inline filtering by snapshot
-// Enable tag - based filtering(after TagManager is added)
-// Add export button for table content
-// Add import button for table content
-// Add ìCreate New Entityî button
-// Add ìDelete All Entitiesî button
-// Add ìEdit All Entitiesî button
-// Add ìCopy Entityî button
-// Add ìShow All Relatedî button
-// Add ìCopy to Snapshotî button
-// Add ìPinî button
-// Add ìShow PlotPoints for Current Snapshot Onlyî toggle
-// Add ìShow All Snapshotsî toggle
- 
+Ôªø// src/components/EntityTable.jsx
+import React, { useState } from "react";
+import { FaPlus, FaTrash, FaCopy, FaExpand } from 'react-icons/fa';
+import EditableTableRow from './EditableTableRow';
 
- import React from "react";
+export default function EntityTable({
+    data,
+    referenceData = {},
+    onCreate,
+    onEdit,
+    onDelete,
+    onCopy
+}) {
+    const [selectedIds, _setSelectedIds] = useState([]);
+    const [showRelated, setShowRelated] = useState(false);
+    const [showAllChapters, setShowAllChapters] = useState(false);
 
-export default function EntityTable({ data, onEdit, onDelete, onSnapshot }) {
     if (!data || data.length === 0) return <p>No data available.</p>;
 
-    const columns = Object.keys(data[0]).filter(key => !key.endsWith("Id") && key !== "id");
+    const columns = Object.keys(data[0])
+        .filter(key => key !== "id" && !key.toLowerCase().endsWith("id"));
+
+    const handleSave = (updatedRow) => {
+        onEdit(updatedRow);
+    };
 
     return (
-        <table className="table table-bordered table-hover">
-            <thead className="table-dark">
-                <tr>
-                    {columns.map(col => <th key={col}>{col}</th>)}
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {data.map(entity => (
-                    <tr key={entity.id}>
-                        {columns.map(col => <td key={col}>{entity[col]}</td>)}
-                        <td>
-                            <button className="btn btn-sm btn-warning me-1" onClick={() => onEdit(entity.id)}>Edit</button>
-                            <button className="btn btn-sm btn-info me-1" onClick={() => onSnapshot(entity.id)}>New Snapshot</button>
-                            <button className="btn btn-sm btn-danger" onClick={() => onDelete(entity.id)}>Delete</button>
-                        </td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
+        <div className="entity-table-container">
+            <div className="table-controls">
+                <button className="control-button" onClick={onCreate} title="Create New">
+                    <FaPlus />
+                </button>
+                <button className="control-button" onClick={() => selectedIds.forEach(onDelete)} title="Delete Selected">
+                    <FaTrash />
+                </button>
+                <button className="control-button" onClick={() => selectedIds.forEach(onCopy)} title="Copy Selected">
+                    <FaCopy />
+                </button>
+                <button className="control-button" onClick={() => setShowRelated(prev => !prev)} title="Show Related Entities">
+                    <FaExpand />
+                </button>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={showAllChapters}
+                        onChange={() => setShowAllChapters(!showAllChapters)}
+                    />
+                    Show All Chapters
+                </label>
+            </div>
+
+            <div className="table-scroll-wrapper">
+                <table className="character-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            {columns.map(col => <th key={col}>{col}</th>)}
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data.map(row => (
+                            <React.Fragment key={row.id}>
+                                <EditableTableRow
+                                    rowData={row}
+                                    isNew={false}
+                                    characters={referenceData.characters || []}
+                                    chapters={referenceData.chapters || []}
+                                    onSave={handleSave}
+                                    onCancel={() => { }} // optional no-op
+                                    onDelete={() => onDelete(row.id)}
+                                    onCopy={() => onCopy(row.id)}
+                                />
+                                {showRelated && selectedIds.includes(row.id) && (
+                                    <tr className="related-row">
+                                        <td colSpan={columns.length + 2}>
+                                            <strong>üîç Related Entities:</strong>
+                                            <ul>
+                                                {Object.entries(row).map(([key, value]) => {
+                                                    if (key.endsWith("Id") && value) {
+                                                        const relatedListKey = key.slice(0, -2).toLowerCase() + 's';
+                                                        const list = referenceData[relatedListKey];
+                                                        const match = list?.find(e => e.id === value);
+                                                        return match ? (
+                                                            <li key={key}>
+                                                                {key.replace("Id", "")}: {match.name || match.title || "[Unnamed]"}
+                                                            </li>
+                                                        ) : null;
+                                                    }
+                                                    return null;
+                                                })}
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                )}
+                            </React.Fragment>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     );
 }

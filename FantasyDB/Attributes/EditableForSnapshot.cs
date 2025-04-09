@@ -4,11 +4,11 @@ namespace FantasyDB.Attributes
 {
 
     [AttributeUsage(AttributeTargets.Property)]
-    public class EditableForSnapshotAttribute : Attribute
+    public class EditableForChapterAttribute : Attribute
     {
         public bool IsEditable { get; }
 
-        public EditableForSnapshotAttribute(bool isEditable = true)
+        public EditableForChapterAttribute(bool isEditable = true)
         {
             IsEditable = isEditable;
         }

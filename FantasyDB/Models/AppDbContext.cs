@@ -5,12 +5,10 @@ using FantasyDB.Models;
 using Microsoft.EntityFrameworkCore;
 using static FantasyDB.Models.JunctionClasses;
 
-public class AppDbContext : DbContext
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-
     public DbSet<Item> Items { get; set; }
-    public DbSet<Calendar> Calendar { get; set; }
+    public DbSet<Calendar> Dates { get; set; }
     public DbSet<Character> Characters { get; set; }
     public DbSet<CharacterRelationship> CharacterRelationships { get; set; }
     public DbSet<Currency> Currencies { get; set; }
@@ -22,18 +20,16 @@ public class AppDbContext : DbContext
     public DbSet<PriceExample> PriceExamples { get; set; }
     public DbSet<River> Rivers { get; set; }
     public DbSet<Route> Routes { get; set; }
-    public DbSet<Snapshot> Snapshots { get; set; }
-    public DbSet<JunctionClasses.SnapshotCharacter> SnapshotsCharacters { get; set; }
-    public DbSet<JunctionClasses.SnapshotItem> SnapshotsItems { get; set; }
-    public DbSet<JunctionClasses.SnapshotEra> SnapshotsEras { get; set; }
-    public DbSet<JunctionClasses.SnapshotEvent> SnapshotsEvents { get; set; }
-    public DbSet<JunctionClasses.SnapshotFaction> SnapshotsFactions { get; set; }
-    public DbSet<JunctionClasses.SnapshotLocation> SnapshotsLocations { get; set; }
-    public DbSet<JunctionClasses.SnapshotCharacterRelationship> SnapshotsCharacterRelationships { get; set; }
     public DbSet<LanguageLocation> LanguagesLocations { get; set; }
     public DbSet<PlotPoint> PlotPoints { get; set; }
     public DbSet<PlotPointRiver> PlotPointsRivers { get; set; }
     public DbSet<PlotPointRoute> PlotPointsRoutes { get; set; }
+    public DbSet<ConversationTurn> ConversationTurns { get; set; }
+    public DbSet<Book> Books { get; set; }
+    public DbSet<Act> Acts { get; set; }
+    public DbSet<Chapter> Chapters { get; set; }
+    public DbSet<Scene> Scenes { get; set; }
+
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -51,15 +47,15 @@ public class AppDbContext : DbContext
         ConfigureRoute(modelBuilder);
         ConfigurePriceExample(modelBuilder);
         ConfigureLanguageLocation(modelBuilder);
+        ConfigureConversationTurns(modelBuilder);
 
+        ConfigureBook(modelBuilder);
+        ConfigureAct(modelBuilder);
+        ConfigureChapter(modelBuilder);
+        ConfigurePlotPoint(modelBuilder);
+        ConfigureScene(modelBuilder);
+        
 
-        ConfigureJoin<SnapshotCharacter>(modelBuilder, x => new { x.SnapshotId, x.CharacterId });
-        ConfigureJoin<SnapshotItem>(modelBuilder, x => new { x.SnapshotId, x.ItemId });
-        ConfigureJoin<SnapshotEra>(modelBuilder, x => new { x.SnapshotId, x.EraId });
-        ConfigureJoin<SnapshotEvent>(modelBuilder, x => new { x.SnapshotId, x.EventId });
-        ConfigureJoin<SnapshotFaction>(modelBuilder, x => new { x.SnapshotId, x.FactionId });
-        ConfigureJoin<SnapshotLocation>(modelBuilder, x => new { x.SnapshotId, x.LocationId });
-        ConfigureJoin<SnapshotCharacterRelationship>(modelBuilder, x => new { x.SnapshotId, x.CharacterRelationshipId });
         ConfigureJoin<PlotPointRiver>(modelBuilder, x => new { x.PlotPointId, x.RiverId });
         ConfigureJoin<PlotPointRoute>(modelBuilder, x => new { x.PlotPointId, x.RouteId });
 
@@ -75,33 +71,64 @@ public class AppDbContext : DbContext
         }
     }
 
-    private void ConfigureJoin<T>(ModelBuilder modelBuilder, Expression<Func<T, object>> keyExpression) where T : class
+    private void ConfigureJoin<T>(ModelBuilder modelBuilder, Expression<Func<T, object?>> keyExpression) where T : class
     {
         modelBuilder.Entity<T>().HasKey(keyExpression);
     }
 
-   
-    private void ConfigureItem(ModelBuilder modelBuilder)
+    private void ConfigureBook(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Item>()
-            .HasOne(a => a.Owner)
-            .WithMany()
-            .HasForeignKey("OwnerId");
+        modelBuilder.Entity<Book>()
+            .HasMany(b => b.Acts)
+            .WithOne(a => a.Book)
+            .HasForeignKey(a => a.BookId)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
 
-        modelBuilder.Entity<Item>()
-            .HasOne(a => a.Snapshot)
+    private void ConfigureAct(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Act>()
+            .HasOne(a => a.Book)
+            .WithMany(b => b.Acts)
+            .HasForeignKey(a => a.BookId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
+    private void ConfigureChapter(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Chapter>()
+            .HasOne(c => c.Act)
+            .WithMany(a => a.Chapters)
+            .HasForeignKey(c => c.ActId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Chapter>()
+            .HasOne(c => c.POVCharacter)
             .WithMany()
-            .HasForeignKey("SnapshotId");
+            .HasForeignKey(c => c.POVCharacterId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Chapter>()
+            .HasMany(c => c.Scenes)
+            .WithOne(s => s.Chapter)
+            .HasForeignKey(s => s.ChapterId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 
 
-    private void ConfigureCalendar(ModelBuilder modelBuilder)
+    private void ConfigureScene(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Calendar>()
-            .HasOne(c => c.Event)
-            .WithMany()
-            .HasForeignKey("EventId");
+        modelBuilder.Entity<Scene>()
+            .HasOne(s => s.Chapter)
+            .WithMany(c => c.Scenes)
+            .HasForeignKey(s => s.ChapterId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.Restrict);
     }
+
 
 
     private void ConfigureCharacter(ModelBuilder modelBuilder)
@@ -121,10 +148,60 @@ public class AppDbContext : DbContext
             .WithMany()
             .HasForeignKey("LanguageId");
 
+        // One Character is POV in many Chapters referencing it by ChapterId
         modelBuilder.Entity<Character>()
-            .HasOne(c => c.Snapshot)
+            .HasOne(c => c.Chapter)
+            .WithMany() // 🔁 mirror side
+            .HasForeignKey(c => c.ChapterId)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
+
+    private void ConfigureConversationTurns(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ConversationTurn>()
+            .HasOne(c => c.PlotPoint)
             .WithMany()
-            .HasForeignKey("SnapshotId");
+            .HasForeignKey("PlotPointId");
+    }
+
+    private void ConfigureItem(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Item>()
+            .HasOne(a => a.Owner)
+            .WithMany()
+            .HasForeignKey("OwnerId");
+
+        modelBuilder.Entity<Item>()
+            .HasOne(a => a.Chapter)
+            .WithMany()
+            .HasForeignKey("ChapterId");
+    }
+
+    private void ConfigureCalendar(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Calendar>()
+            .HasOne(c => c.Event)
+            .WithMany()
+            .HasForeignKey("EventId");
+    }
+
+
+    private void ConfigurePlotPoint(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<PlotPoint>()
+            .HasOne(c => c.Chapter)
+            .WithMany()
+            .HasForeignKey("ChapterId");
+
+        modelBuilder.Entity<PlotPoint>()
+            .HasOne(c => c.StartDate)
+            .WithMany()
+            .HasForeignKey("startDateId");
+
+        modelBuilder.Entity<PlotPoint>()
+            .HasOne(c => c.endDate)
+            .WithMany()
+            .HasForeignKey("endDateId");
     }
 
 
@@ -141,34 +218,33 @@ public class AppDbContext : DbContext
             .HasForeignKey("Character2Id");
 
         modelBuilder.Entity<CharacterRelationship>()
-            .HasOne(cr => cr.Snapshot)
+            .HasOne(cr => cr.Chapter)
             .WithMany()
-            .HasForeignKey("SnapshotId");
+            .HasForeignKey("ChapterId");
     }
 
 
     private void ConfigureEra(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Era>()
-            .HasOne(e => e.Snapshot)
+            .HasOne(e => e.Chapter)
             .WithMany()
-            .HasForeignKey("SnapshotId");
+            .HasForeignKey("ChapterId");
     }
 
 
     private void ConfigureEvent(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Event>()
-            .HasOne(e => e.Location)
-            .WithMany(l => l.Events)
-            .HasForeignKey(e => e.LocationId)
-            .OnDelete(DeleteBehavior.SetNull); // or .SetNull if you'd like auto-unlinking
 
         modelBuilder.Entity<Event>()
-            .HasOne(e => e.Snapshot)
+            .HasOne(e => e.Location)
             .WithMany()
-            .HasForeignKey(e => e.SnapshotId)
-            .OnDelete(DeleteBehavior.SetNull);
+            .HasForeignKey("ParentLocationId");
+
+        modelBuilder.Entity<Event>()
+            .HasOne(e => e.Chapter)
+            .WithMany()
+            .HasForeignKey("ChapterId");
     }
 
 
@@ -209,9 +285,9 @@ public class AppDbContext : DbContext
             .HasForeignKey("HQLocationId");
 
         modelBuilder.Entity<Faction>()
-            .HasOne(f => f.Snapshot)
+            .HasOne(f => f.Chapter)
             .WithMany()
-            .HasForeignKey("SnapshotId");
+            .HasForeignKey("ChapterId");
     }
 
     private void ConfigureRiver(ModelBuilder modelBuilder)

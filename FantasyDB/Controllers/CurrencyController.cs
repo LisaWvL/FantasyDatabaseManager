@@ -13,13 +13,8 @@ namespace FantasyDB.Controllers
 {
     [ApiController]
     [Route("api/currency")]
-    public class CurrencyController : BaseEntityController<Currency, CurrencyViewModel>
+    public class CurrencyController(AppDbContext context, IMapper mapper, IDropdownService dropdownService) : BaseEntityController<Currency, CurrencyViewModel>(context, mapper, dropdownService)
     {
-        public CurrencyController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
-            : base(context, mapper, dropdownService)
-        {
-        }
-
         protected override IQueryable<Currency> GetQueryable()
         {
             return _context.Currencies.AsNoTracking();

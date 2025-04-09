@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import {
     fetchFactions,
     deleteFaction,
-    fetchNewSnapshot
+    fetchNewChapter
 } from '../api/FactionApi';
 
 export default function FactionPage() {
@@ -29,10 +29,10 @@ export default function FactionPage() {
         }
     };
 
-    const handleSnapshot = async (id) => {
-        const snapshot = await fetchNewSnapshot(id);
-        console.log('New snapshot prepared:', snapshot);
-        // Navigate or display snapshot editor here
+    const handleChapter = async (id) => {
+        const chapter = await fetchNewChapter(id);
+        console.log('New chapter prepared:', chapter);
+        // Navigate or display chapter editor here
     };
 
     return (
@@ -44,7 +44,7 @@ export default function FactionPage() {
                         <th>Name</th>
                         <th>Leader</th>
                         <th>HQ Location</th>
-                        <th>Snapshot</th>
+                        <th>Chapter</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -54,9 +54,9 @@ export default function FactionPage() {
                             <td>{f.name}</td>
                             <td>{f.leaderName}</td>
                             <td>{f.hqLocationName}</td>
-                            <td>{f.snapshotName}</td>
+                            <td>{f.chapterName}</td>
                             <td>
-                                <button className="btn btn-sm btn-warning me-2" onClick={() => handleSnapshot(f.id)}>Snapshot</button>
+                                <button className="btn btn-sm btn-warning me-2" onClick={() => handleChapter(f.id)}>Chapter</button>
                                 <button className="btn btn-sm btn-danger" onClick={() => handleDelete(f.id)}>Delete</button>
                             </td>
                         </tr>

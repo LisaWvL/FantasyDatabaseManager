@@ -2,7 +2,7 @@
 import {
     fetchRivers,
     fetchRoutes,
-    fetchSnapshots
+    fetchChapters
 } from '../api/DropdownApi';
 import {
     fetchCalendarDayByMonthAndDay,
@@ -14,7 +14,7 @@ import '../styles/PlotPointModal.css';
 export default function PlotPointModal({ onClose, onSave }) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [snapshotId, setSnapshotId] = useState(null);
+    const [chapterId, setChapterId] = useState(null);
     const [bookOverride, setBookOverride] = useState('');
     const [chapterOverride, setChapterOverride] = useState('');
 
@@ -26,7 +26,7 @@ export default function PlotPointModal({ onClose, onSave }) {
     const [setEndDateId] = useState(null);
 
     const [months, setMonths] = useState([]);
-    const [snapshots, setSnapshots] = useState([]);
+    const [chapters, setChapters] = useState([]);
     const [rivers, setRivers] = useState([]);
     const [routes, setRoutes] = useState([]);
 
@@ -39,7 +39,7 @@ export default function PlotPointModal({ onClose, onSave }) {
     useEffect(() => {
         const loadData = async () => {
             setMonths(await fetchMonths());
-            setSnapshots(await fetchSnapshots());
+            setChapters(await fetchChapters());
             setRivers(await fetchRivers());
             setRoutes(await fetchRoutes());
         };
@@ -75,7 +75,7 @@ export default function PlotPointModal({ onClose, onSave }) {
                 description,
                 startDateId: startId,
                 endDateId: endId,
-                snapshotId,
+                chapterId,
                 bookOverride,
                 chapterOverride,
                 ...linkedEntities
@@ -120,11 +120,11 @@ export default function PlotPointModal({ onClose, onSave }) {
                     </select>
                 </div>
 
-                <label>Snapshot</label>
-                <select onChange={e => setSnapshotId(Number(e.target.value))}>
+                <label>Chapter</label>
+                <select onChange={e => setChapterId(Number(e.target.value))}>
                     <option value="">(Optional)</option>
-                    {snapshots.map(s => (
-                        <option key={s.id} value={s.id}>{s.snapshotName}</option>
+                    {chapters.map(s => (
+                        <option key={s.id} value={s.id}>{s.chapterName}</option>
                     ))}
                 </select>
 

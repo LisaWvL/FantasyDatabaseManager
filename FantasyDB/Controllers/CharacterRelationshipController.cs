@@ -12,19 +12,14 @@ namespace FantasyDB.Controllers
 {
     [Route("api/characterrelationship")]
     [ApiController]
-    public class CharacterRelationshipController : BaseEntityController<CharacterRelationship, CharacterRelationshipViewModel>
+    public class CharacterRelationshipController(AppDbContext context, IMapper mapper, IDropdownService dropdownService) : BaseEntityController<CharacterRelationship, CharacterRelationshipViewModel>(context, mapper, dropdownService)
     {
-        public CharacterRelationshipController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
-            : base(context, mapper, dropdownService)
-        {
-        }
-
         protected override IQueryable<CharacterRelationship> GetQueryable()
         {
             return _context.CharacterRelationships
                 .Include(r => r.Character1)
                 .Include(r => r.Character2)
-                .Include(r => r.Snapshot);
+                .Include(r => r.Chapter);
         }
 
         [HttpGet]
@@ -62,6 +57,18 @@ namespace FantasyDB.Controllers
             return CreatedAtAction(nameof(GetById), new { id = createdViewModel.Id }, createdViewModel);
         }
 
+        [HttpDelete("delete")]
+        public async Task<IActionResult> Delete([FromBody] CharacterRelationshipViewModel viewModel)
+        {
+            var relationship = await _context.CharacterRelationships.FindAsync(viewModel.Id);
+            if (relationship == null)
+                return NotFound();
+            _context.CharacterRelationships.Remove(relationship);
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "CharacterRelationship deleted" });
+        }
+
+
         [HttpPut("{id}")]
         public override async Task<IActionResult> Update(int id, [FromBody] CharacterRelationshipViewModel viewModel)
         {
@@ -92,16 +99,16 @@ namespace FantasyDB.Controllers
             return Ok(new { message = "CharacterRelationship deleted" });
         }
 
-        [HttpGet("{id}/new-snapshot")]
-        public override async Task<IActionResult> CreateNewSnapshot(int id)
+        [HttpGet("{id}/new-chapter")]
+        public override async Task<IActionResult> CreateNewChapter(int id)
         {
-            return await base.CreateNewSnapshot(id);
+            return await base.CreateNewChapter(id);
         }
 
-        [HttpGet("{id}/new-snapshot-page")]
-        public override async Task<IActionResult> CreateNewSnapshotPage(int id)
+        [HttpGet("{id}/new-chapter-page")]
+        public override async Task<IActionResult> CreateNewWritingAssistantPage(int id)
         {
-            return await base.CreateNewSnapshotPage(id);
+            return await base.CreateNewWritingAssistantPage(id);
         }
 
         [HttpGet("filter/by-character/{characterId}")]
@@ -111,7 +118,7 @@ namespace FantasyDB.Controllers
                 .Where(r => r.Character1Id == characterId || r.Character2Id == characterId)
                 .Include(r => r.Character1)
                 .Include(r => r.Character2)
-                .Include(r => r.Snapshot)
+                .Include(r => r.Chapter)
                 .ToListAsync();
 
             return Ok(_mapper.Map<List<CharacterRelationshipViewModel>>(rels));

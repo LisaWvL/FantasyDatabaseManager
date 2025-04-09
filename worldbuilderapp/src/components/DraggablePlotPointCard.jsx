@@ -1,5 +1,5 @@
 ﻿/* eslint-disable react-refresh/only-export-components */
-//TODO - The Plotpoint Card contains data regarding all entities versioned by snapshot, that are related to the PlotPoint.
+//TODO - The Plotpoint Card contains data regarding all entities versioned by chapter, that are related to the PlotPoint.
 //The cell of the CalendarGrid represents where in the timeline this Plotpoint happens. Dragging the card updates the date
 
 //TODO - The DraggablePlotPointCard component allows plot points to be dragged and dropped
@@ -28,37 +28,43 @@
 
 
 // src/components/DraggablePlotPointCard.jsx
-import React from "react";
-import { useDrag } from "react-dnd";
-import "../styles/CalendarPlotView.css";
+/* eslint-disable react-refresh/only-export-components */
+import React from 'react';
+import { useDrag } from 'react-dnd';
+import '../styles/CalendarPlotView.css';
 
-export const ItemTypes = {  
-    PLOTPOINT: "plotpoint",
-};
-
-export default function DraggablePlotPointCard({ plotPoint, onContextMenu }) {
+const DraggablePlotPointCard = ({ plotPoint, onContextMenu }) => {
     const [{ isDragging }, drag] = useDrag(() => ({
-        type: ItemTypes.PLOTPOINT, 
-        item: { id: plotPoint.id, calendarId: plotPoint.calendarId },
+        type: 'PLOT_POINT',
+        item: { id: plotPoint.id },
         collect: (monitor) => ({
-            isDragging: monitor.isDragging(),
-        }),
-    }));
+            isDragging: monitor.isDragging()
+        })
+    }), [plotPoint]);
+
     const handleContextMenu = (e) => {
         e.preventDefault();
-        onContextMenu(e, plotPoint, "plotpoint");
+        if (onContextMenu) {
+            onContextMenu(e, plotPoint, 'plotpoint');
+        }
     };
+
     return (
         <div
             ref={drag}
             className="plotpoint-card"
-            style={{
-                opacity: isDragging ? 0.5 : 1,
-                cursor: "move",
-            }}
             onContextMenu={handleContextMenu}
+            style={{ opacity: isDragging ? 0.5 : 1 }}
         >
-            {plotPoint.title}
+            <div className="plotpoint-title">{plotPoint.title}</div>
+            <div className="plotpoint-subinfo">
+                {plotPoint.startDateName && <span>{plotPoint.startDateName}</span>}
+                {plotPoint.endDateName && plotPoint.endDateName !== plotPoint.startDateName && (
+                    <span> → {plotPoint.endDateName}</span>
+                )}
+            </div>
         </div>
     );
-}
+};
+
+export default DraggablePlotPointCard;

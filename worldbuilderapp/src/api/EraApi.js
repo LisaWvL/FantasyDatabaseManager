@@ -50,12 +50,12 @@ export const deleteEra = async (id) => {
     }
 };
 
-export const fetchNewSnapshotEra = async (id) => {
+export const fetchNewChapterEra = async (id) => {
     try {
-        const response = await axiosInstance.get(`/era/${id}/new-snapshot`);
+        const response = await axiosInstance.get(`/era/${id}/new-chapter`);
         return response.data;
     } catch (error) {
-        console.error(`❌ Failed to fetch snapshot version of era ${id}:`, error);
+        console.error(`❌ Failed to fetch chapter version of era ${id}:`, error);
         throw error;
     }
 };

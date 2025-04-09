@@ -34,17 +34,17 @@
 //TODO this component will be used to navigate and explore the relationships between characters in the worldbuilder application
 
 //TODO Add methods and functionality to the RelationshipGraph component
-//TODO Add a snapshot toggle to the RelationshipGraph component
+//TODO Add a chapter toggle to the RelationshipGraph component
 //TODO Add relationship type filtering to the RelationshipGraph component
 //TODO Add mirrored relationship support to the RelationshipGraph component
 //TODO Enable right-click to edit or remove relationship in the RelationshipGraph component
 //TODO Add a "Create New Relationship" button to the RelationshipGraph component
 //TODO Add a "Copy Relationship" button to the RelationshipGraph component
 //TODO Add a "Show All Related" button to the RelationshipGraph component
-//TODO Add a "Copy to Snapshot" button to the RelationshipGraph component
+//TODO Add a "Copy to Chapter" button to the RelationshipGraph component
 //TODO Add a "Pin" button to the RelationshipGraph component
-//TODO Add a "Show PlotPoints for Current Snapshot Only" toggle to the RelationshipGraph component
-//TODO Add a "Show All Snapshots" toggle to the RelationshipGraph component
+//TODO Add a "Show PlotPoints for Current Chapter Only" toggle to the RelationshipGraph component
+//TODO Add a "Show All Chapters" toggle to the RelationshipGraph component
 
 
 import React, { useEffect } from "react";
@@ -81,7 +81,7 @@ export default function RelationshipGraph() {
 
 
 //RelationshipGraph.jsx
-//Add: snapshot toggle
+//Add: chapter toggle
 //Add: relationship type filtering
 // Add: mirrored relationship support
 // Enable right - click to edit or remove relationship

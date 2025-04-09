@@ -5,7 +5,7 @@ import {
     createEra,
   //  updateEra,
     deleteEra,
-    fetchNewSnapshotEra
+    fetchNewChapterEra
 } from '../api/EraApi';
 
 export default function EraPage() {
@@ -64,7 +64,7 @@ export default function EraPage() {
                         <tr>
                             <th>Name</th>
                             <th>Description</th>
-                            <th>Snapshot</th>
+                            <th>Chapter</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -73,9 +73,9 @@ export default function EraPage() {
                             <tr key={era.id}>
                                 <td>{era.name}</td>
                                 <td>{era.description}</td>
-                                <td>{era.snapshotName}</td>
+                                <td>{era.chapterName}</td>
                                 <td>
-                                    <button onClick={() => fetchNewSnapshotEra(era.id)}>Snapshot</button>
+                                    <button onClick={() => fetchNewChapterEra(era.id)}>Chapter</button>
                                     <button onClick={() => handleDelete(era.id)}>Delete</button>
                                 </td>
                             </tr>

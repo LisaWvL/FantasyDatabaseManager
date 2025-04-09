@@ -1,42 +1,50 @@
 [
     {
         "Id": 1,
-        "SnapshotId": null,
-        "LocationId": 3
+        "ParentLocationId": null,
+        "LocationId": null,
+        "ChapterId": null
     },
     {
         "Id": 2,
-        "SnapshotId": null,
-        "LocationId": 1
+        "ParentLocationId": null,
+        "LocationId": null,
+        "ChapterId": null
     },
     {
         "Id": 3,
-        "SnapshotId": null,
-        "LocationId": 4
+        "ParentLocationId": null,
+        "LocationId": null,
+        "ChapterId": null
     },
     {
         "Id": 4,
-        "SnapshotId": null,
-        "LocationId": 2
+        "ParentLocationId": null,
+        "LocationId": null,
+        "ChapterId": null
     },
     {
         "Id": 5,
-        "SnapshotId": null,
-        "LocationId": 2
+        "ParentLocationId": null,
+        "LocationId": null,
+        "ChapterId": null
     },
     {
         "Id": 6,
-        "SnapshotId": null,
-        "LocationId": 2
+        "ParentLocationId": null,
+        "LocationId": null,
+        "ChapterId": null
     },
     {
         "Id": 7,
-        "SnapshotId": null,
-        "LocationId": 2
+        "ParentLocationId": null,
+        "LocationId": null,
+        "ChapterId": null
     },
     {
         "Id": 8,
-        "SnapshotId": null,
-        "LocationId": 2
+        "ParentLocationId": null,
+        "LocationId": null,
+        "ChapterId": null
     }
 ]

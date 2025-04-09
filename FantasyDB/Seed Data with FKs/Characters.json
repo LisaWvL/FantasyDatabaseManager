@@ -1,93 +1,93 @@
 [
     {
         "Id": 1,
+        "LanguageId": null,
+        "LocationId": null,
         "FactionId": null,
-        "SnapshotId": 6,
-        "LanguageId": 3,
-        "LocationId": 2
+        "ChapterId": null
     },
     {
         "Id": 2,
+        "LanguageId": null,
+        "LocationId": null,
         "FactionId": null,
-        "SnapshotId": 5,
-        "LanguageId": 4,
-        "LocationId": 2
+        "ChapterId": null
     },
     {
         "Id": 3,
-        "FactionId": null,
-        "SnapshotId": 4,
         "LanguageId": null,
-        "LocationId": 2
+        "LocationId": null,
+        "FactionId": null,
+        "ChapterId": null
     },
     {
         "Id": 4,
+        "LanguageId": null,
+        "LocationId": null,
         "FactionId": null,
-        "SnapshotId": 6,
-        "LanguageId": 5,
-        "LocationId": 3
+        "ChapterId": null
     },
     {
         "Id": 5,
-        "FactionId": null,
-        "SnapshotId": 5,
         "LanguageId": null,
-        "LocationId": 3
+        "LocationId": null,
+        "FactionId": null,
+        "ChapterId": null
     },
     {
         "Id": 6,
-        "FactionId": null,
-        "SnapshotId": 2,
         "LanguageId": null,
-        "LocationId": 2
+        "LocationId": null,
+        "FactionId": null,
+        "ChapterId": null
     },
     {
         "Id": 7,
-        "FactionId": null,
-        "SnapshotId": 1,
         "LanguageId": null,
-        "LocationId": 2
+        "LocationId": null,
+        "FactionId": null,
+        "ChapterId": null
     },
     {
         "Id": 8,
-        "FactionId": null,
-        "SnapshotId": 6,
         "LanguageId": null,
-        "LocationId": 2
+        "LocationId": null,
+        "FactionId": null,
+        "ChapterId": null
     },
     {
         "Id": 9,
-        "FactionId": null,
-        "SnapshotId": 6,
         "LanguageId": null,
-        "LocationId": 2
+        "LocationId": null,
+        "FactionId": null,
+        "ChapterId": null
     },
     {
         "Id": 10,
-        "FactionId": null,
-        "SnapshotId": 2,
         "LanguageId": null,
-        "LocationId": 3
+        "LocationId": null,
+        "FactionId": null,
+        "ChapterId": null
     },
     {
         "Id": 11,
+        "LanguageId": null,
+        "LocationId": null,
         "FactionId": null,
-        "SnapshotId": 5,
-        "LanguageId": 6,
-        "LocationId": 2
+        "ChapterId": null
     },
     {
         "Id": 12,
+        "LanguageId": null,
+        "LocationId": null,
         "FactionId": null,
-        "SnapshotId": 6,
-        "LanguageId": 6,
-        "LocationId": 2
+        "ChapterId": null
     },
     {
         "Id": 13,
+        "LanguageId": null,
+        "LocationId": null,
         "FactionId": null,
-        "SnapshotId": 5,
-        "LanguageId": 3,
-        "LocationId": 2
+        "ChapterId": null
     }
 ]

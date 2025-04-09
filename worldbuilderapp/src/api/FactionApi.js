@@ -50,12 +50,12 @@ export const deleteFaction = async (id) => {
     }
 };
 
-export const fetchNewSnapshot = async (id) => {
+export const fetchNewChapter = async (id) => {
     try {
-        const response = await axiosInstance.get(`/faction/${id}/new-snapshot`);
+        const response = await axiosInstance.get(`/faction/${id}/new-chapter`);
         return response.data;
     } catch (error) {
-        console.error(`❌ Failed to fetch new snapshot for faction ${id}:`, error);
+        console.error(`❌ Failed to fetch new chapter for faction ${id}:`, error);
         throw error;
     }
 };

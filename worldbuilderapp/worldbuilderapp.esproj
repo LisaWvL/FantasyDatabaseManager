@@ -10,10 +10,23 @@
     <BuildCommand>(localdb)\MSSQLLocalDB</BuildCommand>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="public\" />
+    <None Remove="src\components\FilterBar.jsx" />
+    <None Remove="src\hooks\useChapterManager.js" />
+    <None Remove="src\hooks\useCharacters.js" />
+    <None Remove="src\hooks\useEntityManager.js" />
+    <None Remove="src\hooks\useRowEditKeyboard.js" />
+    <None Remove="src\styles\index.css" />
+    <None Remove="src\styles\theme.css" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="src\assets\" />
     <Folder Include="src\data\" />
+    <Folder Include="src\hooks\" />
     <Folder Include="src\services\" />
     <Folder Include="src\state\" />
+    <Folder Include="src\utils\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".vscode\task.json" />
   </ItemGroup>
 </Project>

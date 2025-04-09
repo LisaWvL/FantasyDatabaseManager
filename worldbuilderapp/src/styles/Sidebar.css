@@ -3,66 +3,129 @@
     --bg: #121212;
     --text: #e0d6c6;
     --card-bg: rgba(28, 20, 18, 0.85);
+    --font-header: 'Cinzel', serif;
+    --font-body: 'Inter', sans-serif;
 }
 
 body {
     margin: 0;
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-header);
     background-color: var(--bg);
     color: var(--text);
-    min-width: 320px;
-    min-height: 100vh;
     overflow: hidden;
+    height: 100vh;
 }
 
-
-/* Make the app shell aware of sidebar width */
 .app-shell {
     display: flex;
-    flex-direction: row;
     height: 100vh;
     width: 100vw;
 }
 
-/* Sidebar */
-.sidebar {
-    height: 100vh; /* ✅ Make sure it's always full height */
-    width: 250px;
-    background-color: rgba(32, 24, 20, 0.95);
-    color: #e0d6c6;
-    padding: 1rem;
-    border-right: 1px solid #444;
-    transition: margin-left 0.3s ease-in-out;
-    position: relative;
-    z-index: 1000;
+/* Sidebar wrapper includes the sidebar and the button */
+.sidebar-wrapper {
+    display: flex;
+    flex-direction: row;
+    transition: width 0.3s ease-in-out;
 }
 
-    /* Sidebar collapses by sliding out, but still takes space */
-    .sidebar.collapsed {
-        margin-left: -250px; /* ✅ Keeps its size, but visually slides away */
+    .sidebar-wrapper.expanded {
+        width: 250px;
     }
 
-/* Toggle Button on edge */
-.sidebar-toggle-btn {
-    position: absolute;
-    top: 1rem;
-    right: -1.25rem;
-    background-color: #5c3a3a;
-    color: #e0d6c6;
-    border: none;
-    padding: 0.25rem 0.5rem;
-    font-size: 1rem;
-    border-radius: 0 4px 4px 0;
-    cursor: pointer;
-    z-index: 1100;
+    .sidebar-wrapper.collapsed {
+        width: 30px; /* Only enough for the toggle button */
+    }
+
+/* Sidebar content panel */
+.sidebar {
+    width: 250px;
+    background-color: rgba(32, 24, 20, 0.95);
+    color: var(--text);
+    padding: 1rem;
+    border-right: 1px solid #444;
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out, opacity 0.3s;
 }
 
-/* Main content next to sidebar */
+    .sidebar.collapsed {
+        display: none;
+    }
+
+/* Toggle button sits next to sidebar, always visible */
+.sidebar-toggle-btn {
+    width: 32px;
+    height: 32px;
+    margin: 8px 0 0 0;
+    background-color: var(--accent);
+    color: #000;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 0 6px 6px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+    .sidebar-toggle-btn:hover {
+        box-shadow: 0 0 6px var(--accent);
+        background-color: #c598ff; /* Slightly lighter purple on hover */
+    }
+
+
+/* Sidebar text elements */
+.sidebar h2,
+.sidebar h3 {
+    font-family: var(--font-header);
+    font-size: 1.25rem;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.sidebar li {
+    margin-bottom: 0.5rem;
+}
+
+.sidebar a {
+    color: var(--accent);
+    text-decoration: none;
+    font-family: var(--font-body);
+}
+
+    .sidebar a:hover {
+        color: #ddaaff;
+    }
+
+/* Main content */
 .main-content {
     flex: 1;
     overflow-y: auto;
+    background: url('/assets/parchment-bg.png') center center / cover no-repeat;
+    box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.8);
     padding: 2rem;
     transition: margin-left 0.3s ease-in-out;
-    background: url('/assets/parchment-bg.png') center center / no-repeat;
-    box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.8);
 }
+/* === THEME TOGGLE SWITCH START === */
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    font-family: var(--font-body);
+    color: var(--text);
+}
+
+    .theme-toggle input[type="checkbox"] {
+        margin-right: 0.5rem;
+        transform: scale(1.2);
+        accent-color: var(--accent);
+        cursor: pointer;
+    }
+/* === THEME TOGGLE SWITCH END === */

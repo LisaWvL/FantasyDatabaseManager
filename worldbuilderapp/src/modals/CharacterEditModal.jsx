@@ -1,105 +1,121 @@
-//TODO
-//CharacterEditModal.jsx
-// Refactor to be reusable for other entities(Location, Event, etc.)
-// Add dropdowns for Language, Location, Faction
-// Pre - fill current values
-// Save changes via updateCharacter
-// Add "Create New Snapshot" button inside modal
-// Add "Delete" button inside modal
-// Add "Show Snapshots" button inside modal
-// Add "Copy to Snapshot" button inside modal
-// Add "Pin" button inside modal
-// Add "Show All Related" button inside modal
-// Add "Show All Snapshots" button inside modal
-// Add "Show All Related Snapshots" button inside modal
-// Add "Show PlotPoints for Current Snapshot Only" toggle inside modal
-// Add "Show All Snapshots" toggle inside modal
-// Add "Show All Related Snapshots" toggle inside modal
-// Add "Show All Related Characters" toggle inside modal
-// Add "Show All Related Locations" toggle inside modal
-// Add "Show All Related Factions" toggle inside modal
-// Add "Show All Related Events" toggle inside modal
-// Add "Show All Related Items" toggle inside modal
-// Add "Show All Related Rivers" toggle inside modal
-// Add "Show All Related Routes" toggle inside modal
-// Add "Show All Related Languages" toggle inside modal
-// Add "Show All Related Eras" toggle inside modal
-// Add "Show All Related PlotPoints" toggle inside modal
-//add code to implement all te mentioned features
+﻿// src/pages/CharacterPage.jsx
+import React, { useEffect, useState } from "react";
+import '../styles/CharacterPage.css';
 
+import {
+    fetchCharacters,
+    deleteCharacter,
+    updateCharacter,
+} from '../api/CharacterApi';
 
+import {
+    fetchFactions,
+    fetchLocations,
+    fetchLanguages
+} from '../api/DropdownApi';
 
-// src/components/CharacterEditModal.jsx
-import React, { useState, useEffect } from 'react';
-import '../styles/CharacterEditModal.css';
+import { fetchChapters } from '../api/ChapterApi';
 
-export default function CharacterEditModal({ character, onClose, onSave, factions, locations, languages }) {
-    const [form, setForm] = useState({ ...character });
+import CharacterCard from "../components/CharacterCard";
+import CharacterEditModal from "../modals/CharacterEditModal";
+import "../styles/App.css";
+
+export default function CharacterPage() {
+    const [characters, setCharacters] = useState([]);
+    const [chapters, setChapters] = useState([]);
+    const [editingCharacter, setEditingCharacter] = useState(null);
+    const [factions, setFactions] = useState([]);
+    const [locations, setLocations] = useState([]);
+    const [languages, setLanguages] = useState([]);
 
     useEffect(() => {
-        setForm({ ...character });
-    }, [character]);
+        loadData();
+    }, []);
 
-    const handleChange = (field, value) => {
-        setForm(prev => ({ ...prev, [field]: value }));
+    const loadData = async () => {
+        try {
+            const [characterData, chapterData, factionsData, locationsData, languagesData] = await Promise.all([
+                fetchCharacters(),
+                fetchChapters(),
+                fetchFactions(),
+                fetchLocations(),
+                fetchLanguages()
+            ]);
+
+            setCharacters(characterData);
+            setChapters(chapterData);
+            setFactions(factionsData);
+            setLocations(locationsData);
+            setLanguages(languagesData);
+        } catch (err) {
+            console.error("❌ Failed to load data:", err);
+        }
     };
 
-    const handleSubmit = () => {
-        onSave(form);
+    const handleDelete = async (id) => {
+        if (confirm("Delete this character?")) {
+            await deleteCharacter(id);
+            await loadData();
+        }
     };
+
+    const handleEdit = (char) => {
+        setEditingCharacter(char);
+    };
+
+    const handleModalClose = () => {
+        setEditingCharacter(null);
+    };
+
+    const handleModalSave = async (updatedChar) => {
+        await updateCharacter(updatedChar.id, updatedChar);
+        await loadData();
+        setEditingCharacter(null);
+    };
+
+    // 🧠 Group characters by chapter ID
+    const charactersByChapter = characters.reduce((acc, char) => {
+        if (!char.chapterId) return acc;
+        if (!acc[char.chapterId]) acc[char.chapterId] = [];
+        acc[char.chapterId].push(char);
+        return acc;
+    }, {});
+
+    // 📘 Filter chapters that have visible content
+    const relevantChapters = chapters.filter(c =>
+        c.chapterTitle || c.chapterText || c.chapterSummary || c.toDo
+    );
 
     return (
-        <div className="modal-backdrop">
-            <div className="modal">
-                <h2>Edit Character</h2>
-
-                <div className="form-grid">
-                    <label>Personality:
-                        <input value={form.personality || ''} onChange={e => handleChange('personality', e.target.value)} />
-                    </label>
-                    <label>Motivation:
-                        <input value={form.motivation || ''} onChange={e => handleChange('motivation', e.target.value)} />
-                    </label>
-                    <label>Desire:
-                        <input value={form.desire || ''} onChange={e => handleChange('desire', e.target.value)} />
-                    </label>
-                    <label>Fear:
-                        <input value={form.fear || ''} onChange={e => handleChange('fear', e.target.value)} />
-                    </label>
-                    <label>Weakness:
-                        <input value={form.weakness || ''} onChange={e => handleChange('weakness', e.target.value)} />
-                    </label>
-                    <label>Flaw:
-                        <input value={form.flaw || ''} onChange={e => handleChange('flaw', e.target.value)} />
-                    </label>
-                    <label>Misbelief:
-                        <input value={form.misbelief || ''} onChange={e => handleChange('misbelief', e.target.value)} />
-                    </label>
-                    <label>Faction:
-                        <select value={form.factionId || ''} onChange={e => handleChange('factionId', parseInt(e.target.value))}>
-                            <option value="">-- None --</option>
-                            {factions.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
-                        </select>
-                    </label>
-                    <label>Location:
-                        <select value={form.locationId || ''} onChange={e => handleChange('locationId', parseInt(e.target.value))}>
-                            <option value="">-- None --</option>
-                            {locations.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}
-                        </select>
-                    </label>
-                    <label>Language:
-                        <select value={form.languageId || ''} onChange={e => handleChange('languageId', parseInt(e.target.value))}>
-                            <option value="">-- None --</option>
-                            {languages.map(lang => <option key={lang.id} value={lang.id}>{lang.name}</option>)}
-                        </select>
-                    </label>
-                </div>
-
-                <div className="modal-actions">
-                    <button onClick={handleSubmit}>Save</button>
-                    <button onClick={onClose}>Cancel</button>
-                </div>
-            </div>
+        <div className="character-grid">
+            {relevantChapters.map(chap => (
+                <section key={chap.id} className="chapter-section">
+                    <h2 className="chapter-title">
+                        Book {chap.bookNumber} • Act {chap.actNumber} • Chapter {chap.chapterNumber}: {chap.chapterTitle}
+                    </h2>
+                    <div className="chapter-card-list">
+                        {(charactersByChapter[chap.id] || []).map(char => (
+                            <React.Fragment key={char.id}>
+                                <CharacterCard
+                                    chapters={(charactersByChapter[chap.id] || []).filter(c => c.name === char.name)}
+                                    onEdit={() => handleEdit(char)}
+                                    onDelete={() => handleDelete(char.id)}
+                                />
+                                {editingCharacter?.id === char.id && (
+                                    <CharacterEditModal
+                                        character={editingCharacter}
+                                        onClose={handleModalClose}
+                                        onSave={handleModalSave}
+                                        factions={factions}
+                                        locations={locations}
+                                        languages={languages}
+                                    />
+                                )}
+                            </React.Fragment>
+                        ))}
+                    </div>
+                </section>
+            ))}
         </div>
     );
 }

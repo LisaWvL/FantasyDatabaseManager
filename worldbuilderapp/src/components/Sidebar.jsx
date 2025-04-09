@@ -22,14 +22,25 @@
 import { Link } from 'react-router-dom';
 import '../styles/Sidebar.css'; // optional: move styles here
 
+
 export default function Sidebar({ show, toggle }) {
     return (
-        <div className={`sidebar ${show ? 'open' : 'collapsed'}`}>
-            {/* Toggle Arrow */}
-            <button className="sidebar-toggle-btn" onClick={toggle}>
-                {show ? '❮' : '❯'}
-            </button>
-
+        <div className={`sidebar-wrapper ${show ? '' : 'collapsed'}`}>
+            <div className={`sidebar ${show ? '' : 'collapsed'}`}>
+                <div className="theme-toggle">
+                    <label>
+                        <input
+                            type="checkbox"
+                            onChange={(e) => {
+                                const grim = e.target.checked;
+                                document.documentElement.classList.toggle('grim', grim);
+                                document.body.classList.toggle('grim', grim);
+                                localStorage.setItem('grimTheme', grim ? '1' : '0');
+                            }}
+                        />
+                        Grim Theme
+                    </label>
+                </div>
             <h2>Worldbuilder</h2>
             <nav>
                 <SidebarGroup title="Characters">
@@ -42,7 +53,7 @@ export default function Sidebar({ show, toggle }) {
                 <SidebarGroup title="Timeline">
                     <SidebarLink to="/eras">Eras</SidebarLink>
                     <SidebarLink to="/plotpoints">PlotPoints</SidebarLink>
-                    <SidebarLink to="/snapshots">Snapshots</SidebarLink>
+                    <SidebarLink to="/chapters">Chapters</SidebarLink>
                     <SidebarLink to="/events">Events</SidebarLink>
                     <SidebarLink to="/timelinestoryview">Timeline View</SidebarLink>
                 </SidebarGroup>
@@ -58,11 +69,15 @@ export default function Sidebar({ show, toggle }) {
                     <SidebarLink to="/routes">Routes</SidebarLink>
                 </SidebarGroup>
 
-                <SidebarGroup title="AI Assistant">
-                    <SidebarLink to="/assistant">Writing Assistant</SidebarLink>
-
+                <SidebarGroup title="Writing Assistant">
+                    <SidebarLink to="/writing-assistant">Writing Assistant</SidebarLink>
+                    <SidebarLink to="/assistant">AI Assistant</SidebarLink>
                 </SidebarGroup>
-            </nav>
+                </nav>
+            </div>
+            <button className="sidebar-toggle-btn" onClick={toggle}>
+                {show ? '❮' : '❯'}
+            </button>
         </div>
     );
 }

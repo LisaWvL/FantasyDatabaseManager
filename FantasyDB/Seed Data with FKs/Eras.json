@@ -1,42 +1,42 @@
 [
     {
         "Id": 1,
-        "SnapshotId": null
+        "ChapterId": null
     },
     {
         "Id": 2,
-        "SnapshotId": null
+        "ChapterId": null
     },
     {
         "Id": 3,
-        "SnapshotId": null
+        "ChapterId": null
     },
     {
         "Id": 4,
-        "SnapshotId": null
+        "ChapterId": null
     },
     {
         "Id": 5,
-        "SnapshotId": null
+        "ChapterId": null
     },
     {
         "Id": 6,
-        "SnapshotId": null
+        "ChapterId": null
     },
     {
         "Id": 7,
-        "SnapshotId": null
+        "ChapterId": null
     },
     {
         "Id": 8,
-        "SnapshotId": null
+        "ChapterId": null
     },
     {
         "Id": 9,
-        "SnapshotId": null
+        "ChapterId": null
     },
     {
         "Id": 10,
-        "SnapshotId": null
+        "ChapterId": null
     }
 ]

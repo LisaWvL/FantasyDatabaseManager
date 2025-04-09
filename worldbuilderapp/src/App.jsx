@@ -1,12 +1,14 @@
 ﻿// src/App.jsx
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import 'react-quill/dist/quill.snow.css';
+
 import MainLayout from './layout/MainLayout';
 
 // Pages
 import Dashboard from './pages/Dashboard.jsx';
 import CalendarPlotView from './pages/CalendarPlotView.jsx';
-import SnapshotEntityView from './pages/SnapshotEntityView.jsx';
+import ChapterEntityView from './pages/ChapterEntityView.jsx';
 
 import CharactersPage from './pages/CharactersPage.jsx';
 import CharacterRelationshipsPage from './pages/CharacterRelationshipsPage.jsx';
@@ -16,9 +18,7 @@ import LanguagesPage from './pages/LanguagesPage.jsx';
 import ErasPage from './pages/ErasPage.jsx';
 import EventsPage from './pages/EventsPage.jsx';
 import PlotPointsPage from './pages/PlotPointsPage.jsx';
-import SnapshotsPage from './pages/SnapshotsPage.jsx';
 import TimelineStoryView from './pages/TimelineStoryView.jsx';
-
 
 import ItemsPage from './pages/ItemsPage.jsx';
 import PriceExamplesPage from './pages/PriceExamplesPage.jsx';
@@ -27,6 +27,7 @@ import LocationsPage from './pages/LocationsPage.jsx';
 import RiversPage from './pages/RiversPage.jsx';
 import RoutesPage from './pages/RoutesPage.jsx';
 import AssistantPage from './pages/AssistantPage.jsx';
+import WritingAssistantPage from './pages/WritingAssistantPage.jsx';
 
 
 function App() {
@@ -40,7 +41,7 @@ function App() {
                     {/* Core Pages */}
                     <Route path="dashboard" element={<Dashboard />} />
                     <Route path="calendar" element={<CalendarPlotView />} />
-                    <Route path="snapshots" element={<SnapshotEntityView />} />
+                    <Route path="chapters" element={<ChapterEntityView />} />
 
                     {/* Characters & Relations */}
                     <Route path="characters" element={<CharactersPage />} />
@@ -52,7 +53,6 @@ function App() {
                     <Route path="eras" element={<ErasPage />} />
                     <Route path="events" element={<EventsPage />} />
                     <Route path="plotpoints" element={<PlotPointsPage />} />
-                    <Route path="snapshots-overview" element={<SnapshotsPage />} />
                     <Route path="/timelinestoryview" element={<TimelineStoryView />} />
 
                     {/* Items */}
@@ -64,8 +64,9 @@ function App() {
                     <Route path="rivers" element={<RiversPage />} />
                     <Route path="routes" element={<RoutesPage />} />
 
-                    {/* AI Assistant */}
+                    {/* Writing Assistant */}
                     <Route path="/assistant" element={<AssistantPage />} />
+                    <Route path="writing-assistant" element={<WritingAssistantPage />} />
                 </Route>
             </Routes>
         </Router>

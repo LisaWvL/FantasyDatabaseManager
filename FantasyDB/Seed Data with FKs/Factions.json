@@ -4,27 +4,27 @@
         "LeaderId": null,
         "HQLocationId": null,
         "FounderId": null,
-        "SnapshotId": null
+        "ChapterId": null
     },
     {
         "Id": 2,
         "LeaderId": null,
         "HQLocationId": null,
         "FounderId": null,
-        "SnapshotId": null
+        "ChapterId": null
     },
     {
         "Id": 3,
         "LeaderId": null,
         "HQLocationId": null,
         "FounderId": null,
-        "SnapshotId": null
+        "ChapterId": null
     },
     {
         "Id": 4,
         "LeaderId": null,
         "HQLocationId": null,
         "FounderId": null,
-        "SnapshotId": null
+        "ChapterId": null
     }
 ]

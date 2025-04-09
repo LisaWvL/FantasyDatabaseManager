@@ -10,39 +10,39 @@ namespace FantasyDB.ViewModels
         public string? Name { get; set; } = string.Empty;
         public string? Type { get; set; } = string.Empty;
         public string? Biome { get; set; } = string.Empty;
-        [EditableForSnapshot]
+        [EditableForChapter]
         public string? Cultures { get; set; } = string.Empty;
-        [EditableForSnapshot]
+        [EditableForChapter]
         public string? Politics { get; set; } = string.Empty;
-        [EditableForSnapshot]
+        [EditableForChapter]
         public int? TotalPopulation { get; set; }
-        [EditableForSnapshot]
+        [EditableForChapter]
         public int? DivineMagicians { get; set; }
-        [EditableForSnapshot]
+        [EditableForChapter]
         public int? WildMagicians { get; set; }
 
 
         // --------------------------------------------
         // MULTIPLE EVENTS AND LANGUAGES
         // --------------------------------------------
-        [EditableForSnapshot]
-        public List<int> EventIds { get; set; } = new();
-        public List<string> EventNames { get; set; } = new();
+        [EditableForChapter]
+        public List<int> EventIds { get; set; } = [];
+        public List<string> EventNames { get; set; } = [];
 
-        [EditableForSnapshot]
-        public List<int> LanguageIds { get; set; } = new();
-        public List<string>? LanguageNames { get; set; } = new();
+        [EditableForChapter]
+        public List<int> LanguageIds { get; set; } = [];
+        public List<string>? LanguageNames { get; set; } = [];
 
         // --------------------------------------------
         // RELATIONSHIP FIELDS
         // --------------------------------------------
-        [EditableForSnapshot]
+        [EditableForChapter]
         public int? ParentLocationId { get; set; }
         public string? ParentLocationName { get; set; } = string.Empty;
 
-        [EditableForSnapshot]
-        public int? SnapshotId { get; set; }
-        public string? SnapshotName { get; set; } = string.Empty;
+        [EditableForChapter]
+        public int? ChapterId { get; set; }
+        public int? ChapterNumber { get; set; } = 0;
 
 
     }

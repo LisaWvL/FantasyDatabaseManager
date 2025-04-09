@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>c6381189-f420-43b8-868d-d8e8d0c74058</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>FantasyAssistant.py</StartupFile>
+    <StartupFile>assistant_server.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -16,8 +16,12 @@
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <InterpreterId>
     </InterpreterId>
-    <InterpreterPath>F:\Development\Python\Python.exe</InterpreterPath>
+    <InterpreterPath>F:\Development\Python\python.exe</InterpreterPath>
     <SuppressEnvironmentCreationPrompt>True</SuppressEnvironmentCreationPrompt>
+    <TestFramework>none</TestFramework>
+    <UnitTestPattern>test*.py</UnitTestPattern>
+    <UnitTestRootDirectory>.</UnitTestRootDirectory>
+    <IsWindowsApplication>False</IsWindowsApplication>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,13 +33,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="analyzers\feedback_engine.py" />
-    <Compile Include="api\assistant_server.py" />
+    <Compile Include="assistant_server.py" />
+    <Compile Include="models\chapter_prompt_engine.py" />
+    <Compile Include="models\conversation_store.py" />
     <Compile Include="embeddings\loader.py" />
-    <Compile Include="FantasyAssistant.py" />
+    <Compile Include="models\MemoryManager.py" />
     <Compile Include="models\ollama_client.py" />
-    <Compile Include="models\snapshot_prompt_engine.py" />
+    <Compile Include="models\TokenUtils.py" />
     <Compile Include="scenes\generation_session.py" />
-    <Compile Include="utils\config.py" />
     <Compile Include="utils\usage_logger.py" />
     <Compile Include="venv\Lib\site-packages\pip\_internal\build_env.py" />
     <Compile Include="venv\Lib\site-packages\pip\_internal\cache.py" />
@@ -577,7 +582,6 @@
     <Content Include="embeddings\__pycache__\loader.cpython-313.pyc" />
     <Content Include="FantasyAssistant\embeddings\vector_store.db\chroma.sqlite3" />
     <Content Include="models\__pycache__\ollama_client.cpython-313.pyc" />
-    <Content Include="models\__pycache__\snapshot_prompt_engine.cpython-313.pyc" />
     <Content Include="requirements.txt" />
     <Content Include="scenes\__pycache__\generation_session.cpython-313.pyc" />
     <Content Include="utils\__pycache__\config.cpython-313.pyc" />

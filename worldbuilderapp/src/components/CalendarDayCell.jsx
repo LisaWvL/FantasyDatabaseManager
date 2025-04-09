@@ -50,29 +50,43 @@
 
 
 // src/components/CalendarDayCell.jsx
-import React from "react";
-import { useDrop } from "react-dnd";
-import DraggablePlotPointCard from "./DraggablePlotPointCard";
-import "../styles/CalendarPlotView.css";
+import React from 'react';
+import { useDrop } from 'react-dnd';
+import DraggablePlotPointCard from './DraggablePlotPointCard';
+import '../styles/CalendarPlotView.css';
 
-export default function CalendarDayCell({ day, plotPoints, onDropPlotPoint, onContextMenu }) {
-    const [, drop] = useDrop({
-        accept: "plotpoint",
-        drop: (item) => onDropPlotPoint(item.id, day.id),
-    });
+const CalendarDayCell = ({ day, plotPoints = [], onDropPlotPoint, onContextMenu }) => {
+    const [{ isOver, canDrop }, drop] = useDrop(() => ({
+        accept: 'PLOT_POINT',
+        drop: (item) => {
+            onDropPlotPoint(item.id, day.id);
+        },
+        collect: (monitor) => ({
+            isOver: monitor.isOver(),
+            canDrop: monitor.canDrop(),
+        }),
+    }), [day]);
+
+    const handleContextMenu = (e) => {
+        e.preventDefault();
+        if (onContextMenu) {
+            onContextMenu(e, day, 'calendar');
+        }
+    };
 
     return (
         <div
-            className="calendar-cell"
             ref={drop}
-            onContextMenu={(e) => onContextMenu(e, day, "calendar")}
+            className={`calendar-cell ${isOver && canDrop ? 'highlight-drop' : ''}`}
+            onContextMenu={handleContextMenu}
         >
             <div className="calendar-header">
-                <span>{day.day} {day.weekday}</span>
-                <span>{day.month}</span>
+                <span className="day-number">{day.day}</span>
+                <span className="weekday-name">{day.weekday}</span>
+                <span className="month-name">{day.month}</span>
             </div>
 
-            {plotPoints.map(plotPoint => (
+            {plotPoints.map((plotPoint) => (
                 <DraggablePlotPointCard
                     key={plotPoint.id}
                     plotPoint={plotPoint}
@@ -81,5 +95,6 @@ export default function CalendarDayCell({ day, plotPoints, onDropPlotPoint, onCo
             ))}
         </div>
     );
-}
+};
 
+export default CalendarDayCell;
