@@ -15,9 +15,10 @@ namespace FantasyDB.Controllers
     public class CalendarController(AppDbContext context, IMapper mapper, IDropdownService dropdownService) : BaseEntityController<Calendar, CalendarViewModel>(context, mapper, dropdownService)
     {
         protected override IQueryable<Calendar> GetQueryable()
+
         {
-            return _context.Dates
-                .Include(c => c.Event);
+            return _context.Dates.AsQueryable();
+
         }
 
         // -------------------------------------------------------------
@@ -26,8 +27,23 @@ namespace FantasyDB.Controllers
         [HttpGet]
         public override async Task<ActionResult<List<CalendarViewModel>>> Index()
         {
-            var entries = await GetQueryable().AsNoTracking().ToListAsync();
-            return Ok(_mapper.Map<List<CalendarViewModel>>(entries));
+            var calendars = await _context.Dates.AsNoTracking().ToListAsync();
+            var events = await _context.Events.AsNoTracking().ToListAsync();
+
+            var calendarViewModels = calendars.Select(c =>
+            {
+                var evt = events.FirstOrDefault(e => e.CalendarId == c.Id);
+                return new CalendarViewModel
+                {
+                    Id = c.Id,
+                    Day = c.Day,
+                    Month = c.Month ?? "",
+                    Weekday = c.Weekday ?? "",
+                    Year = c.Year,
+                };
+            }).ToList();
+
+            return Ok(calendarViewModels);
         }
 
         // -------------------------------------------------------------
@@ -36,14 +52,23 @@ namespace FantasyDB.Controllers
         [HttpGet("{id}")]
         public override async Task<ActionResult<CalendarViewModel>> GetById(int id)
         {
-            var day = await _context.Dates
-                .Include(c => c.Event)
-                .FirstOrDefaultAsync(c => c.Id == id);
+            var calendar = await _context.Dates.FindAsync(id);
+            if (calendar == null) return NotFound();
 
-            if (day == null)
-                return NotFound();
+            var evt = await _context.Events
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e => e.CalendarId == id);
 
-            return Ok(_mapper.Map<CalendarViewModel>(day));
+            var viewModel = new CalendarViewModel
+            {
+                Id = calendar.Id,
+                Day = calendar.Day,
+                Month = calendar.Month ?? "",
+                Weekday = calendar.Weekday ?? "",
+                Year = calendar.Year,
+            };
+
+            return Ok(viewModel);
         }
 
         // -------------------------------------------------------------
@@ -52,17 +77,27 @@ namespace FantasyDB.Controllers
         [HttpGet("grid")]
         public async Task<ActionResult<List<CalendarViewModel>>> GetFullGrid()
         {
-            var all = await _context.Dates
-                .Include(c => c.Event)
-                .AsNoTracking()
-                .ToListAsync();
+            var calendars = await _context.Dates.AsNoTracking().ToListAsync();
+            var events = await _context.Events.AsNoTracking().ToListAsync();
 
-            var ordered = all
+            var calendarViewModels = calendars
+                .Select(c =>
+                {
+                    var evt = events.FirstOrDefault(e => e.CalendarId == c.Id);
+                    return new CalendarViewModel
+                    {
+                        Id = c.Id,
+                        Day = c.Day,
+                        Month = c.Month ?? "",
+                        Weekday = c.Weekday ?? "",
+                        Year = c.Year,
+                    };
+                })
                 .OrderBy(c => c.Month == "Jespen" ? 999 : GetMonthIndex(c.Month))
                 .ThenBy(c => c.Day ?? 0)
                 .ToList();
 
-            return Ok(_mapper.Map<List<CalendarViewModel>>(ordered));
+            return Ok(calendarViewModels);
         }
 
         private static int GetMonthIndex(string? month)
@@ -84,12 +119,25 @@ namespace FantasyDB.Controllers
         [HttpGet("with-events")]
         public async Task<ActionResult<List<CalendarViewModel>>> GetDaysWithEvents()
         {
-            var daysWithEvents = await _context.Dates
-                .Include(c => c.Event)
-                .Where(c => c.EventId != null)
+            var events = await _context.Events.AsNoTracking().ToListAsync();
+            var calendars = await _context.Dates
+                .Where(c => events.Any(e => e.CalendarId == c.Id))
                 .ToListAsync();
 
-            return Ok(_mapper.Map<List<CalendarViewModel>>(daysWithEvents));
+            var result = calendars.Select(c =>
+            {
+                var evt = events.FirstOrDefault(e => e.CalendarId == c.Id);
+                return new CalendarViewModel
+                {
+                    Id = c.Id,
+                    Day = c.Day,
+                    Month = c.Month ?? "",
+                    Weekday = c.Weekday ?? "",
+                    Year = c.Year,
+                };
+            }).ToList();
+
+            return Ok(result);
         }
 
         // -------------------------------------------------------------
@@ -98,13 +146,27 @@ namespace FantasyDB.Controllers
         [HttpGet("by-month/{month}")]
         public async Task<ActionResult<List<CalendarViewModel>>> GetByMonth(string month)
         {
-            var results = await _context.Dates
-                .Include(c => c.Event)
+            var calendars = await _context.Dates
                 .Where(c => c.Month == month)
                 .OrderBy(c => c.Day)
                 .ToListAsync();
 
-            return Ok(_mapper.Map<List<CalendarViewModel>>(results));
+            var events = await _context.Events.AsNoTracking().ToListAsync();
+
+            var result = calendars.Select(c =>
+            {
+                var evt = events.FirstOrDefault(e => e.CalendarId == c.Id);
+                return new CalendarViewModel
+                {
+                    Id = c.Id,
+                    Day = c.Day,
+                    Month = c.Month ?? "",
+                    Weekday = c.Weekday ?? "",
+                    Year = c.Year,
+                };
+            }).ToList();
+
+            return Ok(result);
         }
 
         // -------------------------------------------------------------
@@ -113,14 +175,25 @@ namespace FantasyDB.Controllers
         [HttpGet("day/{month}/{day}")]
         public async Task<ActionResult<CalendarViewModel>> GetByMonthDay(string month, int day)
         {
-            var entry = await _context.Dates
-                .Include(c => c.Event)
+            var calendar = await _context.Dates
                 .FirstOrDefaultAsync(c => c.Month == month && c.Day == day);
 
-            if (entry == null)
-                return NotFound();
+            if (calendar == null) return NotFound();
 
-            return Ok(_mapper.Map<CalendarViewModel>(entry));
+            var evt = await _context.Events
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e => e.CalendarId == calendar.Id);
+
+            var result = new CalendarViewModel
+            {
+                Id = calendar.Id,
+                Day = calendar.Day,
+                Month = calendar.Month ?? "",
+                Weekday = calendar.Weekday ?? "",
+                Year = calendar.Year,
+            };
+
+            return Ok(result);
         }
 
         // -------------------------------------------------------------
@@ -129,19 +202,13 @@ namespace FantasyDB.Controllers
         [HttpPost("assign-event")]
         public async Task<IActionResult> AssignEvent([FromBody] AssignEventRequest request)
         {
-            var calendarDay = await _context.Dates.FindAsync(request.DayId);
-            if (calendarDay == null)
-                return NotFound();
+            var eventEntry = await _context.Events.FindAsync(request.EventId);
+            if (eventEntry == null) return NotFound("Event not found.");
 
-            calendarDay.EventId = request.EventId;
+            eventEntry.CalendarId = request.DayId;
             await _context.SaveChangesAsync();
-            return Ok(new { message = "Event assigned to calendar day." });
-        }
 
-        public class AssignEventRequest
-        {
-            public int DayId { get; set; }
-            public int EventId { get; set; }
+            return Ok(new { message = "Event assigned to calendar day." });
         }
 
         // -------------------------------------------------------------
@@ -150,13 +217,22 @@ namespace FantasyDB.Controllers
         [HttpDelete("remove-event/{dayId}")]
         public async Task<IActionResult> RemoveEvent(int dayId)
         {
-            var day = await _context.Dates.FindAsync(dayId);
-            if (day == null)
-                return NotFound();
+            var evt = await _context.Events
+                .FirstOrDefaultAsync(e => e.CalendarId == dayId);
 
-            day.EventId = null;
+            if (evt == null)
+                return NotFound("No event assigned to this calendar day.");
+
+            evt.CalendarId = 0;
             await _context.SaveChangesAsync();
+
             return Ok(new { message = "Event removed from calendar day." });
+        }
+
+        public class AssignEventRequest
+        {
+            public int DayId { get; set; }
+            public int EventId { get; set; }
         }
 
         // -------------------------------------------------------------
@@ -176,12 +252,13 @@ namespace FantasyDB.Controllers
             return Ok(months);
         }
 
-
-        // Base CRUD already handled:
+        // -------------------------------------------------------------
+        // ✅ BaseEntityController already handles:
         // GET /api/calendar
         // GET /api/calendar/{id}
         // POST /api/calendar/create
         // PUT /api/calendar/{id}
         // DELETE /api/calendar/{id}
+        // -------------------------------------------------------------
     }
 }

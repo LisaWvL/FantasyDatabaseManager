@@ -1,29 +1,64 @@
-﻿//TODO this is my main layout,
-//it has a sidebar on the left which can be folded in and out
-// add a main content area where different pages are shown
-//add a header part, which adapts depending on the content of the content part
-//in the top right corner add a search bar which is present at all times
-//add a footer to the bottom of the page
-
-
-// src/layout/MainLayout.jsx
-
-// MainLayout.jsx
-import { useState } from 'react';
-import Sidebar from '../components/Sidebar.jsx';
+﻿import { useState } from 'react';
+import Sidebar from '../../features/sidebar/Sidebar.jsx';
 import { Outlet } from 'react-router-dom';
+import { ControlledMenu, MenuItem } from '@szhsin/react-menu';
+
+import '@szhsin/react-menu/dist/index.css';
+import '@szhsin/react-menu/dist/theme-dark.css';
 
 export default function MainLayout() {
-    const [sidebarOpen, setSidebarOpen] = useState(true);
-    const toggleSidebar = () => setSidebarOpen(prev => !prev);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const toggleSidebar = () => setSidebarOpen((prev) => !prev);
 
-    return (
-        <div className="app-shell">
-            <Sidebar show={sidebarOpen} toggle={toggleSidebar} />
-            <div className={`main-content ${sidebarOpen ? '' : 'expanded'}`}>
-                <Outlet />
-            </div>
-        </div>
-    );
+  const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
+  const [menuVisible, setMenuVisible] = useState(false);
+
+  const handleContextMenu = (e) => {
+    e.preventDefault();
+    setMenuPosition({ x: e.clientX, y: e.clientY });
+    setMenuVisible(true);
+  };
+
+  const closeMenu = () => setMenuVisible(false);
+
+  return (
+    <div className="app-shell" onContextMenu={handleContextMenu}>
+      <Sidebar show={sidebarOpen} toggle={toggleSidebar} />
+      <div className={`main-content ${sidebarOpen ? '' : 'expanded'}`}>
+        <Outlet />
+      </div>
+
+      <ControlledMenu
+        anchorPoint={menuPosition}
+        state={menuVisible ? 'open' : 'closed'}
+        onClose={closeMenu}
+        theme="dark"
+      >
+        <MenuItem
+          onClick={() => {
+            console.log('💾 Save');
+            closeMenu();
+          }}
+        >
+          Save
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            console.log('✖ Cancel');
+            closeMenu();
+          }}
+        >
+          Cancel
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            console.log('📋 Copy');
+            closeMenu();
+          }}
+        >
+          Copy
+        </MenuItem>
+      </ControlledMenu>
+    </div>
+  );
 }
-

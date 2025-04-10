@@ -1,93 +1,93 @@
 [
     {
         "Id": 1,
-        "LanguageId": null,
-        "LocationId": null,
+        "LanguageId": 3,
+        "ChapterId": 6,
         "FactionId": null,
-        "ChapterId": null
+        "LocationId": 2
     },
     {
         "Id": 2,
         "LanguageId": null,
-        "LocationId": null,
+        "ChapterId": 6,
         "FactionId": null,
-        "ChapterId": null
+        "LocationId": 2
     },
     {
         "Id": 3,
-        "LanguageId": null,
-        "LocationId": null,
-        "FactionId": null,
-        "ChapterId": null
+        "LanguageId": 1,
+        "ChapterId": 1,
+        "FactionId": 3,
+        "LocationId": 2
     },
     {
         "Id": 4,
         "LanguageId": null,
-        "LocationId": null,
+        "ChapterId": 6,
         "FactionId": null,
-        "ChapterId": null
+        "LocationId": 2
     },
     {
         "Id": 5,
         "LanguageId": null,
-        "LocationId": null,
+        "ChapterId": 6,
         "FactionId": null,
-        "ChapterId": null
+        "LocationId": 4
     },
     {
         "Id": 6,
         "LanguageId": null,
-        "LocationId": null,
+        "ChapterId": 6,
         "FactionId": null,
-        "ChapterId": null
+        "LocationId": 4
     },
     {
         "Id": 7,
         "LanguageId": null,
-        "LocationId": null,
-        "FactionId": null,
-        "ChapterId": null
+        "ChapterId": 2,
+        "FactionId": 1,
+        "LocationId": 2
     },
     {
         "Id": 8,
         "LanguageId": null,
-        "LocationId": null,
-        "FactionId": null,
-        "ChapterId": null
+        "ChapterId": 1,
+        "FactionId": 1,
+        "LocationId": 2
     },
     {
         "Id": 9,
         "LanguageId": null,
-        "LocationId": null,
+        "ChapterId": 2,
         "FactionId": null,
-        "ChapterId": null
+        "LocationId": 2
     },
     {
         "Id": 10,
         "LanguageId": null,
-        "LocationId": null,
-        "FactionId": null,
-        "ChapterId": null
+        "ChapterId": 3,
+        "FactionId": 1,
+        "LocationId": 2
     },
     {
         "Id": 11,
         "LanguageId": null,
-        "LocationId": null,
+        "ChapterId": 5,
         "FactionId": null,
-        "ChapterId": null
+        "LocationId": 2
     },
     {
         "Id": 12,
         "LanguageId": null,
-        "LocationId": null,
+        "ChapterId": 7,
         "FactionId": null,
-        "ChapterId": null
+        "LocationId": 2
     },
     {
         "Id": 13,
         "LanguageId": null,
-        "LocationId": null,
+        "ChapterId": 7,
         "FactionId": null,
-        "ChapterId": null
+        "LocationId": 2
     }
 ]

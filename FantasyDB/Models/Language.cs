@@ -11,7 +11,7 @@ namespace FantasyDB.Models // ✅ Add this line
 
         // ✅ Navigation for M:N with Location
         // Language.cs
-        public List<LanguageLocation> LanguageLocations { get; set; } = new();
+        public List<LanguageLocation> LanguageLocations { get; set; } = [];
 
     }
 

@@ -96,18 +96,16 @@ namespace FantasyDB.Migrations
                     b.Property<int?>("Day")
                         .HasColumnType("int");
 
-                    b.Property<int?>("EventId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Month")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Weekday")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<int?>("Year")
+                        .HasColumnType("int");
 
-                    b.HasIndex("EventId");
+                    b.HasKey("Id");
 
                     b.ToTable("Dates");
                 });
@@ -400,10 +398,10 @@ namespace FantasyDB.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ChapterId")
+                    b.Property<int?>("CalendarId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Day")
+                    b.Property<int?>("ChapterId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -412,28 +410,19 @@ namespace FantasyDB.Migrations
                     b.Property<int?>("LocationId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Month")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ParentLocationId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Purpose")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Year")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("CalendarId");
 
                     b.HasIndex("ChapterId");
 
                     b.HasIndex("LocationId");
-
-                    b.HasIndex("ParentLocationId");
 
                     b.ToTable("Events");
                 });
@@ -643,23 +632,23 @@ namespace FantasyDB.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("EndDateId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StartDateId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("endDateId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("startDateId")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ChapterId");
 
-                    b.HasIndex("endDateId");
+                    b.HasIndex("EndDateId");
 
-                    b.HasIndex("startDateId");
+                    b.HasIndex("StartDateId");
 
                     b.ToTable("PlotPoints");
                 });
@@ -808,16 +797,6 @@ namespace FantasyDB.Migrations
                     b.Navigation("Book");
                 });
 
-            modelBuilder.Entity("FantasyDB.Models.Calendar", b =>
-                {
-                    b.HasOne("FantasyDB.Models.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Event");
-                });
-
             modelBuilder.Entity("FantasyDB.Models.Chapter", b =>
                 {
                     b.HasOne("FantasyDB.Models.Act", "Act")
@@ -911,21 +890,24 @@ namespace FantasyDB.Migrations
 
             modelBuilder.Entity("FantasyDB.Models.Event", b =>
                 {
+                    b.HasOne("FantasyDB.Models.Calendar", "Date")
+                        .WithMany()
+                        .HasForeignKey("CalendarId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("FantasyDB.Models.Chapter", "Chapter")
                         .WithMany()
                         .HasForeignKey("ChapterId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("FantasyDB.Models.Location", null)
-                        .WithMany("Events")
-                        .HasForeignKey("LocationId");
-
                     b.HasOne("FantasyDB.Models.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("ParentLocationId")
+                        .WithMany("Events")
+                        .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Chapter");
+
+                    b.Navigation("Date");
 
                     b.Navigation("Location");
                 });
@@ -1057,21 +1039,21 @@ namespace FantasyDB.Migrations
                         .HasForeignKey("ChapterId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("FantasyDB.Models.Calendar", "endDate")
+                    b.HasOne("FantasyDB.Models.Calendar", "EndDate")
                         .WithMany()
-                        .HasForeignKey("endDateId")
+                        .HasForeignKey("EndDateId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("FantasyDB.Models.Calendar", "StartDate")
                         .WithMany()
-                        .HasForeignKey("startDateId")
+                        .HasForeignKey("StartDateId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Chapter");
 
-                    b.Navigation("StartDate");
+                    b.Navigation("EndDate");
 
-                    b.Navigation("endDate");
+                    b.Navigation("StartDate");
                 });
 
             modelBuilder.Entity("FantasyDB.Models.River", b =>

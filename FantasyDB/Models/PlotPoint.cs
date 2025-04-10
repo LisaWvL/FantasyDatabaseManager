@@ -15,21 +15,21 @@ namespace FantasyDB.Models
         public string Title { get; set; } = string.Empty;
         public string? Description { get; set; }
 
-        public int? startDateId { get; set; }
-        [ForeignKey("startDateId")]
+        public int? StartDateId { get; set; }
+        [ForeignKey("StartDateId")]
         public virtual Calendar? StartDate { get; set; }
 
-        public int? endDateId { get; set; }
-        [ForeignKey("endDateId")]
-        public virtual Calendar? endDate { get; set; }
+        public int? EndDateId { get; set; }
+        [ForeignKey("EndDateId")]
+        public virtual Calendar? EndDate { get; set; }
 
         public int? ChapterId { get; set; }
         [ForeignKey("ChapterId")]
         public virtual Chapter? Chapter { get; set; }
 
         // Junctions
-        public List<PlotPointRiver> PlotPointRivers { get; set; } = new();
-        public List<PlotPointRoute> PlotPointRoutes { get; set; } = new();
+        public List<PlotPointRiver> PlotPointRivers { get; set; } = [];
+        public List<PlotPointRoute> PlotPointRoutes { get; set; } = [];
 
     }
 }

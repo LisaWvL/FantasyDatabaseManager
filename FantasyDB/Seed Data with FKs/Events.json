@@ -1,50 +1,50 @@
 [
     {
         "Id": 1,
-        "ParentLocationId": null,
+        "ChapterId": null,
         "LocationId": null,
-        "ChapterId": null
+        "ParentLocationId": null
     },
     {
         "Id": 2,
-        "ParentLocationId": null,
+        "ChapterId": null,
         "LocationId": null,
-        "ChapterId": null
+        "ParentLocationId": null
     },
     {
         "Id": 3,
-        "ParentLocationId": null,
+        "ChapterId": null,
         "LocationId": null,
-        "ChapterId": null
+        "ParentLocationId": null
     },
     {
         "Id": 4,
-        "ParentLocationId": null,
+        "ChapterId": null,
         "LocationId": null,
-        "ChapterId": null
+        "ParentLocationId": null
     },
     {
         "Id": 5,
-        "ParentLocationId": null,
+        "ChapterId": null,
         "LocationId": null,
-        "ChapterId": null
+        "ParentLocationId": null
     },
     {
         "Id": 6,
-        "ParentLocationId": null,
+        "ChapterId": null,
         "LocationId": null,
-        "ChapterId": null
+        "ParentLocationId": null
     },
     {
         "Id": 7,
-        "ParentLocationId": null,
+        "ChapterId": null,
         "LocationId": null,
-        "ChapterId": null
+        "ParentLocationId": null
     },
     {
         "Id": 8,
-        "ParentLocationId": null,
+        "ChapterId": null,
         "LocationId": null,
-        "ChapterId": null
+        "ParentLocationId": null
     }
 ]

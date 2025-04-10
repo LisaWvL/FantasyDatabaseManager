@@ -19,7 +19,7 @@ public class PlotPointController(AppDbContext context, IMapper mapper, IDropdown
     {
         return _context.PlotPoints
             .Include(p => p.StartDate)
-            .Include(p => p.endDate)
+            .Include(p => p.EndDate)
             .Include(p => p.Chapter);
     }
 
@@ -128,7 +128,7 @@ public class PlotPointController(AppDbContext context, IMapper mapper, IDropdown
     public async Task<ActionResult<List<PlotPointViewModel>>> ByCalendar(int startDateId)
     {
         var plotPoints = await _context.PlotPoints
-            .Where(p => p.startDateId == startDateId)
+            .Where(p => p.StartDateId == startDateId)
             .ToListAsync();
         var vms = _mapper.Map<List<PlotPointViewModel>>(plotPoints);
         return Ok(vms);
@@ -138,7 +138,7 @@ public class PlotPointController(AppDbContext context, IMapper mapper, IDropdown
     public async Task<ActionResult<List<PlotPointViewModel>>> ByCalendarRange(int startDateId, int endDateId)
     {
         var plotPoints = await _context.PlotPoints
-            .Where(p => p.startDateId == startDateId && p.endDateId == endDateId)
+            .Where(p => p.StartDateId == startDateId && p.EndDateId == endDateId)
             .ToListAsync();
         var vms = _mapper.Map<List<PlotPointViewModel>>(plotPoints);
         return Ok(vms);
@@ -187,12 +187,12 @@ public class PlotPointController(AppDbContext context, IMapper mapper, IDropdown
             .ToList();
 
         var startDate = _context.Dates
-            .Where(d => d.Id == plotPoint.startDateId)
+            .Where(d => d.Id == plotPoint.StartDateId)
             .Select(d => new { d.Day, d.Month, d.Weekday })
             .FirstOrDefault();
 
         var endDate = _context.Dates
-            .Where(d => d.Id == plotPoint.endDateId)
+            .Where(d => d.Id == plotPoint.EndDateId)
             .Select(d => new { d.Day, d.Month, d.Weekday })
             .FirstOrDefault();
 
@@ -215,8 +215,8 @@ public class PlotPointController(AppDbContext context, IMapper mapper, IDropdown
                 Id = p.Id,
                 Title = p.Title,
                 Description = p.Description,
-                StartDateId = p.startDateId,
-                EndDateId = p.endDateId,
+                StartDateId = p.StartDateId,
+                EndDateId = p.EndDateId,
                 ChapterId = p.ChapterId
             })
             .ToListAsync();
@@ -232,8 +232,8 @@ public class PlotPointController(AppDbContext context, IMapper mapper, IDropdown
                 Id = p.Id,
                 Title = p.Title,
                 Description = p.Description,
-                StartDateId = p.startDateId,
-                EndDateId = p.endDateId,
+                StartDateId = p.StartDateId,
+                EndDateId = p.EndDateId,
                 ChapterId = p.ChapterId
             })
             .ToListAsync();
@@ -249,8 +249,8 @@ public class PlotPointController(AppDbContext context, IMapper mapper, IDropdown
                 Id = p.Id,
                 Title = p.Title,
                 Description = p.Description,
-                StartDateId = p.startDateId,
-                EndDateId = p.endDateId,
+                StartDateId = p.StartDateId,
+                EndDateId = p.EndDateId,
                 ChapterId = p.ChapterId
             })
             .ToListAsync();
@@ -266,8 +266,8 @@ public class PlotPointController(AppDbContext context, IMapper mapper, IDropdown
                 Id = p.Id,
                 Title = p.Title,
                 Description = p.Description,
-                StartDateId = p.startDateId,
-                EndDateId = p.endDateId,
+                StartDateId = p.StartDateId,
+                EndDateId = p.EndDateId,
                 ChapterId = p.ChapterId
             })
             .ToListAsync();
@@ -277,14 +277,14 @@ public class PlotPointController(AppDbContext context, IMapper mapper, IDropdown
     public async Task<ActionResult<List<PlotPointViewModel>>> GetDropdownByPlotPointAndChapterAndStartDate(int plotPointId, int chapterId, int startDateId)
     {
         var plotPoints = await _context.PlotPoints
-            .Where(p => p.Id == plotPointId && p.ChapterId == chapterId && p.startDateId == startDateId)
+            .Where(p => p.Id == plotPointId && p.ChapterId == chapterId && p.StartDateId == startDateId)
             .Select(p => new PlotPointViewModel
             {
                 Id = p.Id,
                 Title = p.Title,
                 Description = p.Description,
-                StartDateId = p.startDateId,
-                EndDateId = p.endDateId,
+                StartDateId = p.StartDateId,
+                EndDateId = p.EndDateId,
                 ChapterId = p.ChapterId
             })
             .ToListAsync();
@@ -294,14 +294,14 @@ public class PlotPointController(AppDbContext context, IMapper mapper, IDropdown
     public ActionResult<List<PlotPointViewModel>> GetDropdownByPlotPointAndChapterAndStartDateAndEndDate(int plotPointId, int chapterId, int startDateId, int endDateId)
     {
         var plotPoints = _context.PlotPoints
-            .Where(p => p.Id == plotPointId && p.ChapterId == chapterId && p.startDateId == startDateId && p.endDateId == endDateId)
+            .Where(p => p.Id == plotPointId && p.ChapterId == chapterId && p.StartDateId == startDateId && p.EndDateId == endDateId)
             .Select(p => new PlotPointViewModel
             {
                 Id = p.Id,
                 Title = p.Title,
                 Description = p.Description,
-                StartDateId = p.startDateId,
-                EndDateId = p.endDateId,
+                StartDateId = p.StartDateId,
+                EndDateId = p.EndDateId,
                 ChapterId = p.ChapterId
             })
             .ToList();

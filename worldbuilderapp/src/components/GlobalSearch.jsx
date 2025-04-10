@@ -23,23 +23,21 @@
 //TODO this component will return the JSX code
 //TODO this component will be imported in the App.js file
 //TODO this component will be rendered in the Header component
-import React from "react";
+import React from 'react';
 
 export default function GlobalSearch() {
-
-    return (
-        <div className="container">
-            <h1>Global Search</h1>
-            <input type="text" className="form-control" placeholder="Search..." />
-            <button className="btn btn-primary mt-2">Search</button>
-            <hr />
-            <h2>Search Results</h2>
-            <ul>
-                <li>Result 1</li>
-                <li>Result 2</li>
-                <li>Result 3</li>
-            </ul>
-        </div>
-    );
-
+  return (
+    <div className="container">
+      <h1>Global Search</h1>
+      <input type="text" className="form-control" placeholder="Search..." />
+      <button className="btn btn-primary mt-2">Search</button>
+      <hr />
+      <h2>Search Results</h2>
+      <ul>
+        <li>Result 1</li>
+        <li>Result 2</li>
+        <li>Result 3</li>
+      </ul>
+    </div>
+  );
 }

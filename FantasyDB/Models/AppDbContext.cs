@@ -62,7 +62,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     }
 
 
-    private void ApplyGlobalDeleteBehavior(ModelBuilder modelBuilder)
+    private static void ApplyGlobalDeleteBehavior(ModelBuilder modelBuilder)
     {
         foreach (var relationship in modelBuilder.Model.GetEntityTypes()
             .SelectMany(e => e.GetForeignKeys()))
@@ -71,12 +71,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         }
     }
 
-    private void ConfigureJoin<T>(ModelBuilder modelBuilder, Expression<Func<T, object?>> keyExpression) where T : class
+    private static void ConfigureJoin<T>(ModelBuilder modelBuilder, Expression<Func<T, object?>> keyExpression) where T : class
     {
         modelBuilder.Entity<T>().HasKey(keyExpression);
     }
 
-    private void ConfigureBook(ModelBuilder modelBuilder)
+    private static void ConfigureBook(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Book>()
             .HasMany(b => b.Acts)
@@ -85,7 +85,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .OnDelete(DeleteBehavior.Restrict);
     }
 
-    private void ConfigureAct(ModelBuilder modelBuilder)
+    private static void ConfigureAct(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Act>()
             .HasOne(a => a.Book)
@@ -94,7 +94,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .IsRequired(false)
             .OnDelete(DeleteBehavior.Restrict);
     }
-    private void ConfigureChapter(ModelBuilder modelBuilder)
+    private static void ConfigureChapter(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Chapter>()
             .HasOne(c => c.Act)
@@ -119,7 +119,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     }
 
 
-    private void ConfigureScene(ModelBuilder modelBuilder)
+    private static void ConfigureScene(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Scene>()
             .HasOne(s => s.Chapter)
@@ -131,7 +131,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
 
 
-    private void ConfigureCharacter(ModelBuilder modelBuilder)
+    private static void ConfigureCharacter(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Character>()
             .HasOne(c => c.Faction)
@@ -156,7 +156,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .OnDelete(DeleteBehavior.Restrict);
     }
 
-    private void ConfigureConversationTurns(ModelBuilder modelBuilder)
+    private static void ConfigureConversationTurns(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ConversationTurn>()
             .HasOne(c => c.PlotPoint)
@@ -164,7 +164,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .HasForeignKey("PlotPointId");
     }
 
-    private void ConfigureItem(ModelBuilder modelBuilder)
+    private static void ConfigureItem(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Item>()
             .HasOne(a => a.Owner)
@@ -177,16 +177,18 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .HasForeignKey("ChapterId");
     }
 
-    private void ConfigureCalendar(ModelBuilder modelBuilder)
+    private static void ConfigureCalendar(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Calendar>()
-            .HasOne(c => c.Event)
-            .WithMany()
-            .HasForeignKey("EventId");
+        modelBuilder.Entity<Event>()
+            .HasOne(e => e.Date)
+            .WithOne() // or .WithMany() if Calendar had multiple Events — but it doesn't need this.
+            .HasForeignKey<Event>("CalendarId")
+            .IsRequired(false);
+
     }
 
 
-    private void ConfigurePlotPoint(ModelBuilder modelBuilder)
+    private static void ConfigurePlotPoint(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<PlotPoint>()
             .HasOne(c => c.Chapter)
@@ -196,16 +198,16 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<PlotPoint>()
             .HasOne(c => c.StartDate)
             .WithMany()
-            .HasForeignKey("startDateId");
+            .HasForeignKey("StartDateId");
 
         modelBuilder.Entity<PlotPoint>()
-            .HasOne(c => c.endDate)
+            .HasOne(c => c.EndDate)
             .WithMany()
-            .HasForeignKey("endDateId");
+            .HasForeignKey("EndDateId");
     }
 
 
-    private void ConfigureCharacterRelationship(ModelBuilder modelBuilder)
+    private static void ConfigureCharacterRelationship(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<CharacterRelationship>()
             .HasOne(cr => cr.Character1)
@@ -224,7 +226,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     }
 
 
-    private void ConfigureEra(ModelBuilder modelBuilder)
+    private static void ConfigureEra(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Era>()
             .HasOne(e => e.Chapter)
@@ -233,22 +235,31 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     }
 
 
-    private void ConfigureEvent(ModelBuilder modelBuilder)
+    private static void ConfigureEvent(ModelBuilder modelBuilder)
     {
-
         modelBuilder.Entity<Event>()
             .HasOne(e => e.Location)
-            .WithMany()
-            .HasForeignKey("ParentLocationId");
+            .WithMany(l => l.Events)
+            .HasForeignKey(e => e.LocationId)
+            .IsRequired(false); // Optional, since LocationId is nullable
 
         modelBuilder.Entity<Event>()
             .HasOne(e => e.Chapter)
             .WithMany()
-            .HasForeignKey("ChapterId");
+            .HasForeignKey(e => e.ChapterId)
+            .IsRequired(false);
+
+        modelBuilder.Entity<Event>()
+            .HasOne(e => e.Date)
+            .WithMany()
+            .HasForeignKey(e => e.CalendarId)
+            .IsRequired(false);
     }
 
 
-    private void ConfigureLanguageLocation(ModelBuilder modelBuilder)
+
+
+    private static void ConfigureLanguageLocation(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<LanguageLocation>()
             .HasKey(ll => new { ll.LanguageId, ll.LocationId });
@@ -267,7 +278,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     }
 
 
-    private void ConfigureFaction(ModelBuilder modelBuilder)
+    private static void ConfigureFaction(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Faction>()
             .HasOne(f => f.Founder)
@@ -290,7 +301,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .HasForeignKey("ChapterId");
     }
 
-    private void ConfigureRiver(ModelBuilder modelBuilder)
+    private static void ConfigureRiver(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<River>()
             .HasOne(r => r.SourceLocation)
@@ -304,7 +315,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     }
 
 
-    private void ConfigureRoute(ModelBuilder modelBuilder)
+    private static void ConfigureRoute(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Route>()
             .HasOne(r => r.From)
@@ -318,7 +329,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     }
 
 
-    private void ConfigurePriceExample(ModelBuilder modelBuilder)
+    private static void ConfigurePriceExample(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<PriceExample>()
             .Property(p => p.Price)

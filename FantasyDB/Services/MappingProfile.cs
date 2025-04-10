@@ -45,16 +45,19 @@ namespace FantasyDB.Services
 
 
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
             CreateMap<Event, EventViewModel>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.LocationName, opt => opt.MapFrom(src => src.Location.Name))
-                .ForMember(dest => dest.ChapterNumber, opt => opt.MapFrom(src => src.Chapter.ChapterNumber));
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                .ForMember(dest => dest.LocationName, opt => opt.MapFrom(src => src.Location != null ? src.Location.Name : ""))
+                .ForMember(dest => dest.ReadableDate, opt => opt.MapFrom(src =>
+                    src.Date != null
+                        ? $"{src.Date.Weekday} - {src.Date.Day:00} {src.Date.Month} {src.Date.Year}"
+                        : ""))
+                .ForMember(dest => dest.CalendarId, opt => opt.MapFrom(src => src.CalendarId));
+
 
             CreateMap<EventViewModel, Event>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.LocationId, opt => opt.MapFrom(src => src.LocationId))
+                .ForMember(dest => dest.CalendarId, opt => opt.MapFrom(src => src.CalendarId))
                 .ForMember(dest => dest.ChapterId, opt => opt.MapFrom(src => src.ChapterId));
 
 
@@ -73,6 +76,8 @@ namespace FantasyDB.Services
             // Calendar
             CreateMap<Calendar, CalendarViewModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
+
+
             CreateMap<CalendarViewModel, Calendar>()
                         .ForMember(dest => dest.Id, opt => opt.Ignore()); // 👈 prevent AutoMapper from setting Id
 
@@ -286,17 +291,21 @@ namespace FantasyDB.Services
                     opt => opt.MapFrom(src => src.PlotPointRivers.Select(pr => pr.RiverId)))
                 .ForMember(dest => dest.RouteIds,
                     opt => opt.MapFrom(src => src.PlotPointRoutes.Select(pr => pr.RouteId)))
-
-                // ✅ Direct mapping of scalar foreign key IDs
-                .ForMember(dest => dest.StartDateId, opt => opt.MapFrom(src => src.startDateId))
-                .ForMember(dest => dest.EndDateId, opt => opt.MapFrom(src => src.endDateId))
+                .ForMember(dest => dest.StartDateId, opt => opt.MapFrom(src => src.StartDateId))
+                .ForMember(dest => dest.EndDateId, opt => opt.MapFrom(src => src.EndDateId))
                 .ForMember(dest => dest.ChapterId, opt => opt.MapFrom(src => src.ChapterId))
-
-                // ✅ You construct these manually later
                 .ForMember(dest => dest.StartDateName, opt => opt.Ignore())
                 .ForMember(dest => dest.EndDateName, opt => opt.Ignore())
-
                 .ForMember(dest => dest.ChapterNumber, opt => opt.Ignore());
+
+            CreateMap<PlotPointViewModel, PlotPoint>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.PlotPointRivers, opt => opt.Ignore())
+                .ForMember(dest => dest.PlotPointRoutes, opt => opt.Ignore())
+                .ForMember(dest => dest.StartDateId, opt => opt.MapFrom(src => src.StartDateId))
+                .ForMember(dest => dest.EndDateId, opt => opt.MapFrom(src => src.EndDateId))
+                .ForMember(dest => dest.ChapterId, opt => opt.MapFrom(src => src.ChapterId))
+                .ForMember(dest => dest.Chapter, opt => opt.Ignore()); // Prevent EF from tracking conflicts
 
 
             CreateMap<ConversationTurn, ConversationTurnViewModel>()

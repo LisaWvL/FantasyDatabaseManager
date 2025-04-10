@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "target": "ES2020",
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "checkJs": true, // 👈 Enables type checking for .js files
+        "allowJs": true, // 👈 Allows JS/JSX files in project
+        "jsx": "react-jsx",
+        "strict": false, // Optional: turn on later if you migrate to TS
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "include": [ "src/**/*", "features/eras/ErasPage.jsx", "features/characters/CharactersPage.jsx", "features/entities/ContextMenu.jsx", "features/entities/TooltipLink.jsx" ],
+    "exclude": [ "node_modules", "dist" ]
+}

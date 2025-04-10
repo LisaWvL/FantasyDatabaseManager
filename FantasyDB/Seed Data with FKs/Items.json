@@ -1,47 +1,47 @@
 [
     {
         "Id": 1,
-        "OwnerId": null,
-        "ChapterId": null
+        "ChapterId": null,
+        "OwnerId": null
     },
     {
         "Id": 2,
-        "OwnerId": null,
-        "ChapterId": null
+        "ChapterId": null,
+        "OwnerId": null
     },
     {
         "Id": 3,
-        "OwnerId": null,
-        "ChapterId": null
+        "ChapterId": null,
+        "OwnerId": null
     },
     {
         "Id": 4,
-        "OwnerId": null,
-        "ChapterId": null
+        "ChapterId": null,
+        "OwnerId": null
     },
     {
         "Id": 5,
-        "OwnerId": null,
-        "ChapterId": null
+        "ChapterId": null,
+        "OwnerId": null
     },
     {
         "Id": 6,
-        "OwnerId": null,
-        "ChapterId": null
+        "ChapterId": null,
+        "OwnerId": null
     },
     {
         "Id": 7,
-        "OwnerId": null,
-        "ChapterId": null
+        "ChapterId": null,
+        "OwnerId": null
     },
     {
         "Id": 8,
-        "OwnerId": null,
-        "ChapterId": null
+        "ChapterId": null,
+        "OwnerId": null
     },
     {
         "Id": 9,
-        "OwnerId": null,
-        "ChapterId": null
+        "ChapterId": null,
+        "OwnerId": null
     }
 ]

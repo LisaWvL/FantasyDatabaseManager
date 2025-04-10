@@ -15,13 +15,15 @@
     <None Remove="src\hooks\useCharacters.js" />
     <None Remove="src\hooks\useEntityManager.js" />
     <None Remove="src\hooks\useRowEditKeyboard.js" />
+    <None Remove="src\styles\CharacterCard.css" />
+    <None Remove="src\styles\CharacterPage.css" />
+    <None Remove="src\styles\FactionsPage.css" />
     <None Remove="src\styles\index.css" />
     <None Remove="src\styles\theme.css" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\assets\" />
     <Folder Include="src\data\" />
-    <Folder Include="src\hooks\" />
     <Folder Include="src\services\" />
     <Folder Include="src\state\" />
     <Folder Include="src\utils\" />
