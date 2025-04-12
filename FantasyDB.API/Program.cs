@@ -52,6 +52,7 @@ if (builder.Environment.IsDevelopment())
 
 var app = builder.Build();
 
+
 app.UseCors("AllowWorldbuilderApp");
 
 if (app.Environment.IsDevelopment())
@@ -65,6 +66,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
+
+
 app.UseAuthorization();
 
 app.MapControllers();

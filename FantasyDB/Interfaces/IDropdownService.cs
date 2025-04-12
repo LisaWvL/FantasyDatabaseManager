@@ -10,7 +10,12 @@ namespace FantasyDB.Interfaces
         Task<List<SimpleItem>> GetCharactersAsync();
         Task<List<SimpleItem>> GetLocationsAsync();
         Task<List<SimpleItem>> GetLanguagesAsync();
-        Task<List<SimpleItem>> GetSnapshotsAsync();
+
+        Task<List<SimpleItem>> GetBooksAsync();
+        Task<List<SimpleItem>> GetActsAsync();
+        Task<List<SimpleItem>> GetScenesAsync();
+        Task<List<SimpleItem>> GetChaptersAsync();
+
         Task<List<SimpleItem>> GetEventsAsync();
         Task<List<SimpleItem>> GetErasAsync();
         Task<List<SimpleItem>> GetItemsAsync();

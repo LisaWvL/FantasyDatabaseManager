@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System;
 
-public interface IEntityRegistryService
+namespace FantasyDB.Interfaces
 {
-    Dictionary<string, (Type ModelType, Type ViewModelType)> GetEntityMap();
+    public interface IEntityRegistryService
+    {
+        Dictionary<string, (Type ModelType, Type ViewModelType)> GetEntityMap();
+    }
 }

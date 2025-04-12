@@ -12,13 +12,8 @@ namespace FantasyDB.Controllers
 {
     [ApiController]
     [Route("api/priceexample")]
-    public class PriceExampleController : BaseEntityController<PriceExample, PriceExampleViewModel>
+    public class PriceExampleController(AppDbContext context, IMapper mapper, IDropdownService dropdownService) : BaseEntityController<PriceExample, PriceExampleViewModel>(context, mapper, dropdownService)
     {
-        public PriceExampleController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
-            : base(context, mapper, dropdownService)
-        {
-        }
-
         protected override IQueryable<PriceExample> GetQueryable()
         {
             return _context.PriceExamples;

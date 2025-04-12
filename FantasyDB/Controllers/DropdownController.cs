@@ -8,69 +8,62 @@ namespace FantasyDB.Controllers
 {
     [ApiController]
     [Route("api/dropdown")]
-    public class DropdownController : ControllerBase
+    public class DropdownController(IDropdownService dropdownService) : ControllerBase
     {
-        private readonly IDropdownService _dropdownService;
-
-        public DropdownController(IDropdownService dropdownService)
-        {
-            _dropdownService = dropdownService;
-        }
-
         [HttpGet("factions")]
         public async Task<ActionResult<List<SimpleItem>>> GetFactions() =>
-            Ok(await _dropdownService.GetFactionsAsync());
+            Ok(await dropdownService.GetFactionsAsync());
 
         [HttpGet("characters")]
         public async Task<ActionResult<List<SimpleItem>>> GetCharacters() =>
-            Ok(await _dropdownService.GetCharactersAsync());
+            Ok(await dropdownService.GetCharactersAsync());
 
         [HttpGet("locations")]
         public async Task<ActionResult<List<SimpleItem>>> GetLocations() =>
-            Ok(await _dropdownService.GetLocationsAsync());
+            Ok(await dropdownService.GetLocationsAsync());
 
         [HttpGet("languages")]
         public async Task<ActionResult<List<SimpleItem>>> GetLanguages() =>
-            Ok(await _dropdownService.GetLanguagesAsync());
+            Ok(await dropdownService.GetLanguagesAsync());
 
-        [HttpGet("snapshots")]
-        public async Task<ActionResult<List<SimpleItem>>> GetSnapshots() =>
-            Ok(await _dropdownService.GetSnapshotsAsync());
+        [HttpGet("chapters")]
+        public async Task<ActionResult<List<SimpleItem>>> GetChapters() =>
+            Ok(await dropdownService.GetChaptersAsync());
 
         [HttpGet("events")]
         public async Task<ActionResult<List<SimpleItem>>> GetEvents() =>
-            Ok(await _dropdownService.GetEventsAsync());
+            Ok(await dropdownService.GetEventsAsync());
 
         [HttpGet("eras")]
         public async Task<ActionResult<List<SimpleItem>>> GetEras() =>
-            Ok(await _dropdownService.GetErasAsync());
+            Ok(await dropdownService.GetErasAsync());
 
         [HttpGet("Items")]
         public async Task<ActionResult<List<SimpleItem>>> GetItems() =>
-            Ok(await _dropdownService.GetItemsAsync());
+            Ok(await dropdownService.GetItemsAsync());
 
         [HttpGet("routes")]
         public async Task<ActionResult<List<SimpleItem>>> GetRoutes() =>
-            Ok(await _dropdownService.GetRoutesAsync());
+            Ok(await dropdownService.GetRoutesAsync());
 
         [HttpGet("rivers")]
         public async Task<ActionResult<List<SimpleItem>>> GetRivers() =>
-            Ok(await _dropdownService.GetRiversAsync());
+            Ok(await dropdownService.GetRiversAsync());
 
         [HttpGet("weekdays")]
         public async Task<ActionResult<List<SimpleItem>>> GetWeekdays() =>
-            Ok(await _dropdownService.GetWeekdaysAsync());
+            Ok(await dropdownService.GetWeekdaysAsync());
 
         [HttpGet("months")]
         public async Task<ActionResult<List<SimpleItem>>> GetMonths() =>
-            Ok(await _dropdownService.GetMonthsAsync());
+            Ok(await dropdownService.GetMonthsAsync());
 
         [HttpGet("character-relationships")]
         public async Task<ActionResult<List<SimpleItem>>> GetCharacterRelationships() =>
-            Ok(await _dropdownService.GetCharacterRelationshipsAsync());
+            Ok(await dropdownService.GetCharacterRelationshipsAsync());
 
         [HttpGet("character-relationships/{characterId}")]
         public async Task<ActionResult<List<SimpleItem>>> GetCharacterRelationshipsForCharacter(int characterId) =>
-            Ok(await _dropdownService.GetCharacterRelationshipsForCharacterAsync(characterId));
+            Ok(await dropdownService.GetCharacterRelationshipsForCharacterAsync(characterId));
     }
 }

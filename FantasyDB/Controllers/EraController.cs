@@ -13,16 +13,11 @@ namespace FantasyDB.Controllers
 {
     [ApiController]
     [Route("api/era")]
-    public class EraController : BaseEntityController<Era, EraViewModel>
+    public class EraController(AppDbContext context, IMapper mapper, IDropdownService dropdownService) : BaseEntityController<Era, EraViewModel>(context, mapper, dropdownService)
     {
-        public EraController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
-            : base(context, mapper, dropdownService)
-        {
-        }
-
         protected override IQueryable<Era> GetQueryable()
         {
-            return _context.Eras.Include(e => e.Snapshot).AsNoTracking();
+            return _context.Eras.Include(e => e.Chapter).AsNoTracking();
         }
 
         [HttpGet]
@@ -37,7 +32,7 @@ namespace FantasyDB.Controllers
         public override async Task<ActionResult<EraViewModel>> GetById(int id)
         {
             var entity = await _context.Eras
-                .Include(e => e.Snapshot)
+                .Include(e => e.Chapter)
                 .FirstOrDefaultAsync(e => e.Id == id);
 
             if (entity == null)
@@ -56,8 +51,8 @@ namespace FantasyDB.Controllers
             _context.Eras.Add(model);
             await _context.SaveChangesAsync();
 
-            // Handle snapshot entry
-            await HandleSnapshotLinks(model, viewModel, model.Id);
+            // Handle chapter entry
+            await HandleChapterLinks(model, viewModel, model.Id);
 
             var result = _mapper.Map<EraViewModel>(model);
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
@@ -92,16 +87,16 @@ namespace FantasyDB.Controllers
             return Ok(new { message = "Era deleted" });
         }
 
-        [HttpGet("{id}/new-snapshot")]
-        public override async Task<IActionResult> CreateNewSnapshot(int id)
+        [HttpGet("{id}/new-chapter")]
+        public override async Task<IActionResult> CreateNewChapter(int id)
         {
-            return await base.CreateNewSnapshot(id);
+            return await base.CreateNewChapter(id);
         }
 
-        [HttpGet("{id}/new-snapshot-page")]
-        public override async Task<IActionResult> CreateNewSnapshotPage(int id)
+        [HttpGet("{id}/new-chapter-page")]
+        public override async Task<IActionResult> CreateNewWritingAssistantPage(int id)
         {
-            return await base.CreateNewSnapshotPage(id);
+            return await base.CreateNewWritingAssistantPage(id);
         }
     }
 }

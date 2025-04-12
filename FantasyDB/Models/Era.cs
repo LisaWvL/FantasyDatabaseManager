@@ -11,10 +11,10 @@ namespace FantasyDB.Models // ✅ Add this line
         public int? EndYear { get; set; }
         public string? MagicSystem { get; set; }
         public string? MagicStatus { get; set; }
-        public int? SnapshotId { get; set; }
+        public int? ChapterId { get; set; }
         // ✅ Navigation Properties (Add These Back)
-        [ForeignKey("SnapshotId")]
-        public virtual Snapshot? Snapshot { get; set; }
+        [ForeignKey("ChapterId")]
+        public virtual Chapter? Chapter { get; set; }
     }
 }
 

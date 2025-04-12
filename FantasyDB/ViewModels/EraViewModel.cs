@@ -7,16 +7,16 @@ namespace FantasyDB.ViewModels
     {
         public int Id { get; set; }
         public string? Name { get; set; } = string.Empty;
-        [EditableForSnapshot]
+        [EditableForChapter]
         public string? Description { get; set; } = string.Empty;
         public int? StartYear { get; set; }
         public int? EndYear { get; set; }
-        [EditableForSnapshot]
+        [EditableForChapter]
         public string? MagicSystem { get; set; } = string.Empty;
-        [EditableForSnapshot]
+        [EditableForChapter]
         public string? MagicStatus { get; set; } = string.Empty;
-        [EditableForSnapshot]
-        public int? SnapshotId { get; set; }
-        public string? SnapshotName { get; set; } = string.Empty;
+        [EditableForChapter]
+        public int? ChapterId { get; set; }
+        public int? ChapterNumber { get; set; } = 0;
     }
 }

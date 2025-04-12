@@ -1,0 +1,90 @@
+/*.character-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding: 0 2rem;
+}
+
+    .character-page-header h2 {
+        font-family: 'Cinzel', serif;
+        font-size: 1.8rem;
+        color: #f0e0c6;
+        margin: 0;
+    }
+
+.character-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+    .character-controls select {
+        font-size: 0.95rem;
+        padding: 0.3rem 0.6rem;
+        background-color: #3a2a24;
+        border: 1px solid #82644e;
+        color: #f3e6d5;
+        border-radius: 6px;
+    }
+
+    .character-controls button {
+        font-size: 0.95rem;
+        background-color: #3b2a24;
+        border: 1px solid #82644e;
+        color: #e7c37d;
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+        .character-controls button:hover {
+            background-color: #5c3f33;
+        }*/
+
+/* Character Page Container */
+/*.character-page {
+    overflow-y: auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    max-height: 100vh;*/ /* or 100dvh for dynamic viewport height */
+/*overflow-x: hidden;*/ /* hide horizontal scrollbar if present */
+/*}*/
+
+/* Chapter Section Box */
+/*.chapter-section {
+    background-color: rgba(22, 16, 14, 0.88);
+    border: 1px solid #4e3c34;
+    border-radius: 10px;
+    padding: 1.75rem 2rem;
+    box-shadow: 0 0 12px rgba(140, 110, 200, 0.1);
+    margin-bottom: 2rem;
+}*/
+
+/* Chapter Section Header */
+/*.chapter-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-bottom: 1px solid #705956;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+}
+
+    .chapter-header h3 {
+        font-family: 'Cinzel', serif;
+        color: #f3e6d5;
+        font-size: 1.35rem;
+        margin: 0;
+        letter-spacing: 0.5px;
+    }*/
+
+/* Grid layout for EntityCards */
+/*.character-card-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));*/ /* from 620px down to 480px */
+/*gap: 1.25rem;*/ /* tighter gap between cards */
+/*justify-items: start;
+}*/

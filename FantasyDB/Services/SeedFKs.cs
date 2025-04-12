@@ -23,7 +23,10 @@ namespace FantasyDB.Services
             Console.WriteLine("🔄 Updating foreign keys from FK data files...");
             var basePath = @"F:\FantasyDatabase\FantasyDatabaseManager\FantasyDB\Seed Data with FKs\";
 
-            Update<Snapshot>(basePath + "Snapshots.json");
+            Update<Book>(basePath + "Books.json");
+            Update<Act>(basePath + "Acts.json");
+            Update<Chapter>(basePath + "Chapters.json");
+            Update<Scene>(basePath + "Scenes.json");
             Update<Language>(basePath + "Languages.json");
             Update<Location>(basePath + "Locations.json");
             Update<Character>(basePath + "Characters.json");
@@ -40,23 +43,8 @@ namespace FantasyDB.Services
             // Junctions
             Update<LanguageLocation>(basePath + "LanguagesLocations.json");
 
-            Update<SnapshotCharacter>(basePath + "SnapshotsCharacters.json");
-            Update<SnapshotItem>(basePath + "SnapshotsItems.json");
-            Update<SnapshotEra>(basePath + "SnapshotsEras.json");
-            Update<SnapshotEvent>(basePath + "SnapshotsEvents.json");
-            Update<SnapshotFaction>(basePath + "SnapshotsFactions.json");
-            Update<SnapshotLocation>(basePath + "SnapshotsLocations.json");
-            Update<SnapshotCharacterRelationship>(basePath + "SnapshotCharacterRelationships.json");
-
             Update<CharacterRelationship>(basePath + "CharacterRelationships.json");
             Update<PlotPoint>(basePath + "PlotPoints.json");
-            Update<PlotPointCharacter>(basePath + "PlotPointsCharacters.json");
-            Update<PlotPointLocation>(basePath + "PlotPointsLocations.json");
-            Update<PlotPointEvent>(basePath + "PlotPointsEvents.json");
-            Update<PlotPointFaction>(basePath + "PlotPointsFactions.json");
-            Update<PlotPointItem>(basePath + "PlotPointsItems.json");
-            Update<PlotPointEra>(basePath + "PlotPointsEras.json");
-            Update<PlotPointCharacterRelationship>(basePath + "PlotPointsCharacterRelationships.json");
             Update<PlotPointRiver>(basePath + "PlotPointsRivers.json");
             Update<PlotPointRoute>(basePath + "PlotPointsRoutes.json");
 

@@ -1,12 +1,14 @@
 [
     {
         "Id": 1,
-        "CalendarId": null,
-        "SnapshotId": null
+        "ChapterId": null,
+        "startDateId": null,
+        "endDateId": null
     },
     {
         "Id": 2,
-        "CalendarId": null,
-        "SnapshotId": null
+        "ChapterId": null,
+        "startDateId": null,
+        "endDateId": null
     }
 ]

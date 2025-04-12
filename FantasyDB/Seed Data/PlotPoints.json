@@ -1,14 +1,10 @@
 [
     {
         "Title": "Inciting Incident",
-        "Description": "The main character is drawn into conflict after witnessing a strange event in the forest.",
-        "BookOverride": "Book One",
-        "ChapterOverride": "Chapter 1"
+        "Description": "The main character is drawn into conflict after witnessing a strange event in the forest."
     },
     {
         "Title": "Climactic Betrayal",
-        "Description": "The leader of the rebellion is revealed to be working with the enemy.",
-        "BookOverride": "Book Two",
-        "ChapterOverride": "Chapter 19"
+        "Description": "The leader of the rebellion is revealed to be working with the enemy."
     }
 ]

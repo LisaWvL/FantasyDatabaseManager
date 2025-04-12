@@ -13,22 +13,14 @@ using Microsoft.EntityFrameworkCore;
 namespace FantasyDB.Controllers;
 
 [Route("api/plotpoint")]
-public class PlotPointController : BaseEntityController<PlotPoint, PlotPointViewModel>
+public class PlotPointController(AppDbContext context, IMapper mapper, IDropdownService dropdownService) : BaseEntityController<PlotPoint, PlotPointViewModel>(context, mapper, dropdownService)
 {
-    public PlotPointController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
-        : base(context, mapper, dropdownService)
-    {
-    }
-
     protected override IQueryable<PlotPoint> GetQueryable()
     {
         return _context.PlotPoints
-            .Include(p => p.Calendar)
-            .Include(p => p.Snapshot)
-            .Include(p => p.PlotPointCharacters).ThenInclude(pc => pc.Character)
-            .Include(p => p.PlotPointLocations).ThenInclude(pl => pl.Location)
-            .Include(p => p.PlotPointEvents).ThenInclude(pe => pe.Event)
-            .Include(p => p.PlotPointFactions).ThenInclude(pf => pf.Faction);
+            .Include(p => p.StartDate)
+            .Include(p => p.EndDate)
+            .Include(p => p.Chapter);
     }
 
     public override async Task<ActionResult<List<PlotPointViewModel>>> Index()
@@ -36,14 +28,55 @@ public class PlotPointController : BaseEntityController<PlotPoint, PlotPointView
         var entities = await GetQueryable().AsNoTracking().ToListAsync();
         var viewModels = _mapper.Map<List<PlotPointViewModel>>(entities);
 
-        // Fill readable names
+        var calendarDict = await _context.Dates.ToDictionaryAsync(c => c.Id);
+
+        var routeNames = await _context.Routes
+            .ToDictionaryAsync(r => r.Id, r => r.Name);
+
+        var riverNames = await _context.Rivers
+            .ToDictionaryAsync(r => r.Id, r => r.Name);
+
+        var plotpointRoutes = await _context.PlotPointsRoutes
+            .ToListAsync();
+
+        var plotpointRivers = await _context.PlotPointsRivers
+            .ToListAsync();
+
         foreach (var vm in viewModels)
         {
-            vm.CalendarLabel = _context.Calendar.FirstOrDefault(c => c.Id == vm.CalendarId)?.Month + " " + _context.Calendar.FirstOrDefault(c => c.Id == vm.CalendarId)?.Day;
-            vm.CharacterNames = _context.Characters.Where(c => vm.CharacterIds.Contains(c.Id)).Select(c => c.Name).ToList();
-            vm.LocationNames = _context.Locations.Where(l => vm.LocationIds.Contains(l.Id)).Select(l => l.Name).ToList();
-            vm.EventNames = _context.Events.Where(e => vm.EventIds.Contains(e.Id)).Select(e => e.Name).ToList();
-            vm.FactionNames = _context.Factions.Where(f => vm.FactionIds.Contains(f.Id)).Select(f => f.Name).ToList();
+            // ✅ Date names
+            vm.StartDateName = calendarDict.TryGetValue(vm.StartDateId ?? -1, out var start)
+                ? $"{start.Month} {start.Day}" : null;
+
+            vm.EndDateName = calendarDict.TryGetValue(vm.EndDateId ?? -1, out var end)
+                ? $"{end.Month} {end.Day}" : null;
+
+            // ✅ Routes
+            var matchingRoutes = plotpointRoutes
+                .Where(pr => pr.PlotPointId == vm.Id)
+                .Select(pr => pr.RouteId)
+                .ToList();
+
+            vm.RouteIds = matchingRoutes;
+            vm.RouteNames = [.. matchingRoutes
+                .Where(routeNames.ContainsKey)
+                .Select(id => routeNames[id])
+                .Where(name => name != null)
+                .Select(name => name!)];
+
+            // ✅ Rivers
+            var matchingRivers = plotpointRivers
+                .Where(pr => pr.PlotPointId == vm.Id)
+                .Select(pr => pr.RiverId)
+                .ToList();
+
+
+            vm.RiverIds = matchingRivers;
+            vm.RiverNames = [.. matchingRivers
+                .Where(riverNames.ContainsKey)
+                .Select(id => riverNames[id])
+                .Where(name => name != null)
+                .Select(name => name!)];
         }
 
         return Ok(viewModels);
@@ -67,48 +100,211 @@ public class PlotPointController : BaseEntityController<PlotPoint, PlotPointView
         return await base.Delete(id);
     }
 
-    [HttpGet("{id}/new-snapshot")]
-    public override async Task<IActionResult> CreateNewSnapshot(int id)
+    [HttpGet("{id}/new-chapter")]
+    public override async Task<IActionResult> CreateNewChapter(int id)
     {
-        return await base.CreateNewSnapshot(id);
+        return await base.CreateNewChapter(id);
     }
 
-    [HttpGet("{id}/new-snapshot-page")]
-    public override async Task<IActionResult> CreateNewSnapshotPage(int id)
+    [HttpGet("{id}/new-chapter-page")]
+    public override async Task<IActionResult> CreateNewWritingAssistantPage(int id)
     {
-        return await base.CreateNewSnapshotPage(id);
+        return await base.CreateNewWritingAssistantPage(id);
     }
 
-    // Optional: filtered by snapshot
-    [HttpGet("snapshot/{snapshotId}")]
-    public async Task<ActionResult<List<PlotPointViewModel>>> GetBySnapshot(int snapshotId)
+    // Optional: filtered by chapter
+    [HttpGet("chapter/{chapterId}")]
+    public async Task<ActionResult<List<PlotPointViewModel>>> GetByChapter(int chapterId)
     {
         var plotPoints = await GetQueryable()
-            .Where(p => p.SnapshotId == snapshotId)
+            .Where(p => p.ChapterId == chapterId)
             .ToListAsync();
 
         var vms = _mapper.Map<List<PlotPointViewModel>>(plotPoints);
         return Ok(vms);
     }
 
-    [HttpGet("by-calendar/{calendarId}")]
-    public async Task<ActionResult<List<PlotPointViewModel>>> ByCalendar(int calendarId)
+    [HttpGet("by-calendar/{startDateId}")]
+    public async Task<ActionResult<List<PlotPointViewModel>>> ByCalendar(int startDateId)
     {
         var plotPoints = await _context.PlotPoints
-            .Where(p => p.CalendarId == calendarId)
+            .Where(p => p.StartDateId == startDateId)
             .ToListAsync();
         var vms = _mapper.Map<List<PlotPointViewModel>>(plotPoints);
         return Ok(vms);
     }
 
-    [HttpGet("by-snapshot/{snapshotId}")]
-    public async Task<ActionResult<List<PlotPointViewModel>>> BySnapshot(int snapshotId)
+    [HttpGet("by-calendar-range")]
+    public async Task<ActionResult<List<PlotPointViewModel>>> ByCalendarRange(int startDateId, int endDateId)
     {
         var plotPoints = await _context.PlotPoints
-            .Where(p => p.SnapshotId == snapshotId)
+            .Where(p => p.StartDateId == startDateId && p.EndDateId == endDateId)
             .ToListAsync();
         var vms = _mapper.Map<List<PlotPointViewModel>>(plotPoints);
         return Ok(vms);
     }
 
+
+
+    [HttpGet("by-chapter/{chapterId}")]
+    public async Task<ActionResult<List<PlotPointViewModel>>> ByChapter(int chapterId)
+    {
+        var plotPoints = await _context.PlotPoints
+            .Where(p => p.ChapterId == chapterId)
+            .ToListAsync();
+        var vms = _mapper.Map<List<PlotPointViewModel>>(plotPoints);
+        return Ok(vms);
+    }
+
+    // ✅ NEW ENDPOINT: All connected entities for a PlotPoints
+    [HttpGet("{id}/PlotPointentities")]
+    public IActionResult GetPlotPointEntities(int id)
+    {
+        var plotPoint = _context.PlotPoints.FirstOrDefault(p => p.Id == id);
+        if (plotPoint == null)
+            return NotFound();
+
+        // Find connected rivers via junction table
+        var riverIds = _context.PlotPointsRivers
+            .Where(link => link.PlotPointId == id)
+            .Select(link => link.RiverId)
+            .ToList();
+
+        var rivers = _context.Rivers
+            .Where(r => riverIds.Contains(r.Id))
+            .Select(r => new { r.Id, r.Name })
+            .ToList();
+
+        // Find connected routes via junction table
+        var routeIds = _context.PlotPointsRoutes
+            .Where(link => link.PlotPointId == id)
+            .Select(link => link.RouteId)
+            .ToList();
+
+        var routes = _context.Routes
+            .Where(r => routeIds.Contains(r.Id))
+            .Select(r => new { r.Id, r.Name })
+            .ToList();
+
+        var startDate = _context.Dates
+            .Where(d => d.Id == plotPoint.StartDateId)
+            .Select(d => new { d.Day, d.Month, d.Weekday })
+            .FirstOrDefault();
+
+        var endDate = _context.Dates
+            .Where(d => d.Id == plotPoint.EndDateId)
+            .Select(d => new { d.Day, d.Month, d.Weekday })
+            .FirstOrDefault();
+
+        return Ok(new
+        {
+            rivers,
+            routes,
+            startDate,
+            endDate
+        });
+    }
+
+
+    [HttpGet("dropdown")]
+    public async Task<ActionResult<List<PlotPointViewModel>>> GetDropdown()
+    {
+        var plotPoints = await _context.PlotPoints
+            .Select(p => new PlotPointViewModel
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Description = p.Description,
+                StartDateId = p.StartDateId,
+                EndDateId = p.EndDateId,
+                ChapterId = p.ChapterId
+            })
+            .ToListAsync();
+        return Ok(plotPoints);
+    }
+    [HttpGet("dropdown/{chapterId}")]
+    public async Task<ActionResult<List<PlotPointViewModel>>> GetDropdownByChapter(int chapterId)
+    {
+        var plotPoints = await _context.PlotPoints
+            .Where(p => p.ChapterId == chapterId)
+            .Select(p => new PlotPointViewModel
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Description = p.Description,
+                StartDateId = p.StartDateId,
+                EndDateId = p.EndDateId,
+                ChapterId = p.ChapterId
+            })
+            .ToListAsync();
+        return Ok(plotPoints);
+    }
+    [HttpGet("dropdown/plotpoint/{plotPointId}")]
+    public async Task<ActionResult<List<PlotPointViewModel>>> GetDropdownByPlotPoint(int plotPointId)
+    {
+        var plotPoints = await _context.PlotPoints
+            .Where(p => p.Id == plotPointId)
+            .Select(p => new PlotPointViewModel
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Description = p.Description,
+                StartDateId = p.StartDateId,
+                EndDateId = p.EndDateId,
+                ChapterId = p.ChapterId
+            })
+            .ToListAsync();
+        return Ok(plotPoints);
+    }
+    [HttpGet("dropdown/plotpoint/{plotPointId}/chapter/{chapterId}")]
+    public async Task<ActionResult<List<PlotPointViewModel>>> GetDropdownByPlotPointAndChapter(int plotPointId, int chapterId)
+    {
+        var plotPoints = await _context.PlotPoints
+            .Where(p => p.Id == plotPointId && p.ChapterId == chapterId)
+            .Select(p => new PlotPointViewModel
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Description = p.Description,
+                StartDateId = p.StartDateId,
+                EndDateId = p.EndDateId,
+                ChapterId = p.ChapterId
+            })
+            .ToListAsync();
+        return Ok(plotPoints);
+    }
+    [HttpGet("dropdown/plotpoint/{plotPointId}/chapter/{chapterId}/startdate/{startDateId}")]
+    public async Task<ActionResult<List<PlotPointViewModel>>> GetDropdownByPlotPointAndChapterAndStartDate(int plotPointId, int chapterId, int startDateId)
+    {
+        var plotPoints = await _context.PlotPoints
+            .Where(p => p.Id == plotPointId && p.ChapterId == chapterId && p.StartDateId == startDateId)
+            .Select(p => new PlotPointViewModel
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Description = p.Description,
+                StartDateId = p.StartDateId,
+                EndDateId = p.EndDateId,
+                ChapterId = p.ChapterId
+            })
+            .ToListAsync();
+        return Ok(plotPoints);
+    }
+    [HttpGet("dropdown/plotpoint/{plotPointId}/chapter/{chapterId}/startdate/{startDateId}/enddate/{endDateId}")]
+    public ActionResult<List<PlotPointViewModel>> GetDropdownByPlotPointAndChapterAndStartDateAndEndDate(int plotPointId, int chapterId, int startDateId, int endDateId)
+    {
+        var plotPoints = _context.PlotPoints
+            .Where(p => p.Id == plotPointId && p.ChapterId == chapterId && p.StartDateId == startDateId && p.EndDateId == endDateId)
+            .Select(p => new PlotPointViewModel
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Description = p.Description,
+                StartDateId = p.StartDateId,
+                EndDateId = p.EndDateId,
+                ChapterId = p.ChapterId
+            })
+            .ToList();
+        return Ok(plotPoints);
+    }
 }

@@ -4,17 +4,10 @@ using System;
 namespace FantasyDB.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class HandlesJunctionAttribute : Attribute
+    public class HandlesJunctionAttribute(string junctionEntity, string thisKey, string foreignKey) : Attribute
     {
-        public string JunctionEntity { get; }
-        public string ThisKey { get; }
-        public string ForeignKey { get; }
-
-        public HandlesJunctionAttribute(string junctionEntity, string thisKey, string foreignKey)
-        {
-            JunctionEntity = junctionEntity;
-            ThisKey = thisKey;
-            ForeignKey = foreignKey;
-        }
+        public string JunctionEntity { get; } = junctionEntity;
+        public string ThisKey { get; } = thisKey;
+        public string ForeignKey { get; } = foreignKey;
     }
 }

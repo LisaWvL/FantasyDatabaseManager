@@ -12,17 +12,12 @@ namespace FantasyDB.Controllers
 {
     [Route("api/character")]
     [ApiController]
-    public class CharacterController : BaseEntityController<Character, CharacterViewModel>
+    public class CharacterController(AppDbContext context, IMapper mapper, IDropdownService dropdownService) : BaseEntityController<Character, CharacterViewModel>(context, mapper, dropdownService)
     {
-        public CharacterController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
-            : base(context, mapper, dropdownService)
-        {
-        }
-
         protected override IQueryable<Character> GetQueryable()
         {
             return _context.Characters
-                .Include(c => c.Snapshot)
+                .Include(c => c.Chapter)
                 .Include(c => c.Faction)
                 .Include(c => c.Location)
                 .Include(c => c.Language);
@@ -57,7 +52,7 @@ namespace FantasyDB.Controllers
             _context.Characters.Add(character);
             await _context.SaveChangesAsync();
 
-            // Snapshot mapping is handled by BaseEntityController (HandleSnapshotLinks)
+            // Chapter mapping is handled by BaseEntityController (HandleChapterLinks)
 
             var createdViewModel = _mapper.Map<CharacterViewModel>(character);
             return CreatedAtAction(nameof(GetById), new { id = createdViewModel.Id }, createdViewModel);
@@ -92,16 +87,16 @@ namespace FantasyDB.Controllers
             return Ok(new { message = "Character deleted" });
         }
 
-        [HttpGet("{id}/new-snapshot")]
-        public override async Task<IActionResult> CreateNewSnapshot(int id)
+        [HttpGet("{id}/new-chapter")]
+        public override async Task<IActionResult> CreateNewChapter(int id)
         {
-            return await base.CreateNewSnapshot(id);
+            return await base.CreateNewChapter(id);
         }
 
-        [HttpGet("{id}/new-snapshot-page")]
-        public override async Task<IActionResult> CreateNewSnapshotPage(int id)
+        [HttpGet("{id}/new-chapter-page")]
+        public override async Task<IActionResult> CreateNewWritingAssistantPage(int id)
         {
-            return await base.CreateNewSnapshotPage(id);
+            return await base.CreateNewWritingAssistantPage(id);
         }
     }
 }

@@ -1,0 +1,18 @@
+[
+    {
+        "ChapterId": 6,
+        "CharacterRelationshipId": 1
+    },
+    {
+        "ChapterId": 6,
+        "CharacterRelationshipId": 2
+    },
+    {
+        "ChapterId": 6,
+        "CharacterRelationshipId": 7
+    },
+    {
+        "ChapterId": 6,
+        "CharacterRelationshipId": 8
+    }
+]

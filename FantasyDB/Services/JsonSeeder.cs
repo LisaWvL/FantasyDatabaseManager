@@ -28,13 +28,16 @@ namespace FantasyDB
             try
             {
                 // ORDER MATTERS: parents first, then junctions
-                Seed<Snapshot>("Snapshots.json");
+                Seed<Book>("Books.json");
+                Seed<Act>("Acts.json");
+                Seed<Chapter>("Chapters.json");
+                Seed<Scene>("Scenes.json");
                 Seed<Language>("Languages.json");
                 Seed<Location>("Locations.json");
                 Seed<Character>("Characters.json");
                 Seed<Faction>("Factions.json");
                 Seed<Item>("Items.json");
-                Seed<Calendar>("Calendar.json");
+                Seed<Calendar>("Dates.json");
                 Seed<Event>("Events.json");
                 Seed<Era>("Eras.json");
                 Seed<Currency>("Currencies.json");
@@ -44,26 +47,14 @@ namespace FantasyDB
 
                 // Junctions & Complex Links
                 Seed<LanguageLocation>("LanguagesLocations.json");
-
-                Seed<SnapshotCharacter>("SnapshotsCharacters.json");
-                Seed<SnapshotItem>("SnapshotsItems.json");
-                Seed<SnapshotEra>("SnapshotsEras.json");
-                Seed<SnapshotEvent>("SnapshotsEvents.json");
-                Seed<SnapshotFaction>("SnapshotsFactions.json");
-                Seed<SnapshotLocation>("SnapshotsLocations.json");
-                Seed<SnapshotCharacterRelationship>("SnapshotsCharacterRelationships.json");
-
                 Seed<CharacterRelationship>("CharacterRelationships.json");
                 Seed<PlotPoint>("PlotPoints.json");
-                Seed<PlotPointCharacter>("PlotPointsCharacters.json");
-                Seed<PlotPointLocation>("PlotPointsLocations.json");
-                Seed<PlotPointEvent>("PlotPointsEvents.json");
-                Seed<PlotPointFaction>("PlotPointsFactions.json");
-                Seed<PlotPointItem>("PlotPointsItems.json");
-                Seed<PlotPointEra>("PlotPointsEras.json");
-                Seed<PlotPointCharacterRelationship>("PlotPointsCharacterRelationships.json");
                 Seed<PlotPointRiver>("PlotPointsRivers.json");
                 Seed<PlotPointRoute>("PlotPointsRoutes.json");
+                Seed<ConversationTurn>("ConversationTurns.json");
+
+
+
 
                 _context.SaveChanges();
                 transaction.Commit();

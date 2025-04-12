@@ -8,13 +8,10 @@ namespace FantasyDB.Models // ✅ Add this line
         public int? Character2Id { get; set; }
         public string? RelationshipType { get; set; } = "Friend, Family, Ally, Sibling, Father, Mother, Mentor, Enemy, Archenemy";
         public string? RelationshipDynamic { get; set; }
-        public int? SnapshotId { get; set; }
+        public int? ChapterId { get; set; }
         // ✅ Navigation Properties (Add These Back)
-        [ForeignKey("Character1Id")]
         public virtual Character? Character1 { get; set; }
-        [ForeignKey("Character2Id")]
         public virtual Character? Character2 { get; set; }
-        [ForeignKey("SnapshotId")]
-        public virtual Snapshot? Snapshot { get; set; }
+        public virtual Chapter? Chapter { get; set; }
     }
 }

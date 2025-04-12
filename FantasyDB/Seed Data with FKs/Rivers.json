@@ -51,7 +51,7 @@
     },
     {
         "Id": 11,
-        "SourceLocationId": 3,
-        "DestinationLocationId": 2
+        "SourceLocationId": null,
+        "DestinationLocationId": null
     }
 ]

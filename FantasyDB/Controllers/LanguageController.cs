@@ -13,13 +13,8 @@ namespace FantasyDB.Controllers
 {
     [ApiController]
     [Route("api/language")]
-    public class LanguageController : BaseEntityController<Language, LanguageViewModel>
+    public class LanguageController(AppDbContext context, IMapper mapper, IDropdownService dropdownService) : BaseEntityController<Language, LanguageViewModel>(context, mapper, dropdownService)
     {
-        public LanguageController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
-            : base(context, mapper, dropdownService)
-        {
-        }
-
         protected override IQueryable<Language> GetQueryable()
         {
             return _context.Languages
@@ -49,9 +44,7 @@ namespace FantasyDB.Controllers
             // Handle junction
             if (viewModel.LocationIds != null)
             {
-                language.LanguageLocations = viewModel.LocationIds
-                    .Select(locId => new LanguageLocation { LocationId = locId })
-                    .ToList();
+                language.LanguageLocations = [.. viewModel.LocationIds.Select(locId => new LanguageLocation { LocationId = locId })];
             }
 
             _context.Languages.Add(language);
@@ -108,16 +101,16 @@ namespace FantasyDB.Controllers
             return Ok(new { message = "Language deleted" });
         }
 
-        [HttpGet("{id}/new-snapshot")]
-        public override async Task<IActionResult> CreateNewSnapshot(int id)
+        [HttpGet("{id}/new-chapter")]
+        public override async Task<IActionResult> CreateNewChapter(int id)
         {
-            return await base.CreateNewSnapshot(id);
+            return await base.CreateNewChapter(id);
         }
 
-        [HttpGet("{id}/new-snapshot-page")]
-        public override async Task<IActionResult> CreateNewSnapshotPage(int id)
+        [HttpGet("{id}/new-chapter-page")]
+        public override async Task<IActionResult> CreateNewWritingAssistantPage(int id)
         {
-            return await base.CreateNewSnapshotPage(id);
+            return await base.CreateNewWritingAssistantPage(id);
         }
     }
 }

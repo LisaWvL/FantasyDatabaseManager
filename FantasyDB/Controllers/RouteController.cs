@@ -12,12 +12,8 @@ namespace FantasyDB.Controllers
 {
     [ApiController]
     [Route("api/route")]
-    public class RouteController : BaseEntityController<Route, RouteViewModel>
+    public class RouteController(AppDbContext context, IMapper mapper, IDropdownService dropdownService) : BaseEntityController<Route, RouteViewModel>(context, mapper, dropdownService)
     {
-        public RouteController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
-            : base(context, mapper, dropdownService)
-        {
-        }
 
         // ✅ Include related locations
         protected override IQueryable<Route> GetQueryable()
@@ -53,16 +49,16 @@ namespace FantasyDB.Controllers
             return await base.Delete(id);
         }
 
-        [HttpGet("{id}/new-snapshot")]
-        public override async Task<IActionResult> CreateNewSnapshot(int id)
+        [HttpGet("{id}/new-chapter")]
+        public override async Task<IActionResult> CreateNewChapter(int id)
         {
-            return await base.CreateNewSnapshot(id);
+            return await base.CreateNewChapter(id);
         }
 
-        [HttpGet("{id}/new-snapshot-page")]
-        public override async Task<IActionResult> CreateNewSnapshotPage(int id)
+        [HttpGet("{id}/new-chapter-page")]
+        public override async Task<IActionResult> CreateNewWritingAssistantPage(int id)
         {
-            return await base.CreateNewSnapshotPage(id);
+            return await base.CreateNewWritingAssistantPage(id);
         }
     }
 }

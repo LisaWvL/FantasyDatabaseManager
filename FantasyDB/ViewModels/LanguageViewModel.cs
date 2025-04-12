@@ -14,10 +14,10 @@ namespace FantasyDB.ViewModels
         // --------------------------------------------
         // MULTIPLE Locations where this language is spoken 
         // --------------------------------------------
-        [EditableForSnapshot]
+        [EditableForChapter]
         [HandlesJunction("LanguageLocation", "LanguageId", "LocationId")]
-        public List<int> LocationIds { get; set; } = new();
+        public List<int> LocationIds { get; set; } = [];
 
-        public List<string> LocationNames { get; set; } = new();
+        public List<string> LocationNames { get; set; } = [];
     }
 }

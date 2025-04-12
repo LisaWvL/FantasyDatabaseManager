@@ -2,29 +2,29 @@
     {
         "Id": 1,
         "FounderId": null,
+        "HQLocationId": null,
         "LeaderId": null,
-        "SnapshotId": null,
-        "HQLocationId": null
+        "ChapterId": null
     },
     {
         "Id": 2,
         "FounderId": null,
+        "HQLocationId": null,
         "LeaderId": null,
-        "SnapshotId": null,
-        "HQLocationId": null
+        "ChapterId": null
     },
     {
         "Id": 3,
         "FounderId": null,
+        "HQLocationId": null,
         "LeaderId": null,
-        "SnapshotId": null,
-        "HQLocationId": null
+        "ChapterId": null
     },
     {
         "Id": 4,
         "FounderId": null,
+        "HQLocationId": null,
         "LeaderId": null,
-        "SnapshotId": null,
-        "HQLocationId": null
+        "ChapterId": null
     }
 ]

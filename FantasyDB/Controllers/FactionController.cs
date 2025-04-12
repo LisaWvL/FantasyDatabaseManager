@@ -12,12 +12,8 @@ namespace FantasyDB.Controllers
 {
     [ApiController]
     [Route("api/faction")]
-    public class FactionController : BaseEntityController<Faction, FactionViewModel>
+    public class FactionController(AppDbContext context, IMapper mapper, IDropdownService dropdownService) : BaseEntityController<Faction, FactionViewModel>(context, mapper, dropdownService)
     {
-        public FactionController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
-            : base(context, mapper, dropdownService)
-        {
-        }
 
         // ✅ EF Core query with full includes
         protected override IQueryable<Faction> GetQueryable()
@@ -26,7 +22,7 @@ namespace FantasyDB.Controllers
                 .Include(f => f.Founder)
                 .Include(f => f.Leader)
                 .Include(f => f.HQLocation)
-                .Include(f => f.Snapshot);
+                .Include(f => f.Chapter);
         }
 
         // ✅ API-compatible Index method
@@ -55,16 +51,16 @@ namespace FantasyDB.Controllers
             return await base.Delete(id);
         }
 
-        [HttpGet("{id}/new-snapshot")]
-        public override async Task<IActionResult> CreateNewSnapshot(int id)
+        [HttpGet("{id}/new-chapter")]
+        public override async Task<IActionResult> CreateNewChapter(int id)
         {
-            return await base.CreateNewSnapshot(id);
+            return await base.CreateNewChapter(id);
         }
 
-        [HttpGet("{id}/new-snapshot-page")]
-        public override async Task<IActionResult> CreateNewSnapshotPage(int id)
+        [HttpGet("{id}/new-chapter-page")]
+        public override async Task<IActionResult> CreateNewWritingAssistantPage(int id)
         {
-            return await base.CreateNewSnapshotPage(id);
+            return await base.CreateNewWritingAssistantPage(id);
         }
     }
 }

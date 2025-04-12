@@ -16,20 +16,13 @@ namespace FantasyDB.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public abstract class BaseEntityController<TModel, TViewModel> : ControllerBase
+public abstract class BaseEntityController<TModel, TViewModel>(AppDbContext context, IMapper mapper, IDropdownService dropdownService) : ControllerBase
     where TModel : class, new()
     where TViewModel : class, IViewModelWithId
 {
-    protected readonly AppDbContext _context;
-    protected readonly IMapper _mapper;
-    protected readonly IDropdownService _dropdownService;
-
-    protected BaseEntityController(AppDbContext context, IMapper mapper, IDropdownService dropdownService)
-    {
-        _context = context;
-        _mapper = mapper;
-        _dropdownService = dropdownService;
-    }
+    protected readonly AppDbContext _context = context;
+    protected readonly IMapper _mapper = mapper;
+    protected readonly IDropdownService _dropdownService = dropdownService;
 
     protected abstract IQueryable<TModel> GetQueryable();
 
@@ -91,15 +84,14 @@ public abstract class BaseEntityController<TModel, TViewModel> : ControllerBase
     {
         var entityId = (int)(typeof(TModel).GetProperty("Id")?.GetValue(entity) ?? 0);
 
-        await HandleSnapshotLinks(entity, viewModel, entityId);
+        await HandleChapterLinks(entity, viewModel, entityId);
 
         foreach (var prop in typeof(TViewModel).GetProperties())
         {
             var junctionAttr = prop.GetCustomAttribute<HandlesJunctionAttribute>();
             if (junctionAttr == null) continue;
 
-            var selectedIds = prop.GetValue(viewModel) as IEnumerable<int>;
-            if (selectedIds == null) continue;
+            if (prop.GetValue(viewModel) is not IEnumerable<int> selectedIds) continue;
 
             var junctionType = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a => a.GetTypes())
@@ -137,33 +129,20 @@ public abstract class BaseEntityController<TModel, TViewModel> : ControllerBase
         await _context.SaveChangesAsync();
     }
 
-    protected async Task HandleSnapshotLinks(TModel entity, TViewModel viewModel, int entityId)
+    protected async Task HandleChapterLinks(TModel entity, TViewModel viewModel, int entityId)
     {
-        var snapshotProp = typeof(TViewModel).GetProperty("SnapshotId");
-        if (snapshotProp == null) return;
+        ArgumentNullException.ThrowIfNull(entity);
 
-        var snapshotId = snapshotProp.GetValue(viewModel) as int?;
-        if (!snapshotId.HasValue) return;
+        var chapterProp = typeof(TViewModel).GetProperty("ChapterId");
+        if (chapterProp == null) return;
 
-        if (typeof(TModel) == typeof(Character))
-            _context.SnapshotsCharacters.Add(new SnapshotCharacter { CharacterId = entityId, SnapshotId = snapshotId.Value });
-        else if (typeof(TModel) == typeof(Item))
-            _context.SnapshotsItems.Add(new SnapshotItem { ItemId = entityId, SnapshotId = snapshotId.Value });
-        else if (typeof(TModel) == typeof(Location))
-            _context.SnapshotsLocations.Add(new SnapshotLocation { LocationId = entityId, SnapshotId = snapshotId.Value });
-        else if (typeof(TModel) == typeof(Faction))
-            _context.SnapshotsFactions.Add(new SnapshotFaction { FactionId = entityId, SnapshotId = snapshotId.Value });
-        else if (typeof(TModel) == typeof(Era))
-            _context.SnapshotsEras.Add(new SnapshotEra { EraId = entityId, SnapshotId = snapshotId.Value });
-        else if (typeof(TModel) == typeof(Event))
-            _context.SnapshotsEvents.Add(new SnapshotEvent { EventId = entityId, SnapshotId = snapshotId.Value });
-        else if (typeof(TModel) == typeof(CharacterRelationship))
-            _context.SnapshotsCharacterRelationships.Add(new SnapshotCharacterRelationship { CharacterRelationshipId = entityId, SnapshotId = snapshotId.Value });
+        var chapterId = chapterProp.GetValue(viewModel) as int?;
+        if (!chapterId.HasValue) return;
 
         await _context.SaveChangesAsync();
     }
 
-    // ========== 🆕 API-Compatible Snapshot Duplication ==========
+    // ========== 🆕 API-Compatible Chapter Duplication ==========
 
     [HttpGet("{id}/duplicate")]
     public virtual async Task<ActionResult<TViewModel>> Duplicate(int id)
@@ -174,8 +153,8 @@ public abstract class BaseEntityController<TModel, TViewModel> : ControllerBase
         var newEntity = _mapper.Map<TViewModel>(original);
         newEntity.Id = 0;
 
-        var snapshotProp = typeof(TViewModel).GetProperty("SnapshotId");
-        snapshotProp?.SetValue(newEntity, null);
+        var chapterProp = typeof(TViewModel).GetProperty("ChapterId");
+        chapterProp?.SetValue(newEntity, null);
 
         return Ok(newEntity);
     }
@@ -193,8 +172,8 @@ public abstract class BaseEntityController<TModel, TViewModel> : ControllerBase
         return Ok(grouped);
     }
 
-    [HttpGet("{id}/new-snapshot")]
-    public virtual async Task<IActionResult> CreateNewSnapshot(int id)
+    [HttpGet("{id}/new-chapter")]
+    public virtual async Task<IActionResult> CreateNewChapter(int id)
     {
         var original = await _context.Set<TModel>().FindAsync(id);
         if (original == null)
@@ -204,19 +183,19 @@ public abstract class BaseEntityController<TModel, TViewModel> : ControllerBase
 
         viewModel.Id = 0; // Reset Id so the frontend treats it as a new entity
 
-        // Nullify SnapshotId so the user picks a new one
-        var snapshotProp = typeof(TViewModel).GetProperty("SnapshotId");
-        snapshotProp?.SetValue(viewModel, null);
+        // Nullify ChapterId so the user picks a new one
+        var chapterProp = typeof(TViewModel).GetProperty("ChapterId");
+        chapterProp?.SetValue(viewModel, null);
 
         return Ok(viewModel);
     }
 
 
-    [HttpGet("{id}/new-snapshot-page")]
-    public virtual async Task<IActionResult> CreateNewSnapshotPage(int id)
+    [HttpGet("{id}/new-chapter-page")]
+    public virtual async Task<IActionResult> CreateNewWritingAssistantPage(int id)
     {
         var modelType = typeof(TModel);
-        var navPropsToInclude = new[] { "Faction", "Location", "Language", "Snapshot", "Event", "Era" };
+        var navPropsToInclude = new[] { "Faction", "Location", "Language", "Chapter", "Event", "Era" };
 
         var query = _context.Set<TModel>().AsQueryable();
         foreach (var navProp in navPropsToInclude)
@@ -228,14 +207,14 @@ public abstract class BaseEntityController<TModel, TViewModel> : ControllerBase
         var original = await query.FirstOrDefaultAsync(e => EF.Property<int>(e, "Id") == id);
         if (original == null) return NotFound();
 
-        var newSnapshot = _mapper.Map<TViewModel>(original);
-        newSnapshot.Id = 0;
+        var newChapter = _mapper.Map<TViewModel>(original);
+        newChapter.Id = 0;
 
-        var snapshotProp = typeof(TViewModel).GetProperty("SnapshotId");
-        snapshotProp?.SetValue(newSnapshot, null);
+        var chapterProp = typeof(TViewModel).GetProperty("ChapterId");
+        chapterProp?.SetValue(newChapter, null);
 
         var nameProp = typeof(TViewModel).GetProperty("Name");
-        var nameValue = nameProp?.GetValue(newSnapshot)?.ToString();
+        var nameValue = nameProp?.GetValue(newChapter)?.ToString();
 
         var versionsQuery = _context.Set<TModel>().AsQueryable().AsNoTracking();
         foreach (var navProp in navPropsToInclude)
@@ -245,14 +224,14 @@ public abstract class BaseEntityController<TModel, TViewModel> : ControllerBase
         }
 
         var existingVersions = string.IsNullOrEmpty(nameValue)
-            ? new List<TModel>()
+            ? []
             : await versionsQuery.Where(e => EF.Property<string>(e, "Name") == nameValue).ToListAsync();
 
         var existingVMs = _mapper.Map<List<TViewModel>>(existingVersions);
 
-        var result = new SnapshotEditPageViewModel<TViewModel>
+        var result = new ChapterEditPageViewModel<TViewModel>
         {
-            NewSnapshot = newSnapshot,
+            NewChapter = newChapter,
             ExistingVersions = existingVMs
         };
 

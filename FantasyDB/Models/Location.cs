@@ -16,16 +16,18 @@ namespace FantasyDB.Models // ✅ Add this line
         public int? WildMagicians { get; set; }
 
         public int? ParentLocationId { get; set; }
+        [ForeignKey("ParentLocationId")]
         public virtual Location? ParentLocation { get; set; }
 
-        public int? SnapshotId { get; set; }
-        public virtual Snapshot? Snapshot { get; set; }
+        public int? ChapterId { get; set; }
+        [ForeignKey("ChapterId")]
+        public virtual Chapter? Chapter { get; set; }
 
         // ✅ Navigation for M:N with Language
-        public List<LanguageLocation> LanguageLocations { get; set; } = new();
+        public List<LanguageLocation> LanguageLocations { get; set; } = [];
 
         // ✅ Navigation for 1:N with Event
-        public List<Event> Events { get; set; } = new(); // ✅ One Location → many Events
+        public List<Event> Events { get; set; } = [];
 
     }
 
