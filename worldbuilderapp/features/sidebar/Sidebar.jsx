@@ -42,9 +42,11 @@ export default function Sidebar({ show, toggle }) {
         <h2>Worldbuilder</h2>
               <nav>
         <SidebarGroup title="Planning">
-            <SidebarLink to="/calendarPlotView">Calendar Plot View</SidebarLink>
-            <SidebarLink to="/calendar">Calendar</SidebarLink>
+            <SidebarLink to="/Dashboard">Dashboard</SidebarLink>
+            <SidebarLink to="/TimelineStoryView">Timeline View</SidebarLink>
+             <SidebarLink to="/plotpoints">PlotPoints</SidebarLink>
         </SidebarGroup>
+
           <SidebarGroup title="Characters">
             <SidebarLink to="/characters">Characters</SidebarLink>
             <SidebarLink to="/character-relationships">Relationships</SidebarLink>
@@ -54,7 +56,6 @@ export default function Sidebar({ show, toggle }) {
 
           <SidebarGroup title="Timeline">
             <SidebarLink to="/eras">Eras</SidebarLink>
-            <SidebarLink to="/plotpoints">PlotPoints</SidebarLink>
             <SidebarLink to="/chapters">Chapters</SidebarLink>
             <SidebarLink to="/events">Events</SidebarLink>
             <SidebarLink to="/timelinestoryview">Timeline View</SidebarLink>

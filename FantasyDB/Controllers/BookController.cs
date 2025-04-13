@@ -49,5 +49,7 @@ namespace FantasyDB.Controllers
             await _context.SaveChangesAsync();
             return Ok(new { success = true });
         }
+
+
     }
 }

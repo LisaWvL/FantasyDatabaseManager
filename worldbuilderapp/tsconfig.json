@@ -11,6 +11,6 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true
     },
-    "include": [ "src/**/*", "features/eras/ErasPage.jsx", "features/characters/CharactersPage.jsx", "features/entities/ContextMenu.jsx", "features/entities/TooltipLink.jsx" ],
+    "include": [ "src/**/*", "features/eras/ErasPage.jsx", "features/characters/CharactersPage.jsx", "features/entities/ContextMenu.jsx", "features/entities/TooltipLink.jsx", "features/plotpoints/DashboardLayout.jsx" ],
     "exclude": [ "node_modules", "dist" ]
 }

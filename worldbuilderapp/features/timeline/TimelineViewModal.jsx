@@ -1,9 +1,9 @@
-// src/components/TimelineViewerModal.jsx
+// src/components/TimelineStoryViewModal.jsx
 
 import React, { useState } from 'react';
 import PlotPointModal from '../plotpoints/PlotPointModal';
 
-export default function TimelineViewerModal({ onAddPlotPoint }) {
+export default function TimelineStoryViewModal({ onAddPlotPoint }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => setIsOpen(true);

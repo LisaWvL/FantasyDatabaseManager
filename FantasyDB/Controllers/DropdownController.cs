@@ -65,5 +65,24 @@ namespace FantasyDB.Controllers
         [HttpGet("character-relationships/{characterId}")]
         public async Task<ActionResult<List<SimpleItem>>> GetCharacterRelationshipsForCharacter(int characterId) =>
             Ok(await dropdownService.GetCharacterRelationshipsForCharacterAsync(characterId));
+
+        [HttpGet("price-examples")]
+        public async Task<ActionResult<List<SimpleItem>>> GetPriceExamples() =>
+            Ok(await dropdownService.GetPriceExamplesAsync());
+        [HttpGet("plot-points")]
+        public async Task<ActionResult<List<SimpleItem>>> GetPlotPoints() =>
+            Ok(await dropdownService.GetPlotPointsAsync());
+        [HttpGet("calendars")]
+        public async Task<ActionResult<List<SimpleItem>>> GetCalendars() =>
+            Ok(await dropdownService.GetCalendarsAsync());
+        [HttpGet("books")]
+        public async Task<ActionResult<List<SimpleItem>>> GetBooks() =>
+            Ok(await dropdownService.GetBooksAsync());
+        [HttpGet("acts")]
+        public async Task<ActionResult<List<SimpleItem>>> GetActs() =>
+            Ok(await dropdownService.GetActsAsync());
+        [HttpGet("scenes")]
+        public async Task<ActionResult<List<SimpleItem>>> GetScenes() =>
+            Ok(await dropdownService.GetScenesAsync());
     }
 }

@@ -6,9 +6,9 @@ import 'react-quill/dist/quill.snow.css';
 import MainLayout from './layout/MainLayout';
 
 // Pages
-import CalendarPlotView from '../features/calendar/CalendarPlotView.jsx';
+import Dashboard from '../features/plotpoints/Dashboard.jsx';
 import ChapterEntityView from '../features/chapters/ChapterEntityView.jsx';
-import TimelineView from '../features/timeline/TimelineView.jsx';
+import TimelineStoryView from '../features/timeline/TimelineStoryView.jsx';
 
 import CharactersPage from '../features/characters/CharactersPage.jsx';
 import CharacterRelationshipsPage from '../features/characters/CharacterRelationshipsPage.jsx';
@@ -18,7 +18,6 @@ import LanguagesPage from '../features/languages/LanguagesPage.jsx';
 import ErasPage from '../features/eras/ErasPage.jsx';
 import EventsPage from '../features/events/EventsPage.jsx';
 import PlotPointsPage from '../features/plotpoints/PlotPointsPage.jsx';
-import TimelineStoryView from '../features/timeline/TimelineStoryView.jsx';
 
 import ItemsPage from '../features/items/ItemsPage.jsx';
 import PriceExamplesPage from '../features/items/PriceExamplesPage.jsx';
@@ -35,13 +34,13 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           {/* Default Dashboard or Timeline View */}
-          <Route index element={<CalendarPlotView />} />
+          <Route index element={<Dashboard />} />
 
           {/* Core Pages */}
           {/*<Route path="dashboard" element={<Dashboard />} />*/}
-          <Route path="calendarPlotView" element={<CalendarPlotView />} />
+          <Route path="Dashboard" element={<Dashboard />} />
           <Route path="chapters" element={<ChapterEntityView />} />
-          <Route path="timelineView" element={<TimelineView/>} />
+          <Route path="TimelineStoryView" element={<TimelineStoryView/>} />
 
 
           {/* Characters & Relations */}

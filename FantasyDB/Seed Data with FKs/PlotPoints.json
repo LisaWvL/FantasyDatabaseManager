@@ -1,14 +1,26 @@
 [
     {
         "Id": 1,
-        "ChapterId": null,
-        "startDateId": null,
-        "endDateId": null
+        "EndDateId": null,
+        "StartDateId": null,
+        "ChapterId": 6
     },
     {
         "Id": 2,
-        "ChapterId": null,
-        "startDateId": null,
-        "endDateId": null
+        "EndDateId": null,
+        "StartDateId": null,
+        "ChapterId": 7
+    },
+    {
+        "Id": 3,
+        "EndDateId": null,
+        "StartDateId": null,
+        "ChapterId": 1
+    },
+    {
+        "Id": 4,
+        "EndDateId": null,
+        "StartDateId": null,
+        "ChapterId": 8
     }
 ]

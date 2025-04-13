@@ -1,6 +1,6 @@
 import React from 'react';
 import CalendarDayCell from './CalendarDayCell';
-import PlotPointCard from '../plotpoints/PlotPointCard';
+import PlotPointCard from './PlotPointCard';
 import './CalendarGrid.css';
 
 export default function CalendarGrid({
