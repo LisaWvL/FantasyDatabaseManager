@@ -82,7 +82,7 @@ namespace FantasyDB.Controllers
 
             var items = await _context.Items
                 .Where(f => f.ChapterId == id)
-                .Include(f=> f.Owner)
+                .Include(f => f.Owner)
                 .ToListAsync();
 
 
@@ -101,5 +101,6 @@ namespace FantasyDB.Controllers
                 Factions = factions
             });
         }
+
     }
 }

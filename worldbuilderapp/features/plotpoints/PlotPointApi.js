@@ -21,14 +21,15 @@ export const fetchPlotPointById = async (id) => {
 };
 
 export const createPlotPoint = async (payload) => {
-  try {
-    const response = await axiosInstance.post('/plotpoint', payload);
-    return response.data;
-  } catch (error) {
-    console.error('❌ Failed to create plot point:', error.response?.data || error.message);
-    throw error;
-  }
+    try {
+        const response = await axiosInstance.post('/plotpoint/create', payload);
+        return response.data;
+    } catch (error) {
+        console.error('❌ Failed to create plot point:', error.response?.data || error.message);
+        throw error;
+    }
 };
+
 
 export const fetchPlotPointsForChapter = async (chapterId) => {
   try {
@@ -126,3 +127,35 @@ export const updatePlotPoint = async (id, payload) => {
         throw error;
     }
 };
+
+export const getRelatedActs = async (bookId) => {
+    try {
+        const response = await axiosInstance.get(`/plotpoint/${bookId}/relatedActs`);
+        return response.data;
+    } catch (error) {
+        if (error.response?.status === 404) {
+            console.warn(`⚠️ No chapters found for act ${bookId}`);
+            return []; // ← Return an empty list if none found
+        }
+        console.error(`❌ Failed to fetch related acts for book ${bookId}:`, error.response?.data || error.message);
+        throw error;
+    }
+};
+
+
+export const getRelatedChapters = async (actId) => {
+    try {
+        const response = await axiosInstance.get(`/plotpoint/${actId}/relatedChapters`);
+        return response.data;
+    } catch (error) {
+        if (error.response?.status === 404) {
+            console.warn(`⚠️ No chapters found for act ${actId}`);
+            return []; // ← Return an empty list if none found
+        }
+        console.error(`❌ Failed to fetch related chapters for act ${actId}:`, error.response?.data || error.message);
+        throw error;
+    }
+};
+
+
+

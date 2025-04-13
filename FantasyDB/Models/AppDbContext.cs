@@ -193,17 +193,22 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<PlotPoint>()
             .HasOne(c => c.Chapter)
             .WithMany()
-            .HasForeignKey("ChapterId");
+            .HasForeignKey("ChapterId")
+            .IsRequired(false);
 
         modelBuilder.Entity<PlotPoint>()
             .HasOne(c => c.StartDate)
             .WithMany()
-            .HasForeignKey("StartDateId");
+            .HasForeignKey("StartDateId")
+            .IsRequired(false);
+
 
         modelBuilder.Entity<PlotPoint>()
             .HasOne(c => c.EndDate)
             .WithMany()
-            .HasForeignKey("EndDateId");
+            .HasForeignKey("EndDateId")
+            .IsRequired(false);
+
     }
 
 

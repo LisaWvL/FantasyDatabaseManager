@@ -2,7 +2,7 @@
 
 import * as ActApi from '../chapters/ActApi';
 import * as BookApi from '../chapters/BookApi';
-import * as CalendarApi from '../calendar/CalendarApi';
+import * as CalendarApi from '../plotpoints/CalendarApi';
 import * as ChapterApi from '../chapters/ChapterApi';
 import * as CharacterApi from '../characters/CharacterApi';
 import * as CharacterRelationshipApi from '../characters/CharacterRelationshipApi';

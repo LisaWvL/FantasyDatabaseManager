@@ -1,12 +1,20 @@
-﻿.calendar-main {
-    flex: 1;
-    overflow-y: auto;
-    padding: 2rem;
-    background: url('/assets/parchment-bg.png') center center / cover;
-    box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.8);
+﻿.add-button {
+    background: var(--accent);
+    color: #111;
+    border: none;
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: Cinzel, serif;
+    font-size: 1rem;
+    transition: background 0.2s ease;
 }
 
-/* 📅 Month Header */
+    .add-button:hover {
+        background: #ffe0b3;
+    }
+
 .month-header.sticky {
     position: sticky;
     top: 0;
@@ -28,7 +36,6 @@
     text-align: left;
 }
 
-/* 🗓️ Responsive Calendar Grid */
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -38,7 +45,6 @@
     margin: 0 auto;
 }
 
-/* 📦 Calendar Cell */
 .calendar-cell {
     background-color: var(--bg);
     border: 1px solid var(--accent);
@@ -57,7 +63,6 @@
         transition: background 0.2s ease-in-out;
     }
 
-/* 🔺 Day Cell Header */
 .calendar-header {
     display: flex;
     justify-content: space-between;
@@ -75,6 +80,13 @@
     color: #e8d2b0;
 }
 
+.calendar-weekday {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #ccb89a;
+    line-height: 1;
+}
+
 .calendar-meta {
     font-size: 0.7rem;
     color: #bba48f;
@@ -82,11 +94,19 @@
     line-height: 1.1;
 }
 
-/* 📍 Stack PlotPoints Inside Cell */
 .calendar-body {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
-    justify-content: flex-end; /* Align ghosts to bottom of the cell */
+    justify-content: flex-end;
+}
+
+.new-plotpoint-hint {
+    font-size: 0.75rem;
+    color: gold;
+    padding-top: 0.5rem;
+    text-align: center;
+    font-style: italic;
+    opacity: 0.6;
 }

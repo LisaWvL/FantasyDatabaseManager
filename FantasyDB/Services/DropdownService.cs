@@ -39,27 +39,34 @@ namespace FantasyDB.Services
                 .ToListAsync();
 
         public async Task<List<SimpleItem>> GetBooksAsync() =>
-            await context.Languages.AsNoTracking()
-                .Select(l => new SimpleItem(l.Id, l.Name))
+            await context.Books.AsNoTracking()
+                .Select(l => new SimpleItem(l.Id, l.BookTitle))
                 .ToListAsync();
 
+
         public async Task<List<SimpleItem>> GetActsAsync() =>
-            await context.Languages.AsNoTracking()
-                .Select(l => new SimpleItem(l.Id, l.Name))
+        
+            await context.Acts.AsNoTracking()
+                .AsNoTracking()
+                .Select(a => new SimpleItem(a.Id, a.ActTitle))
+                .ToListAsync();
+
+
+        public async Task<List<SimpleItem>> GetChaptersAsync() =>
+
+            await context.Chapters.AsNoTracking()
+                .AsNoTracking()
+                .Select(a => new SimpleItem(a.Id, a.ChapterTitle))
                 .ToListAsync();
 
         public async Task<List<SimpleItem>> GetScenesAsync() =>
-            await context.Languages.AsNoTracking()
-                .Select(l => new SimpleItem(l.Id, l.Name))
-                .ToListAsync();
-#pragma warning restore CS8604 // Possible null reference argument.
 
-#pragma warning disable CS8604 // Possible null reference argument.
-        public async Task<List<SimpleItem>> GetChaptersAsync() =>
-            await context.Chapters.AsNoTracking()
-                .Select(s => new SimpleItem(s.Id, s.ChapterTitle))
+            await context.Scenes.AsNoTracking()
+                .AsNoTracking()
+                .Select(a => new SimpleItem(a.Id, a.SceneTitle))
                 .ToListAsync();
-#pragma warning restore CS8604 // Possible null reference argument.
+
+
 
 #pragma warning disable CS8604 // Possible null reference argument.
         public async Task<List<SimpleItem>> GetEventsAsync() =>
@@ -159,6 +166,7 @@ namespace FantasyDB.Services
     await context.PlotPoints.AsNoTracking()
         .Select(p => new SimpleItem(p.Id, p.Title))
         .ToListAsync();
+
 
     }
     public record SimpleItem(int Id, string Name);

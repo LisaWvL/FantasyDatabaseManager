@@ -167,6 +167,29 @@
 }
 
 
+.plotpoint-card.reversed {
+    background-color: rgba(78, 26, 26, 0.85);
+    border: 2px dashed #e05656;
+    box-shadow: 0 0 8px rgba(255, 100, 100, 0.3);
+}
+
+    .plotpoint-card.reversed.ghost {
+        opacity: 0.5;
+        background-color: rgba(72, 123, 180, 0.1);
+        filter: brightness(0.85);
+    }
+    .plotpoint-card.reversed::before {
+        content: '↶';
+        position: absolute;
+        top: 4px;
+        right: 6px;
+        font-size: 1.1rem;
+        color: #89c0ff;
+        font-weight: bold;
+    }
+    .plotpoint-card.reversed .plotpoint-title {
+        color: #f6b8b8;
+    }
 
 
 

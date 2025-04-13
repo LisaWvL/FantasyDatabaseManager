@@ -2,1826 +2,2191 @@
     {
         "Day": 1,
         "Weekday": "Solrun",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 2,
         "Weekday": "Lura",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 3,
         "Weekday": "Stellis",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 4,
         "Weekday": "Embra",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 5,
         "Weekday": "Umbrin",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 6,
         "Weekday": "Even",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 7,
         "Weekday": "Auro",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 8,
         "Weekday": "Solrun",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 9,
         "Weekday": "Lura",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 10,
         "Weekday": "Stellis",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 11,
         "Weekday": "Embra",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 12,
         "Weekday": "Umbrin",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 13,
         "Weekday": "Even",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 14,
         "Weekday": "Auro",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 15,
         "Weekday": "Solrun",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 16,
         "Weekday": "Lura",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 17,
         "Weekday": "Stellis",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 18,
         "Weekday": "Embra",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 19,
         "Weekday": "Umbrin",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 20,
         "Weekday": "Even",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 21,
         "Weekday": "Auro",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 22,
         "Weekday": "Solrun",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 23,
         "Weekday": "Lura",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 24,
         "Weekday": "Stellis",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 25,
         "Weekday": "Embra",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 26,
         "Weekday": "Umbrin",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 27,
         "Weekday": "Even",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 28,
         "Weekday": "Auro",
-        "Month": "Aurn"
+        "Month": "Aurn",
+        "Year": 0
     },
     {
         "Day": 1,
         "Weekday": "Solrun",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 2,
         "Weekday": "Lura",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 3,
         "Weekday": "Stellis",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 4,
         "Weekday": "Embra",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 5,
         "Weekday": "Umbrin",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 6,
         "Weekday": "Even",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 7,
         "Weekday": "Auro",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 8,
         "Weekday": "Solrun",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 9,
         "Weekday": "Lura",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 10,
         "Weekday": "Stellis",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 11,
         "Weekday": "Embra",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 12,
         "Weekday": "Umbrin",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 13,
         "Weekday": "Even",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 14,
         "Weekday": "Auro",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 15,
         "Weekday": "Solrun",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 16,
         "Weekday": "Lura",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 17,
         "Weekday": "Stellis",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 18,
         "Weekday": "Embra",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 19,
         "Weekday": "Umbrin",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 20,
         "Weekday": "Even",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 21,
         "Weekday": "Auro",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 22,
         "Weekday": "Solrun",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 23,
         "Weekday": "Lura",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 24,
         "Weekday": "Stellis",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 25,
         "Weekday": "Embra",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 26,
         "Weekday": "Umbrin",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 27,
         "Weekday": "Even",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 28,
         "Weekday": "Auro",
-        "Month": "Brol"
+        "Month": "Brol",
+        "Year": 0
     },
     {
         "Day": 1,
         "Weekday": "Solrun",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 2,
         "Weekday": "Lura",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 3,
         "Weekday": "Stellis",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 4,
         "Weekday": "Embra",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 5,
         "Weekday": "Umbrin",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 6,
         "Weekday": "Even",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 7,
         "Weekday": "Auro",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 8,
         "Weekday": "Solrun",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 9,
         "Weekday": "Lura",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 10,
         "Weekday": "Stellis",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 11,
         "Weekday": "Embra",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 12,
         "Weekday": "Umbrin",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 13,
         "Weekday": "Even",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 14,
         "Weekday": "Auro",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 15,
         "Weekday": "Solrun",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 16,
         "Weekday": "Lura",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 17,
         "Weekday": "Stellis",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 18,
         "Weekday": "Embra",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 19,
         "Weekday": "Umbrin",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 20,
         "Weekday": "Even",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 21,
         "Weekday": "Auro",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 22,
         "Weekday": "Solrun",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 23,
         "Weekday": "Lura",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 24,
         "Weekday": "Stellis",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 25,
         "Weekday": "Embra",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 26,
         "Weekday": "Umbrin",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 27,
         "Weekday": "Even",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 28,
         "Weekday": "Auro",
-        "Month": "Chana"
+        "Month": "Chana",
+        "Year": 0
     },
     {
         "Day": 1,
         "Weekday": "Solrun",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 2,
         "Weekday": "Lura",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 3,
         "Weekday": "Stellis",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 4,
         "Weekday": "Embra",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 5,
         "Weekday": "Umbrin",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 6,
         "Weekday": "Even",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 7,
         "Weekday": "Auro",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 8,
         "Weekday": "Solrun",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 9,
         "Weekday": "Lura",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 10,
         "Weekday": "Stellis",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 11,
         "Weekday": "Embra",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 12,
         "Weekday": "Umbrin",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 13,
         "Weekday": "Even",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 14,
         "Weekday": "Auro",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 15,
         "Weekday": "Solrun",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 16,
         "Weekday": "Lura",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 17,
         "Weekday": "Stellis",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 18,
         "Weekday": "Embra",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 19,
         "Weekday": "Umbrin",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 20,
         "Weekday": "Even",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 21,
         "Weekday": "Auro",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 22,
         "Weekday": "Solrun",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 23,
         "Weekday": "Lura",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 24,
         "Weekday": "Stellis",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 25,
         "Weekday": "Embra",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 26,
         "Weekday": "Umbrin",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 27,
         "Weekday": "Even",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 28,
         "Weekday": "Auro",
-        "Month": "Drom"
+        "Month": "Drom",
+        "Year": 0
     },
     {
         "Day": 1,
         "Weekday": "Solrun",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 2,
         "Weekday": "Lura",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 3,
         "Weekday": "Stellis",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 4,
         "Weekday": "Embra",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 5,
         "Weekday": "Umbrin",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 6,
         "Weekday": "Even",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 7,
         "Weekday": "Auro",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 8,
         "Weekday": "Solrun",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 9,
         "Weekday": "Lura",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 10,
         "Weekday": "Stellis",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 11,
         "Weekday": "Embra",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 12,
         "Weekday": "Umbrin",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 13,
         "Weekday": "Even",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 14,
         "Weekday": "Auro",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 15,
         "Weekday": "Solrun",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 16,
         "Weekday": "Lura",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 17,
         "Weekday": "Stellis",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 18,
         "Weekday": "Embra",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 19,
         "Weekday": "Umbrin",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 20,
         "Weekday": "Even",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 21,
         "Weekday": "Auro",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 22,
         "Weekday": "Solrun",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 23,
         "Weekday": "Lura",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 24,
         "Weekday": "Stellis",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 25,
         "Weekday": "Embra",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 26,
         "Weekday": "Umbrin",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 27,
         "Weekday": "Even",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 28,
         "Weekday": "Auro",
-        "Month": "Eice"
+        "Month": "Eice",
+        "Year": 0
     },
     {
         "Day": 1,
         "Weekday": "Solrun",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 2,
         "Weekday": "Lura",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 3,
         "Weekday": "Stellis",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 4,
         "Weekday": "Embra",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 5,
         "Weekday": "Umbrin",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 6,
         "Weekday": "Even",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 7,
         "Weekday": "Auro",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 8,
         "Weekday": "Solrun",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 9,
         "Weekday": "Lura",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 10,
         "Weekday": "Stellis",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 11,
         "Weekday": "Embra",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 12,
         "Weekday": "Umbrin",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 13,
         "Weekday": "Even",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 14,
         "Weekday": "Auro",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 15,
         "Weekday": "Solrun",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 16,
         "Weekday": "Lura",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 17,
         "Weekday": "Stellis",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 18,
         "Weekday": "Embra",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 19,
         "Weekday": "Umbrin",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 20,
         "Weekday": "Even",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 21,
         "Weekday": "Auro",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 22,
         "Weekday": "Solrun",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 23,
         "Weekday": "Lura",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 24,
         "Weekday": "Stellis",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 25,
         "Weekday": "Embra",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 26,
         "Weekday": "Umbrin",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 27,
         "Weekday": "Even",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 28,
         "Weekday": "Auro",
-        "Month": "Fram"
+        "Month": "Fram",
+        "Year": 0
     },
     {
         "Day": 1,
         "Weekday": "Solrun",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 2,
         "Weekday": "Lura",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 3,
         "Weekday": "Stellis",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 4,
         "Weekday": "Embra",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 5,
         "Weekday": "Umbrin",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 6,
         "Weekday": "Even",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 7,
         "Weekday": "Auro",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 8,
         "Weekday": "Solrun",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 9,
         "Weekday": "Lura",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 10,
         "Weekday": "Stellis",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 11,
         "Weekday": "Embra",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 12,
         "Weekday": "Umbrin",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 13,
         "Weekday": "Even",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 14,
         "Weekday": "Auro",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 15,
         "Weekday": "Solrun",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 16,
         "Weekday": "Lura",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 17,
         "Weekday": "Stellis",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 18,
         "Weekday": "Embra",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 19,
         "Weekday": "Umbrin",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 20,
         "Weekday": "Even",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 21,
         "Weekday": "Auro",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 22,
         "Weekday": "Solrun",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 23,
         "Weekday": "Lura",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 24,
         "Weekday": "Stellis",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 25,
         "Weekday": "Embra",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 26,
         "Weekday": "Umbrin",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 27,
         "Weekday": "Even",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 28,
         "Weekday": "Auro",
-        "Month": "Gila"
+        "Month": "Gila",
+        "Year": 0
     },
     {
         "Day": 1,
         "Weekday": "Solrun",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 2,
         "Weekday": "Lura",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 3,
         "Weekday": "Stellis",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 4,
         "Weekday": "Embra",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 5,
         "Weekday": "Umbrin",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 6,
         "Weekday": "Even",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 7,
         "Weekday": "Auro",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 8,
         "Weekday": "Solrun",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 9,
         "Weekday": "Lura",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 10,
         "Weekday": "Stellis",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 11,
         "Weekday": "Embra",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 12,
         "Weekday": "Umbrin",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 13,
         "Weekday": "Even",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 14,
         "Weekday": "Auro",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 15,
         "Weekday": "Solrun",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 16,
         "Weekday": "Lura",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 17,
         "Weekday": "Stellis",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 18,
         "Weekday": "Embra",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 19,
         "Weekday": "Umbrin",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 20,
         "Weekday": "Even",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 21,
         "Weekday": "Auro",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 22,
         "Weekday": "Solrun",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 23,
         "Weekday": "Lura",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 24,
         "Weekday": "Stellis",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 25,
         "Weekday": "Embra",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 26,
         "Weekday": "Umbrin",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 27,
         "Weekday": "Even",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 28,
         "Weekday": "Auro",
-        "Month": "Heno"
+        "Month": "Heno",
+        "Year": 0
     },
     {
         "Day": 1,
         "Weekday": "Solrun",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 2,
         "Weekday": "Lura",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 3,
         "Weekday": "Stellis",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 4,
         "Weekday": "Embra",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 5,
         "Weekday": "Umbrin",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 6,
         "Weekday": "Even",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 7,
         "Weekday": "Auro",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 8,
         "Weekday": "Solrun",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 9,
         "Weekday": "Lura",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 10,
         "Weekday": "Stellis",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 11,
         "Weekday": "Embra",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 12,
         "Weekday": "Umbrin",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 13,
         "Weekday": "Even",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 14,
         "Weekday": "Auro",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 15,
         "Weekday": "Solrun",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 16,
         "Weekday": "Lura",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 17,
         "Weekday": "Stellis",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 18,
         "Weekday": "Embra",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 19,
         "Weekday": "Umbrin",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 20,
         "Weekday": "Even",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 21,
         "Weekday": "Auro",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 22,
         "Weekday": "Solrun",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 23,
         "Weekday": "Lura",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 24,
         "Weekday": "Stellis",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 25,
         "Weekday": "Embra",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 26,
         "Weekday": "Umbrin",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 27,
         "Weekday": "Even",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 28,
         "Weekday": "Auro",
-        "Month": "Irrst"
+        "Month": "Irrst",
+        "Year": 0
     },
     {
         "Day": 1,
         "Weekday": "Solrun",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 2,
         "Weekday": "Lura",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 3,
         "Weekday": "Stellis",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 4,
         "Weekday": "Embra",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 5,
         "Weekday": "Umbrin",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 6,
         "Weekday": "Even",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 7,
         "Weekday": "Auro",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 8,
         "Weekday": "Solrun",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 9,
         "Weekday": "Lura",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 10,
         "Weekday": "Stellis",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 11,
         "Weekday": "Embra",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 12,
         "Weekday": "Umbrin",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 13,
         "Weekday": "Even",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 14,
         "Weekday": "Auro",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 15,
         "Weekday": "Solrun",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 16,
         "Weekday": "Lura",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 17,
         "Weekday": "Stellis",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 18,
         "Weekday": "Embra",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 19,
         "Weekday": "Umbrin",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 20,
         "Weekday": "Even",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 21,
         "Weekday": "Auro",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 22,
         "Weekday": "Solrun",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 23,
         "Weekday": "Lura",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 24,
         "Weekday": "Stellis",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 25,
         "Weekday": "Embra",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 26,
         "Weekday": "Umbrin",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 27,
         "Weekday": "Even",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 28,
         "Weekday": "Auro",
-        "Month": "Jart"
+        "Month": "Jart",
+        "Year": 0
     },
     {
         "Day": 1,
         "Weekday": "Solrun",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 2,
         "Weekday": "Lura",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 3,
         "Weekday": "Stellis",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 4,
         "Weekday": "Embra",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 5,
         "Weekday": "Umbrin",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 6,
         "Weekday": "Even",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 7,
         "Weekday": "Auro",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 8,
         "Weekday": "Solrun",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 9,
         "Weekday": "Lura",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 10,
         "Weekday": "Stellis",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 11,
         "Weekday": "Embra",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 12,
         "Weekday": "Umbrin",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 13,
         "Weekday": "Even",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 14,
         "Weekday": "Auro",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 15,
         "Weekday": "Solrun",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 16,
         "Weekday": "Lura",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 17,
         "Weekday": "Stellis",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 18,
         "Weekday": "Embra",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 19,
         "Weekday": "Umbrin",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 20,
         "Weekday": "Even",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 21,
         "Weekday": "Auro",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 22,
         "Weekday": "Solrun",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 23,
         "Weekday": "Lura",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 24,
         "Weekday": "Stellis",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 25,
         "Weekday": "Embra",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 26,
         "Weekday": "Umbrin",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 27,
         "Weekday": "Even",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 28,
         "Weekday": "Auro",
-        "Month": "Kwarm"
+        "Month": "Kwarm",
+        "Year": 0
     },
     {
         "Day": 1,
         "Weekday": "Solrun",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 2,
         "Weekday": "Lura",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 3,
         "Weekday": "Stellis",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 4,
         "Weekday": "Embra",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 5,
         "Weekday": "Umbrin",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 6,
         "Weekday": "Even",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 7,
         "Weekday": "Auro",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 8,
         "Weekday": "Solrun",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 9,
         "Weekday": "Lura",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 10,
         "Weekday": "Stellis",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 11,
         "Weekday": "Embra",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 12,
         "Weekday": "Umbrin",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 13,
         "Weekday": "Even",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 14,
         "Weekday": "Auro",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 15,
         "Weekday": "Solrun",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 16,
         "Weekday": "Lura",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 17,
         "Weekday": "Stellis",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 18,
         "Weekday": "Embra",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 19,
         "Weekday": "Umbrin",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 20,
         "Weekday": "Even",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 21,
         "Weekday": "Auro",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 22,
         "Weekday": "Solrun",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 23,
         "Weekday": "Lura",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 24,
         "Weekday": "Stellis",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 25,
         "Weekday": "Embra",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 26,
         "Weekday": "Umbrin",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 27,
         "Weekday": "Even",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 28,
         "Weekday": "Auro",
-        "Month": "Lehnd"
+        "Month": "Lehnd",
+        "Year": 0
     },
     {
         "Day": 1,
         "Weekday": "Solrun",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 2,
         "Weekday": "Lura",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 3,
         "Weekday": "Stellis",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 4,
         "Weekday": "Embra",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 5,
         "Weekday": "Umbrin",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 6,
         "Weekday": "Even",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 7,
         "Weekday": "Auro",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 8,
         "Weekday": "Solrun",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 9,
         "Weekday": "Lura",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 10,
         "Weekday": "Stellis",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 11,
         "Weekday": "Embra",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 12,
         "Weekday": "Umbrin",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 13,
         "Weekday": "Even",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 14,
         "Weekday": "Auro",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 15,
         "Weekday": "Solrun",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 16,
         "Weekday": "Lura",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 17,
         "Weekday": "Stellis",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 18,
         "Weekday": "Embra",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 19,
         "Weekday": "Umbrin",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 20,
         "Weekday": "Even",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 21,
         "Weekday": "Auro",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 22,
         "Weekday": "Solrun",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 23,
         "Weekday": "Lura",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 24,
         "Weekday": "Stellis",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 25,
         "Weekday": "Embra",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 26,
         "Weekday": "Umbrin",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 27,
         "Weekday": "Even",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 28,
         "Weekday": "Auro",
-        "Month": "Moon"
+        "Month": "Moon",
+        "Year": 0
     },
     {
         "Day": 1,
         "Weekday": "Jespen",
-        "Month": "Jespen"
+        "Month": "Jespen",
+        "Year": 0
     }
 ]

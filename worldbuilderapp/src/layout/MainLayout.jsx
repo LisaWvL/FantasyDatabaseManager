@@ -32,7 +32,7 @@ export default function MainLayout() {
         anchorPoint={menuPosition}
         state={menuVisible ? 'open' : 'closed'}
         onClose={closeMenu}
-        theme="dark"
+        className="context-menu"
       >
         <MenuItem
           onClick={() => {

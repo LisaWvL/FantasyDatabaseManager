@@ -89,6 +89,7 @@ export default function EntityTable({
                                     onCancel={() => { }}
                                     onDelete={() => onDelete(row.id)}
                                     onCopy={() => onCopy(row.id)}
+                                    onChapter={onChapter}
                                 />
                                 {onChapter && (
                                     <tr>

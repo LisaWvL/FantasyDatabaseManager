@@ -2,65 +2,41 @@
     {
         "Name": "The Coronation of Prince Edric",
         "Description": "",
-        "Day": 15,
-        "Month": "Aurn",
-        "Year": 1523,
         "Purpose": "Royal Ceremony"
     },
     {
         "Name": "The Burning of the Heretics",
         "Description": "",
-        "Day": 23,
-        "Month": "Heno",
-        "Year": 1523,
         "Purpose": "Religious Purge"
     },
     {
         "Name": "The Battle of Varenthal Pass",
         "Description": "",
-        "Day": 8,
-        "Month": "Drom",
-        "Year": 1524,
         "Purpose": "Military Conflict"
     },
     {
         "Name": "Festival of Thalaa",
         "Description": "",
-        "Day": 8,
-        "Month": "Drom",
-        "Year": null,
         "Purpose": "Water-themed festival to worship and thank the Goddess Thalaa"
     },
     {
         "Name": "Festival of Luma",
         "Description": "",
-        "Day": 8,
-        "Month": "Gila",
-        "Year": null,
         "Purpose": "Earth-themed festival to worship and thank the Goddess Luma"
     },
     {
         "Name": "Festival of Caelon",
         "Description": "",
-        "Day": 8,
-        "Month": "Jart",
-        "Year": null,
         "Purpose": "Fire-themed festival to worship and thank the God Caelon"
     },
     {
         "Name": "Festival of Aelwyn",
         "Description": "",
-        "Day": 8,
-        "Month": "Brol",
-        "Year": null,
         "Purpose": "Wind-themed festival to worship and thank the Goddess Aelwyn"
     },
     {
         "Name": "Jespen",
         "Description": "",
-        "Day": 8,
-        "Month": "Moon",
-        "Year": null,
         "Purpose": "End of Year festival"
     }
 ]

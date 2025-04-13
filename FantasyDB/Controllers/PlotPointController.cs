@@ -82,6 +82,40 @@ public class PlotPointController(AppDbContext context, IMapper mapper, IDropdown
         return Ok(viewModels);
     }
 
+    //load all Chapters, that have this ActId as FK
+    [HttpGet("{ActId}/relatedChapters")]
+    public async Task<ActionResult<List<ChapterViewModel>>> GetRelatedChapters(int ActId)
+    {
+        var chapters = await _context.Chapters
+            .Where(c => c.ActId == ActId)
+            .ToListAsync();
+        if (chapters == null || chapters.Count == 0)
+        {
+            return NotFound();
+        }
+        else
+        {
+            return Ok(_mapper.Map<List<ChapterViewModel>>(chapters));
+        }
+    }
+
+    //load all Acts, that have this BookId as FK
+    [HttpGet("{BookId}/relatedActs")]
+    public async Task<ActionResult<List<ActViewModel>>> GetRelatedActs(int BookId)
+    {
+        var acts = await _context.Acts
+            .Where(a => a.BookId == BookId)
+            .ToListAsync();
+        if (acts == null || acts.Count == 0)
+        {
+            return NotFound();
+        }
+        else
+        {
+            return Ok(_mapper.Map<List<ActViewModel>>(acts));
+        }
+    }
+
     [HttpPost("create")]
     public override async Task<ActionResult<PlotPointViewModel>> Create([FromBody] PlotPointViewModel viewModel)
     {
@@ -307,4 +341,6 @@ public class PlotPointController(AppDbContext context, IMapper mapper, IDropdown
             .ToList();
         return Ok(plotPoints);
     }
+
+
 }
