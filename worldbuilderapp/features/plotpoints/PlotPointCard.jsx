@@ -10,7 +10,6 @@ export default function PlotPointCard({
     onResizeEnd,
     isGhost = false,
     colorIndex = 0,
-
 }) {
     const cardRef = useRef(null);
     const [showTooltip, setShowTooltip] = useState(false);
