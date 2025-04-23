@@ -1,0 +1,113 @@
+﻿/* Optional: Scrollbar styling */
+.navsidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.navsidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+}
+
+.navsidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.navsidebar-wrapper {
+    position: relative;
+    display: flex;
+    height: 100vh;
+    transition: width 0.3s ease;
+    width: 260px; /* Sidebar (250) + Button (32) */
+    pointer-events: auto;
+    overflow: visible;
+    z-index: 10;
+}
+
+    .navsidebar-wrapper.collapsed {
+        width: 20px;
+    }
+
+    .navsidebar-wrapper.open {
+        width: 260px;
+    }
+
+/* Sidebar panel */
+.navsidebar {
+    width: 250px;
+    background-color: #1a1310;
+    border-right: 1px solid var(--accent);
+    overflow-y: auto;
+    transition: transform 0.3s ease;
+    pointer-events: auto;
+    position: relative;
+    height: 100vh;
+    overflow-y: auto;
+    scrollbar-gutter: stable both-edges; /* Helps avoid layout shift when scrollbar appears */
+}
+
+    .navsidebar.collapsed {
+        transform: translateX(-100%);
+    }
+
+    .navsidebar.open {
+        transform: translateX(0);
+    }
+
+
+/* Toggle button */
+.navsidebar-toggle-btn {
+    position: absolute;
+    right: 0;
+    top: 30px;
+    width: 20px;
+    height: 32px;
+    background-color: var(--accent);
+    color: #000;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 0 6px 6px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+    z-index: 9999;
+    pointer-events: auto;
+}
+
+    .navsidebar-toggle-btn:hover {
+        background-color: #c598ff;
+    }
+
+.navsidebar h1 {
+    font-family: var(--font-header);
+    font-size: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.navsidebar h2 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.navsidebar ul {
+    padding-left: 0;
+    margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+}
+
+.navsidebar li {
+    margin-bottom: 0.25rem;
+}
+
+.navsidebar a {
+    color: var(--accent);
+    text-decoration: none;
+    font-family: var(--font-body);
+}
+
+    .navsidebar a:hover {
+        color: #ddaaff;
+    }

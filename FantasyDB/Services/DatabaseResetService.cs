@@ -1,8 +1,10 @@
 ﻿using System;
 using FantasyDB.Services;
 using Microsoft.EntityFrameworkCore;
+using FantasyDB.Entities._Shared;
 
-namespace FantasyDB.Services
+
+namespace FantasyDB.Entities
 {
     public class DatabaseResetService
     {

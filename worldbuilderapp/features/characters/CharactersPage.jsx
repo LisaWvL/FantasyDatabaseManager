@@ -1,8 +1,8 @@
 ﻿// CharacterPage.jsx
 
-import '../entities/EntityPage.css';
-import EntityPage from '../entities/EntityPage';
+import '../entities/ModularEntityPage.css';
+import ModularEntityPage from '../entities/ModularEntityPage';
 
 export default function CharactersPage() {
-  return <EntityPage entityType="Character" />;
+    return <ModularEntityPage cardEntity="Character"  sectionEntity = "Chapter" updateFK="ChapterId"  />;
 }

@@ -10,24 +10,48 @@
     <BuildCommand>(localdb)\MSSQLLocalDB</BuildCommand>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="features\calendar\**" />
+    <None Remove="src\assets\**" />
+    <None Remove="src\data\**" />
+    <None Remove="src\hooks\**" />
+    <None Remove="src\services\**" />
+    <None Remove="src\state\**" />
+    <None Remove="src\utils\**" />
+    <TypeScriptConfiguration Remove="features\calendar\**" />
+    <TypeScriptConfiguration Remove="src\assets\**" />
+    <TypeScriptConfiguration Remove="src\data\**" />
+    <TypeScriptConfiguration Remove="src\hooks\**" />
+    <TypeScriptConfiguration Remove="src\services\**" />
+    <TypeScriptConfiguration Remove="src\state\**" />
+    <TypeScriptConfiguration Remove="src\utils\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="features\ai\WritingAssistantPage.css" />
+    <None Remove="features\ai\WritingAssistantPage.jsx" />
+    <None Remove="features\chapters\ChapterCompareBar.jsx" />
+    <None Remove="features\chapters\ChapterEntityView.jsx" />
+    <None Remove="features\chapters\ChapterSelector.jsx" />
+    <None Remove="features\characters\CharacterCard.jsx" />
+    <None Remove="features\characters\CharactersPage.jsx" />
+    <None Remove="features\entities\ContextMenu.css" />
+    <None Remove="features\entities\ContextMenu.jsx" />
+    <None Remove="features\entities\EntityChapterDiffModal.jsx" />
+    <None Remove="features\entities\EntityDetailSidebar.jsx" />
+    <None Remove="features\entities\EntityMultiSelect.jsx" />
+    <None Remove="features\entities\EntityPage.jsx" />
+    <None Remove="features\plotpoints\DashboardLayout.css" />
+    <None Remove="features\plotpoints\DashboardLayout.jsx" />
+    <None Remove="features\plotpoints\PlotPointDetailModal.jsx" />
+    <None Remove="features\sidebar\Sidebar.css" />
+    <None Remove="features\sidebar\Sidebar.jsx" />
+    <None Remove="hooks\useDragAndDrop.js" />
+    <None Remove="hooks\useDragScroll.js" />
     <None Remove="src\components\FilterBar.jsx" />
-    <None Remove="src\hooks\useChapterManager.js" />
-    <None Remove="src\hooks\useCharacters.js" />
-    <None Remove="src\hooks\useEntityManager.js" />
-    <None Remove="src\hooks\useRowEditKeyboard.js" />
     <None Remove="src\styles\CharacterCard.css" />
     <None Remove="src\styles\CharacterPage.css" />
     <None Remove="src\styles\FactionsPage.css" />
     <None Remove="src\styles\index.css" />
     <None Remove="src\styles\theme.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="features\calendar\" />
-    <Folder Include="src\assets\" />
-    <Folder Include="src\data\" />
-    <Folder Include="src\services\" />
-    <Folder Include="src\state\" />
-    <Folder Include="src\utils\" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".vscode\task.json" />

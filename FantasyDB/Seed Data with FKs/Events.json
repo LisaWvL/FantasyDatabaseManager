@@ -2,49 +2,57 @@
     {
         "Id": 1,
         "ChapterId": null,
-        "CalendarId": null,
+        "StartDateId": null,
+        "EntDateId": null,
         "LocationId": null
     },
     {
         "Id": 2,
         "ChapterId": null,
-        "CalendarId": null,
+        "StartDateId": null,
+        "EntDateId": null,
         "LocationId": null
     },
     {
         "Id": 3,
         "ChapterId": null,
-        "CalendarId": null,
+        "StartDateId": null,
+        "EntDateId": null,
         "LocationId": null
     },
     {
         "Id": 4,
         "ChapterId": null,
-        "CalendarId": null,
+        "StartDateId": null,
+        "EntDateId": null,
         "LocationId": null
     },
     {
         "Id": 5,
         "ChapterId": null,
-        "CalendarId": null,
+        "StartDateId": null,
+        "EntDateId": null,
         "LocationId": null
     },
     {
         "Id": 6,
         "ChapterId": null,
-        "CalendarId": null,
+        "StartDateId": null,
+        "EntDateId": null,
         "LocationId": null
     },
     {
         "Id": 7,
         "ChapterId": null,
-        "CalendarId": null,
+        "StartDateId": null,
+        "EntDateId": null,
         "LocationId": null
     },
     {
         "Id": 8,
         "ChapterId": null,
-        "CalendarId": null,
+        "StartDateId": null,
+        "EntDateId": null,
         "LocationId": null
     }
 ]

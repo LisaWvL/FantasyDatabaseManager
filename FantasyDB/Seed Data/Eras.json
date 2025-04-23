@@ -2,80 +2,80 @@
     {
         "Name": "The Unity",
         "Description": "Magic existed in harmony, and religion was a personal practice. Magicians (3% of the population) could speak and listen to the gods. Magic was a natural force, balanced and free-flowing. Religious practices were personal, not political.",
-        "StartYear": -2000,
-        "EndYear": -1000,
+        "StartDateId": null,
+        "EndDateId": null,
         "MagicSystem": "Fluid magic, personal connection with nature and gods.",
         "MagicStatus": "Balanced"
     },
     {
         "Name": "The Shift",
         "Description": "The Church of Divine Light emerged as a stabilizing force. Divine Magicians (Speakers) vs. Wild Magicians (Listeners). Structured vs. nature-based magic. Balance maintained, but ideologies diverged.",
-        "StartYear": -1000,
-        "EndYear": -800,
+        "StartDateId": null,
+        "EndDateId": null,
         "MagicSystem": "Structured Divine Magic vs. Natural Wild Magic.",
         "MagicStatus": "Balanced with ideological division"
     },
     {
         "Name": "The Fracture",
         "Description": "Church rejected Wild Magic. Wild Magicians formed Keeps and learned True Names of the Gods. Biological shift limited individuals to one magic type. Rising tension but tolerance remained.",
-        "StartYear": -800,
-        "EndYear": -600,
+        "StartDateId": null,
+        "EndDateId": null,
         "MagicSystem": "Divided magic: Divine or Wild only.",
         "MagicStatus": "Still functional, increasingly politicized"
     },
     {
         "Name": "The Rift",
         "Description": "Church branded Wild Magic as heretical. History purged, disasters blamed on Wild Magicians. Cursed Children (Speaker + Listener offspring) appeared. Wild Magicians hunted.",
-        "StartYear": -600,
-        "EndYear": -500,
+        "StartDateId": null,
+        "EndDateId": null,
         "MagicSystem": "Suppressed Wild Magic, Church-dominant doctrine.",
         "MagicStatus": "Unbalanced, tension rising"
     },
     {
         "Name": "The Second Disruption",
         "Description": "Excessive prayer overwhelmed the Celestial Realm. Natural disasters intensified. Wild Magicians exiled. Church refused to accept its role in the instability.",
-        "StartYear": -500,
-        "EndYear": -400,
+        "StartDateId": null,
+        "EndDateId": null,
         "MagicSystem": "Overcharged Divine Magic",
         "MagicStatus": "Dangerously unstable"
     },
     {
         "Name": "The Abyss",
         "Description": "Children of the Void were born without magic or with magic-draining abilities. Church gained total control over monarchy. Wild Magic outlawed entirely.",
-        "StartYear": -400,
-        "EndYear": -350,
+        "StartDateId": null,
+        "EndDateId": null,
         "MagicSystem": "Dominant Divine Magic, suppressed Wild Magic",
         "MagicStatus": "Corrupted, used as tool of oppression"
     },
     {
         "Name": "The Third Disruption",
         "Description": "Belon, God of Darkness, formed from mortal suffering. Divine Magic became rigid and ritualized. Belon unknowingly helped stabilize magic by absorbing pain.",
-        "StartYear": -350,
-        "EndYear": -300,
+        "StartDateId": null,
+        "EndDateId": null,
         "MagicSystem": "Divine-only with emergence of dark stabilizing force",
         "MagicStatus": "Artificially stabilized, deeply fractured"
     },
     {
         "Name": "The Rupture",
         "Description": "Belon threatened the gods by attempting to drain celestial energy directly. The gods feared their own extinction.",
-        "StartYear": -300,
-        "EndYear": -250,
+        "StartDateId": null,
+        "EndDateId": null,
         "MagicSystem": "Divine vs. Belon's Shadow Influence",
         "MagicStatus": "Celestial crisis"
     },
     {
         "Name": "The Silence",
         "Description": "The gods created a mortal bridge to restore balance but he was corrupted, founding the Order of Flame. The gods weakened themselves and fell silent. Magic fell silent too.",
-        "StartYear": -250,
-        "EndYear": -50,
+        "StartDateId": null,
+        "EndDateId": null,
         "MagicSystem": "Fragmented Magic, failed god intervention",
         "MagicStatus": "Broken, gods silent"
     },
     {
         "Name": "The Modern Age",
         "Description": "Magic is broken. Wild Magicians persecuted. Arana is born with both magics; Edric becomes Belon's vessel. Faith vs. magic begins.",
-        "StartYear": -50,
-        "EndYear": 0,
+        "StartDateId": null,
+        "EndDateId": null,
         "MagicSystem": "Dual magic re-emerging, divine silence, Belon rising",
         "MagicStatus": "Critically unstable"
     }

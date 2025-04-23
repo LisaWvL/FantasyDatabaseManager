@@ -1,0 +1,32 @@
+[33m0dd77f3[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mMainLayout-with-sidebar-and-header[m[33m, [m[1;31morigin/MainLayout-with-sidebar-and-header[m[33m, [m[1;32mbackup-ts-migrate[m[33m)[m HEAD@{0}: reset: moving to 0dd77f3
+[33m0dd77f3[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mMainLayout-with-sidebar-and-header[m[33m, [m[1;31morigin/MainLayout-with-sidebar-and-header[m[33m, [m[1;32mbackup-ts-migrate[m[33m)[m HEAD@{1}: checkout: moving from backup-ts-migrate to MainLayout-with-sidebar-and-header
+[33m0dd77f3[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mMainLayout-with-sidebar-and-header[m[33m, [m[1;31morigin/MainLayout-with-sidebar-and-header[m[33m, [m[1;32mbackup-ts-migrate[m[33m)[m HEAD@{2}: checkout: moving from MainLayout-with-sidebar-and-header to backup-ts-migrate
+[33m0dd77f3[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mMainLayout-with-sidebar-and-header[m[33m, [m[1;31morigin/MainLayout-with-sidebar-and-header[m[33m, [m[1;32mbackup-ts-migrate[m[33m)[m HEAD@{3}: reset: moving to 0dd77f3cd19fd810d8df22acb275274bc5ce938d
+[33m920dc96[m HEAD@{4}: commit: [ts-migrate][.] Init tsconfig.json file
+[33m0dd77f3[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mMainLayout-with-sidebar-and-header[m[33m, [m[1;31morigin/MainLayout-with-sidebar-and-header[m[33m, [m[1;32mbackup-ts-migrate[m[33m)[m HEAD@{5}: commit: Basic Small Entity Cards and Sidebar drag & Drop, Update Issues
+[33m309ac2f[m[33m ([m[1;31morigin/Branch-off-of-working-baseline[m[33m, [m[1;32madd-in-contextmenu-into-plotpointcards-and-dashbaord[m[33m, [m[1;32mBranch-off-of-working-baseline[m[33m)[m HEAD@{6}: checkout: moving from add-in-contextmenu-into-plotpointcards-and-dashbaord to MainLayout-with-sidebar-and-header
+[33m309ac2f[m[33m ([m[1;31morigin/Branch-off-of-working-baseline[m[33m, [m[1;32madd-in-contextmenu-into-plotpointcards-and-dashbaord[m[33m, [m[1;32mBranch-off-of-working-baseline[m[33m)[m HEAD@{7}: checkout: moving from Branch-off-of-working-baseline to add-in-contextmenu-into-plotpointcards-and-dashbaord
+[33m309ac2f[m[33m ([m[1;31morigin/Branch-off-of-working-baseline[m[33m, [m[1;32madd-in-contextmenu-into-plotpointcards-and-dashbaord[m[33m, [m[1;32mBranch-off-of-working-baseline[m[33m)[m HEAD@{8}: commit: Working calendar plotpoints with resize. Contextmenu missing
+[33mda53815[m HEAD@{9}: checkout: moving from master to Branch-off-of-working-baseline
+[33m264126d[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{10}: checkout: moving from Branch-off-of-working-baseline to master
+[33mda53815[m HEAD@{11}: commit (amend): working characterPage
+[33m0a149b8[m HEAD@{12}: commit: working characterPage
+[33m2561138[m HEAD@{13}: checkout: moving from master to Branch-off-of-working-baseline
+[33m264126d[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{14}: checkout: moving from Branch-off-of-working-baseline to master
+[33m2561138[m HEAD@{15}: commit: Mostly working
+[33m40b6f1f[m HEAD@{16}: commit: assist
+[33m264126d[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{17}: checkout: moving from master to Branch-off-of-working-baseline
+[33m264126d[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{18}: checkout: moving from Branch-off-of-working-baseline to master
+[33m264126d[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{19}: checkout: moving from master to Branch-off-of-working-baseline
+[33m264126d[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{20}: checkout: moving from Branch-off-of-working-baseline to master
+[33m264126d[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{21}: reset: moving to HEAD
+[33m264126d[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{22}: checkout: moving from master to Branch-off-of-working-baseline
+[33m264126d[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{23}: commit: FrontEnd Baseline working again
+[33me2b37c2[m[33m ([m[1;31morigin/master[m[33m)[m HEAD@{24}: commit: startpage and sidebar with links
+[33me0e67b0[m HEAD@{25}: commit: startpage works
+[33m84b46bf[m HEAD@{26}: commit: Working drop-recreate-seed-seedFKs
+[33mdeac6c5[m HEAD@{27}: commit: electron app
+[33meff8d06[m HEAD@{28}: commit: committ all
+[33md2fac13[m HEAD@{29}: commit: All the edits
+[33md1b7aab[m HEAD@{30}: commit: Add project files.
+[33m59e232f[m HEAD@{31}: commit (initial): Add .gitattributes and .gitignore.

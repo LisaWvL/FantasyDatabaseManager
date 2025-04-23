@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.2191419">
+  <PropertyGroup>
+    <StartupCommand>npm run dev</StartupCommand>
+    <JavaScriptTestRoot>src\</JavaScriptTestRoot>
+    <JavaScriptTestFramework>Vitest</JavaScriptTestFramework>
+    <!-- Allows the build (or compile) script located on package.json to run on Build -->
+    <ShouldRunBuildScript>false</ShouldRunBuildScript>
+    <!-- Folder where production build objects will be placed -->
+    <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="src\cards\**" />
+    <TypeScriptConfiguration Remove="src\cards\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\components\CardRenderer.tsx" />
+    <None Remove="src\hooks\useChapterManager.js" />
+    <None Remove="src\hooks\useCharacters.js" />
+    <None Remove="src\hooks\useEntityContextMenu.jsx" />
+    <None Remove="src\hooks\useEntityManager.js" />
+    <None Remove="src\hooks\useRowEditKeyboard.js" />
+    <None Remove="src\store\EntityRegistry.ts" />
+    <None Remove="src\store\EntityRegistryHelpers.ts" />
+    <None Remove="src\utils\EntityActionHelper.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\app\" />
+  </ItemGroup>
+</Project>

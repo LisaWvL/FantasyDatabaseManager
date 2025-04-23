@@ -1,10 +1,10 @@
-﻿import React, { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { createPlotPoint, getRelatedActs, getRelatedChapters } from './PlotPointApi';
 import { fetchBooks, fetchRivers, fetchRoutes } from '../../src/api/DropdownApi';
 import { toggleLinkedEntity } from './plotPointFormUtils';
 import './PlotPointModal.css';
 
-export default function PlotPointModal({ onClose, onSave }) {
+export default function PlotPointModal({ onClose, onSave, schema, registry }) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
@@ -84,10 +84,6 @@ export default function PlotPointModal({ onClose, onSave }) {
     description,
     ...linkedEntities,
 };
-
-if (selectedChapterId) {
-    payload.chapterId = Number(selectedChapterId);
-}
 
             const result = await createPlotPoint(payload);
             onSave(result);

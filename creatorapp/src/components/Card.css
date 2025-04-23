@@ -1,0 +1,76 @@
+﻿/* ───── Card Styling ───── */
+.entity-card {
+    background: white;
+    padding: 10px;
+    margin: 6px;
+    border: 2px solid var(--default-color, #888);
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    width: 100%;
+    max-width: 100%;
+}
+
+    .entity-card:hover {
+        transform: scale(1.01);
+    }
+
+    .entity-card.ghost {
+        opacity: 0.5;
+        border-style: dashed;
+        background: #f9f9f9;
+    }
+
+    .entity-card.reversed {
+        border-color: red;
+        background: #fff0f0;
+    }
+
+    .entity-card .header {
+        font-weight: bold;
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+    }
+
+    .entity-card .title {
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    .entity-card .body {
+        font-size: 0.9rem;
+        margin-top: 4px;
+    }
+
+    .entity-card .field {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 4px;
+    }
+
+    .entity-card .label {
+        font-weight: 600;
+        color: #444;
+    }
+
+    .entity-card .value {
+        font-weight: 400;
+        color: #222;
+    }
+
+    .entity-card .toggle-edit {
+        margin-top: 8px;
+        font-size: 0.85rem;
+        background: #eee;
+        border: none;
+        padding: 4px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+/* ───── Compact Mode (used in sidebar) ───── */
+.card--compact {
+    width: 100%;
+    box-sizing: border-box;
+}

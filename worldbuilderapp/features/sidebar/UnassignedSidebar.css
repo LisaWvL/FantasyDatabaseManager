@@ -1,0 +1,74 @@
+﻿
+/* ───── Sidebar + Toggle Wrapper ───── */
+.unassigned-sidebar-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    transition: width 0.3s ease;
+    pointer-events: auto; /* ✅ allow interaction */
+    overflow: visible;
+}
+
+    .unassigned-sidebar-wrapper.open {
+        width: 350px;
+    }
+
+    .unassigned-sidebar-wrapper.collapsed {
+        width: 32px;
+    }
+
+/* ───── Sidebar Panel ───── */
+.unassigned-sidebar {
+    position: relative;
+    width: 320px;
+    height: 100%;
+    background-color: #1a1310;
+    border-left: 1px solid var(--accent);
+    overflow: visible; /* allow children to overflow in all directions */
+    pointer-events: auto;
+    transition: transform 0.3s ease;
+    transform: translateX(100%);
+    overflow: visible;
+}
+
+    .unassigned-sidebar.open {
+        transform: translateX(0);
+    }
+
+    .unassigned-sidebar.collapsed {
+        width: 0;
+    }
+
+    .unassigned-sidebar.highlight-drop {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-color: gold;
+    }
+
+/* ───── Toggle Button ───── */
+.unassigned-sidebar-toggle {
+    position: absolute;
+    left: -32px; /* push to the left edge of the wrapper */
+    width: 32px;
+    height: auto;
+    background-color: var(--accent);
+    color: #000;
+    font-family: Cinzel, serif;
+    font-weight: bold;
+    font-size: 0.9rem;
+    border: none;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    border-radius: 6px 0 0 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    z-index: 9999;
+    pointer-events: auto;
+}
+
+    .unassigned-sidebar-toggle:hover {
+        background: #ffe0b3;
+        color: #000;
+    }

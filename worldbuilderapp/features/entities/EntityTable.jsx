@@ -1,5 +1,5 @@
 ﻿// src/components/EntityTable.jsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FaPlus, FaTrash, FaCopy, FaExpand, FaBook } from 'react-icons/fa';
 import EditableTableRow from './EditableTableRow';
 

@@ -5,89 +5,102 @@
         "FactionId": null,
         "LocationId": 2,
         "LanguageId": 3
+        "BirthDateId": null
     },
     {
         "Id": 2,
         "ChapterId": 6,
         "FactionId": null,
         "LocationId": 2,
-        "LanguageId": null
+        "LanguageId": null,
+        "BirthDateId": null
     },
     {
         "Id": 3,
         "ChapterId": 1,
         "FactionId": 3,
         "LocationId": 2,
-        "LanguageId": 1
+        "LanguageId": 1,
+        "BirthDateId": null
     },
     {
         "Id": 4,
         "ChapterId": 6,
         "FactionId": null,
         "LocationId": 2,
-        "LanguageId": null
+        "LanguageId": null,
+        "BirthDateId": null
     },
     {
         "Id": 5,
         "ChapterId": 6,
         "FactionId": null,
         "LocationId": 4,
-        "LanguageId": null
+        "LanguageId": null,
+        "BirthDateId": null
     },
     {
         "Id": 6,
         "ChapterId": 6,
         "FactionId": null,
         "LocationId": 4,
-        "LanguageId": null
+        "LanguageId": null,
+        "BirthDateId": null
     },
     {
         "Id": 7,
         "ChapterId": 2,
         "FactionId": 1,
         "LocationId": 2,
-        "LanguageId": null
+        "LanguageId": null,
+        "BirthDateId": null
     },
     {
         "Id": 8,
         "ChapterId": 2,
         "FactionId": 1,
         "LocationId": 2,
-        "LanguageId": null
+        "LanguageId": null,
+        "BirthDateId": null
     },
     {
         "Id": 9,
         "ChapterId": 1,
         "FactionId": null,
         "LocationId": 2,
-        "LanguageId": null
+        "LanguageId": null,
+        "BirthDateId": null
     },
     {
         "Id": 10,
         "ChapterId": 3,
         "FactionId": 1,
         "LocationId": 2,
-        "LanguageId": null
+        "LanguageId": null,
+        "BirthDateId": null
     },
     {
         "Id": 11,
         "ChapterId": 4,
         "FactionId": null,
         "LocationId": 2,
-        "LanguageId": null
+        "LanguageId": null,
+        "BirthDateId": null
     },
     {
         "Id": 12,
         "ChapterId": 7,
         "FactionId": null,
         "LocationId": 2,
-        "LanguageId": null
+        "LanguageId": null,
+        "BirthDateId": null
     },
     {
         "Id": 13,
         "ChapterId": 7,
         "FactionId": null,
         "LocationId": 2,
-        "LanguageId": null
+        "LanguageId": null,
+        "BirthDateId": null
     }
 ]

@@ -1,42 +1,62 @@
 [
     {
         "Id": 1,
-        "ChapterId": null
+        "ChapterId": null,
+        "StartDateId": null, 
+        "EntDateId":  null
     },
     {
         "Id": 2,
-        "ChapterId": null
+        "ChapterId": null,
+        "StartDateId": null,
+        "EntDateId": null
     },
     {
         "Id": 3,
-        "ChapterId": null
+        "ChapterId": null,
+        "StartDateId": null,
+        "EntDateId": null
     },
     {
         "Id": 4,
-        "ChapterId": null
+        "ChapterId": null,
+        "StartDateId": null,
+        "EntDateId": null
     },
     {
         "Id": 5,
-        "ChapterId": null
+        "ChapterId": null,
+        "StartDateId": null,
+        "EntDateId": null
     },
     {
         "Id": 6,
-        "ChapterId": null
+        "ChapterId": null,
+        "StartDateId": null,
+        "EntDateId": null
     },
     {
         "Id": 7,
-        "ChapterId": null
+        "ChapterId": null,
+        "StartDateId": null,
+        "EntDateId": null
     },
     {
         "Id": 8,
-        "ChapterId": null
+        "ChapterId": null,
+        "StartDateId": null,
+        "EntDateId": null
     },
     {
         "Id": 9,
-        "ChapterId": null
+        "ChapterId": null,
+        "StartDateId": null,
+        "EntDateId": null
     },
     {
         "Id": 10,
-        "ChapterId": null
+        "ChapterId": null,
+        "StartDateId": null,
+        "EntDateId": null
     }
 ]

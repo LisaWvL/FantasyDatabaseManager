@@ -1,4 +1,4 @@
-const API_BASE = 'https://localhost:63752/api';
+const API_BASE = 'https://localhost:56507/api';
 
 export async function fetchEntities(entityType, chapterId = null) {
   const url = chapterId
@@ -14,6 +14,16 @@ export async function fetchEntityById(entityType, id) {
   if (!response.ok) throw new Error(`Failed to load ${entityType} with id ${id}`);
   return await response.json();
 }
+
+
+export async function setNull(entityType, id, field) {
+    const res = await fetch(`${API_BASE}/${entityType}/${id}/setnull?fieldName=${field}`, {
+        method: 'PATCH',
+    });
+    if (!res.ok) throw new Error(`Failed to set '${field}' to null on ${entityType} with ID ${id}`);
+    return await res.json();
+}
+
 
 export async function createEntity(entityType, payload) {
   const response = await fetch(`${API_BASE}/${entityType}/create`, {
@@ -41,4 +51,12 @@ export async function deleteEntity(entityType, id) {
   });
   if (!response.ok) throw new Error(`Failed to delete ${entityType} with id ${id}`);
   return true;
+}
+
+export async function fetchFlatEntity(entityType) {
+    const response = await fetch(`${API_BASE}/${entityType}/flat`, {
+        method: 'GET',
+    });
+    if (!response.ok) throw new Error(`Failed to fetch flat entity of type  ${entityType}`);
+    return true;
 }

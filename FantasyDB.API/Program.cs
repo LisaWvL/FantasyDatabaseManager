@@ -1,11 +1,9 @@
-using FantasyDB.Interfaces;
-using FantasyDB.Services;
-using Microsoft.AspNetCore.Builder;
+﻿using FantasyDB.Entities._Shared;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using FantasyDB.Features;
+using Microsoft.Extensions.DependencyInjection;
+
 
 
 
@@ -20,6 +18,26 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 // Dependency Injection
 builder.Services.AddScoped<IDropdownService, DropdownService>();
+builder.Services.AddScoped<LoadAndRender>();
+builder.Services.AddScoped<CardDesigner>();
+builder.Services.AddScoped<DropHandlerService>();
+builder.Services.AddScoped<UpdateFieldService>();
+builder.Services.AddScoped<RelatedEntitiesService>();
+// 🧠 Set schema path (adjust as needed)
+var schemaJsonPath = Path.Combine(AppContext.BaseDirectory, "store/EntitySchemas.json");
+
+// Inject with path manually
+builder.Services.AddSingleton(new EntitySchemaProvider());
+
+//builder.Services.AddSingleton(new EntitySchemaProvider(schemaJsonPath));
+
+builder.Services.AddScoped<RelatedEntitiesService>();
+builder.Services.AddScoped<AppDbContext>(); // Usually already registered
+
+
+
+
+
 
 
 builder.Services.AddCors(options =>

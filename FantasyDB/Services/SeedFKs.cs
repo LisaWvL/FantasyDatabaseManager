@@ -4,20 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
-using FantasyDB.Models;
-using static FantasyDB.Models.JunctionClasses;
+using FantasyDB.Entities._Shared;
+using FantasyDB.Entities;
 
 namespace FantasyDB.Services
 {
-    public class SeedFks
+    public class SeedFks(AppDbContext context)
     {
-        private readonly AppDbContext _context;
-
-        public SeedFks(AppDbContext context)
-        {
-            _context = context;
-        }
-
         public void UpdateForeignKeys()
         {
             Console.WriteLine("🔄 Updating foreign keys from FK data files...");
@@ -32,23 +25,25 @@ namespace FantasyDB.Services
             Update<Character>(basePath + "Characters.json");
             Update<Faction>(basePath + "Factions.json");
             Update<Item>(basePath + "Items.json");
-            Update<Calendar>(basePath + "Calendar.json");
+            Update<Date>(basePath + "Date.json");
             Update<Event>(basePath + "Events.json");
             Update<Era>(basePath + "Eras.json");
             Update<Currency>(basePath + "Currencies.json");
             Update<Route>(basePath + "Routes.json");
             Update<River>(basePath + "Rivers.json");
             Update<PriceExample>(basePath + "PriceExamples.json");
+            Update<PlotPoint>(basePath + "PlotPoints.json");
+            Update<ConversationTurn>(basePath + "ConversationTurns.json");
+
 
             // Junctions
             Update<LanguageLocation>(basePath + "LanguagesLocations.json");
-
             Update<CharacterRelationship>(basePath + "CharacterRelationships.json");
-            Update<PlotPoint>(basePath + "PlotPoints.json");
             Update<PlotPointRiver>(basePath + "PlotPointsRivers.json");
             Update<PlotPointRoute>(basePath + "PlotPointsRoutes.json");
+            Update<ChapterPlotPoint>(basePath + "ChaptersPlotPoints.json");
 
-            _context.SaveChanges();
+            context.SaveChanges();
             Console.WriteLine("✅ Foreign key updates complete.");
         }
 
@@ -79,7 +74,7 @@ namespace FantasyDB.Services
                     return;
                 }
 
-                var dbSet = _context.Set<T>();
+                var dbSet = context.Set<T>();
                 int processed = 0;
 
                 foreach (var row in updates)

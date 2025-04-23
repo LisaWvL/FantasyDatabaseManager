@@ -1,0 +1,97 @@
+:root {
+    --accent: #a368ff;
+    --bg: #121212;
+    --text: #e0d6c6;
+    --card-bg: rgba(28, 20, 18, 0.85);
+    --font-header: 'Cinzel', serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-header);
+    background-color: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+    height: 100vh;
+}
+
+.app-shell {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+.sticky-header {
+    height: 40px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    background-color: rgba(22, 18, 16, 0.95);
+    padding: 0.5rem 1rem;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #444;
+}
+
+    .sticky-header h1 {
+        margin: 0;
+    }
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.layout-row {
+    display: flex;
+    flex: 1;
+    height: calc(100vh - 40px);
+    overflow: hidden;
+}
+
+.left-sidebar {
+    transition: width 0.3s ease;
+    width: var(--sidebar-width);
+}
+
+    .left-sidebar.collapsed {
+        width: var(--sidebar-collapsed-width);
+    }
+
+.main-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+    background: url('/assets/parchment-bg.png') center center / cover;
+    box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.8);
+    position: relative;
+    z-index: 1;
+    overflow-x: hidden;
+    transition: all 0.3s ease;
+}
+
+.footer {
+    padding: 0.5rem;
+    text-align: center;
+    background-color: rgba(22, 18, 16, 0.95);
+    font-size: 0.8rem;
+}
+
+/* Optional scrollbars */
+.main-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.main-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+}
+
+.main-container::-webkit-scrollbar-track {
+    background: transparent;
+}

@@ -1,8 +1,7 @@
 ﻿import React from 'react';
 import './CalendarDayCell.css';
-//import { fetchWeekdays } from './CalendarApi';
 
-export default function CalendarDayCell({ day, weekday, children, onDropPlotPoint }) {
+export default function CalendarDayCell({ day, weekday, month, year, children, onDropPlotPoint }) {
     const handleDragOver = (e) => {
         e.preventDefault();
         e.dataTransfer.dropEffect = 'move';
@@ -22,6 +21,9 @@ export default function CalendarDayCell({ day, weekday, children, onDropPlotPoin
         <div
             className="calendar-cell"
             data-dayid={day.id}
+            data-month={month.id}
+            data-year={year.id}
+            data-weekday={weekday.id}
             onDragOver={handleDragOver}
             onDrop={handleDrop}
         >

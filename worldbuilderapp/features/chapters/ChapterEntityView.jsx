@@ -1,7 +1,7 @@
 ﻿// src/pages/ChapterEntityView.jsx
 import React, { useState, useEffect } from 'react';
 import ChapterSelector from './ChapterSelector';
-import EntitySelector from '../entities/EntitySelector';
+import EntitySelector from '../../utils/EntitySelector';
 import EntityTable from '../entities/EntityTable';
 import { fetchChapters } from '../chapters/ChapterApi';
 

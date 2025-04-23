@@ -1,18 +1,26 @@
 [
     {
         "Title": "Inciting Incident",
-        "Description": "The main character is drawn into conflict after witnessing a strange event in the forest."
+        "Description": "The main character is drawn into conflict after witnessing a strange event in the forest.",
+        "StartDateId": null,
+        "EndDateId": null
     },
     {
         "Title": "Climactic Betrayal",
-        "Description": "The leader of the rebellion is revealed to be working with the enemy."
+        "Description": "The leader of the rebellion is revealed to be working with the enemy.",
+        "StartDateId": null,
+        "EndDateId": null
     },
     {
         "Title": "Siva is killed",
-        "Description": "prologue, but she is actually taken captive by the church"
+        "Description": "prologue, but she is actually taken captive by the church",
+        "StartDateId": null,
+        "EndDateId": null
     },
     {
         "Title": "The Prince kills his father",
-        "Description": "and ascends to the throne"
+        "Description": "and ascends to the throne",
+        "StartDateId": null,
+        "EndDateId": null
     }
 ]

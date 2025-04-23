@@ -1,0 +1,96 @@
+
+/* ───── Sidebar + Toggle Wrapper ───── */
+.unassigned-sidebar-wrapper {
+    position: absolute;
+    width: 282px;
+    display: flex;
+    justify-content: flex-end;
+    transition: width 0.3s ease;
+    pointer-events: auto; /* ✅ allow interaction */
+    overflow: visible;
+    border-left: 1px solid var(--accent);
+
+/*    new   */
+    height: 100vh;
+}
+
+    .unassigned-sidebar-wrapper.open {
+        width: 282px;
+        transition: ease-in;
+    }
+
+    .unassigned-sidebar-wrapper.collapsed {
+        width: 32px;
+    }
+
+/* ───── Toggle Button ───── */
+.unassigned-sidebar-toggle {
+    position: absolute;
+    left: -32px; /* push to the left edge of the wrapper */
+    width: 32px;
+    height: auto;
+    background-color: var(--accent);
+    transition: background-color 0.2s ease;
+    color: #000;
+    font-family: Cinzel, serif;
+    font-weight: bold;
+    font-size: 0.9rem;
+    border: none;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    border-radius: 6px 0 0 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    z-index: 9999;
+    pointer-events: auto;
+}
+
+    .unassigned-sidebar-toggle:hover {
+        background: #ffe0b3;
+        color: #000;
+    }
+
+
+/* ───── Sidebar Panel ───── */
+.unassigned-sidebar {
+    position: relative;
+    width: 282px; /* fill wrapper minus toggle */
+    /*    height: 100%;*/
+    background-color: #1a1310;
+    overflow: visible; /* allow children to overflow in all directions */
+    pointer-events: auto;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    /*  new     */
+    height: 100vh;
+    scrollbar-gutter: stable both-edges; /* Helps avoid layout shift when scrollbar appears */
+}
+
+    .unassigned-sidebar.open {
+        width: 250px;
+    }
+
+    .unassigned-sidebar.collapsed {
+        width: 0;
+    }
+
+    .unassigned-sidebar.highlight-drop {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-color: gold;
+    }
+
+
+.unassigned-dropzone {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 1rem;
+    overflow-y: auto;
+    flex: 1;
+    height: 100%;
+}
+

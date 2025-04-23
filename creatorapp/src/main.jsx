@@ -1,0 +1,12 @@
+// src/main.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+//import { ChapterProvider } from './context/ChapterContext.jsx';
+import 'react-quill/dist/quill.snow.css';
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>
+);

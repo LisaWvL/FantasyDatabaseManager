@@ -2,41 +2,57 @@
     {
         "Name": "The Coronation of Prince Edric",
         "Description": "",
+        "StartDateId": null,
+        "EndDateId": null,
         "Purpose": "Royal Ceremony"
     },
     {
         "Name": "The Burning of the Heretics",
         "Description": "",
+        "StartDateId": null,
+        "EndDateId": null,
         "Purpose": "Religious Purge"
     },
     {
         "Name": "The Battle of Varenthal Pass",
         "Description": "",
+        "StartDateId": null,
+        "EndDateId": null,
         "Purpose": "Military Conflict"
     },
     {
         "Name": "Festival of Thalaa",
         "Description": "",
+        "StartDateId": null,
+        "EndDateId": null,
         "Purpose": "Water-themed festival to worship and thank the Goddess Thalaa"
     },
     {
         "Name": "Festival of Luma",
         "Description": "",
+        "StartDateId": null,
+        "EndDateId": null,
         "Purpose": "Earth-themed festival to worship and thank the Goddess Luma"
     },
     {
         "Name": "Festival of Caelon",
         "Description": "",
+        "StartDateId": null,
+        "EndDateId": null,
         "Purpose": "Fire-themed festival to worship and thank the God Caelon"
     },
     {
         "Name": "Festival of Aelwyn",
         "Description": "",
+        "StartDateId": null,
+        "EndDateId": null,
         "Purpose": "Wind-themed festival to worship and thank the Goddess Aelwyn"
     },
     {
         "Name": "Jespen",
         "Description": "",
+        "StartDateId": null,
+        "EndDateId": null,
         "Purpose": "End of Year festival"
     }
 ]

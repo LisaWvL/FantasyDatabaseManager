@@ -9,6 +9,29 @@
     <Compile Remove="ControllerViewGenerator.cs" />
     <Compile Remove="ViewModelGenerator.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Seed Data with FKs\Date.json" />
+    <None Remove="Seed Data with FKs\ChaptersCharacterRelationships.json" />
+    <None Remove="Seed Data with FKs\ChaptersCharacters.json" />
+    <None Remove="Seed Data with FKs\ChaptersEras.json" />
+    <None Remove="Seed Data with FKs\ChaptersEvents.json" />
+    <None Remove="Seed Data with FKs\ChaptersFactions.json" />
+    <None Remove="Seed Data with FKs\ChaptersItems.json" />
+    <None Remove="Seed Data with FKs\ChaptersLocations.json" />
+    <None Remove="Seed Data with FKs\LanguagesLocations.json" />
+    <None Remove="Seed Data with FKs\LocationsEvents.json" />
+    <None Remove="Seed Data with FKs\LocationsLocations.json" />
+    <None Remove="Seed Data\Date.json" />
+    <None Remove="Seed Data\ChaptersCharacterRelationships.json" />
+    <None Remove="Seed Data\ChaptersCharacters.json" />
+    <None Remove="Seed Data\ChaptersEras.json" />
+    <None Remove="Seed Data\ChaptersEvents.json" />
+    <None Remove="Seed Data\ChaptersFactions.json" />
+    <None Remove="Seed Data\ChaptersItems.json" />
+    <None Remove="Seed Data\ChaptersLocations.json" />
+    <None Remove="Seed Data\LocationsEvents.json" />
+    <None Remove="Seed Data\LocationsLocations.json" />
+  </ItemGroup>
 	<ItemGroup>
 		<None Update="appsettings.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>

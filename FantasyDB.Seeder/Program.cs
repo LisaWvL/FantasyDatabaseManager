@@ -4,6 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using FantasyDB.Entities._Shared;
+using FantasyDB.Entities;
+
+
 
 var projectDirectory = @"F:\FantasyDatabase\FantasyDatabaseManager\FantasyDB.Seeder";
 

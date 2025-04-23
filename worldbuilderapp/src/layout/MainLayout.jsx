@@ -1,64 +1,51 @@
-﻿import { useState } from 'react';
-import Sidebar from '../../features/sidebar/Sidebar.jsx';
-import { Outlet } from 'react-router-dom';
-import { ControlledMenu, MenuItem } from '@szhsin/react-menu';
+﻿// src/layout/MainLayout.jsx
+import { useState } from 'react';
+import './MainLayout.css';
+import NavSidebar from '../../features/sidebar/NavSidebar.jsx';
+import UnassignedSidebar from '../../features/sidebar/UnassignedSidebar.jsx';
 
-import '@szhsin/react-menu/dist/index.css';
-import '@szhsin/react-menu/dist/theme-dark.css';
+export default function MainLayout({ headerContent, children, unassignedSidebar }) {
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const isUnassignedOpen = unassignedSidebar?.isSidebarOpen;
 
-export default function MainLayout() {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const toggleSidebar = () => setSidebarOpen((prev) => !prev);
+    return (
+        <div className="app-shell">
+            {/* Sticky Header */}
+            <div className="sticky-header">
+                {headerContent || <h1>Worldbuilder</h1>}
+            </div>
 
-  const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
-  const [menuVisible, setMenuVisible] = useState(false);
+            {/* Main Layout */}
+            <div className="layout-row">
+                {/* Left Sidebar */}
+                <div className={`left-sidebar ${sidebarOpen ? 'open' : 'collapsed'}`}>
+                    <NavSidebar show={sidebarOpen} toggle={() => setSidebarOpen((prev) => !prev)} />
+                </div>
 
-  const handleContextMenu = (e) => {
-    e.preventDefault();
-    setMenuPosition({ x: e.clientX, y: e.clientY });
-    setMenuVisible(true);
-  };
+                {/* Content */}
+                <div className={`main-container ${isUnassignedOpen ? 'with-unassigned-sidebar' : 'sidebar-collapsed'}`}>
+                    {children}
+                </div>
 
-  const closeMenu = () => setMenuVisible(false);
-
-  return (
-    <div className="app-shell" onContextMenu={handleContextMenu}>
-      <Sidebar show={sidebarOpen} toggle={toggleSidebar} />
-      <div className={`main-content ${sidebarOpen ? '' : 'expanded'}`}>
-        <Outlet />
-      </div>
-
-      <ControlledMenu
-        anchorPoint={menuPosition}
-        state={menuVisible ? 'open' : 'closed'}
-        onClose={closeMenu}
-        className="context-menu"
-      >
-        <MenuItem
-          onClick={() => {
-            console.log('💾 Save');
-            closeMenu();
-          }}
-        >
-          Save
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            console.log('✖ Cancel');
-            closeMenu();
-          }}
-        >
-          Cancel
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            console.log('📋 Copy');
-            closeMenu();
-          }}
-        >
-          Copy
-        </MenuItem>
-      </ControlledMenu>
-    </div>
-  );
+                {/* Right Sidebar */}
+                <div className={`right-sidebar ${isUnassignedOpen ? 'open' : 'collapsed'}`}>
+                    {unassignedSidebar && (
+                        <UnassignedSidebar
+                            isSidebarOpen={unassignedSidebar.isSidebarOpen}
+                            setIsSidebarOpen={unassignedSidebar.setIsSidebarOpen}
+                            onContextMenu={unassignedSidebar.onContextMenu}
+                            renderItem={unassignedSidebar.renderItem}
+                            entityType={unassignedSidebar.entityType}
+                            items={unassignedSidebar.items}
+                            isUnassigned={unassignedSidebar.isUnassigned}
+                            onDropToUnassigned={unassignedSidebar.onDropToUnassigned}
+                        />
+                    )}
+                </div>
+            </div>
+            <div className="footer">
+                <p>Worldbuilder App © 2025</p>
+            </div>
+        </div>
+    );
 }

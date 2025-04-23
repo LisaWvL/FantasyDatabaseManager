@@ -1,0 +1,176 @@
+/* src/components/Card.css */
+
+.entity-card {
+    background-color: #fff;
+    border-radius: 0.5rem;
+    border: 1px solid #ddd;
+    padding: 0.75rem;
+    margin: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', sans-serif;
+    cursor: grab;
+    transition: transform 0.2s ease;
+}
+
+    .entity-card:active {
+        cursor: grabbing;
+    }
+
+    .entity-card .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+
+.card-title h3 {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.card-actions {
+    display: flex;
+    gap: 0.25rem;
+}
+
+    .card-actions button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+
+.section {
+    margin-top: 0.5rem;
+}
+
+    .section h5 {
+        margin: 0.25rem 0;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        color: #888;
+    }
+
+.field {
+    margin-bottom: 0.4rem;
+}
+
+    .field label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: bold;
+        margin-bottom: 0.2rem;
+        color: #444;
+    }
+
+    .field span {
+        display: block;
+        font-size: 0.9rem;
+        color: #222;
+    }
+
+    .field select,
+    .field textarea {
+        width: 100%;
+        font-size: 0.9rem;
+        padding: 0.25rem;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+    }
+
+.compact-label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #333;
+    padding: 0.25rem 0.5rem;
+    background-color: #f8f8f8;
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* Compact styling (small cards for drag) */
+.entity-card.compact {
+    padding: 0.5rem;
+    border-left: 4px solid #999;
+}
+
+.entity-card.date {
+    border-left: 4px solid #6ab7ff;
+}
+
+.entity-card.unassigned {
+    border-left: 4px solid #aaa;
+}
+
+/* Entity type accents */
+.entity-card.character {
+    border-left-color: #a368ff;
+}
+
+.entity-card.faction {
+    border-left-color: #ffb74d;
+}
+
+.entity-card.item {
+    border-left-color: #81c784;
+}
+
+.entity-card.event {
+    border-left-color: #f06292;
+}
+
+.entity-card.plotpoint {
+    border-left-color: #4fc3f7;
+}
+
+.entity-card.era {
+    border-left-color: #ba68c8;
+}
+
+.entity-card.language {
+    border-left-color: #64b5f6;
+}
+
+.entity-card.location {
+    border-left-color: #aed581;
+}
+
+.entity-card.relationship {
+    border-left-color: #ffd54f;
+}
+
+.entity-card.chapter {
+    border-left-color: #7986cb;
+}
+
+.entity-card.scene {
+    border-left-color: #e57373;
+}
+
+.entity-card.currency {
+    border-left-color: #ffcc80;
+}
+
+.entity-card.route {
+    border-left-color: #9575cd;
+}
+
+.entity-card.river {
+    border-left-color: #4dd0e1;
+}
+
+.entity-card.conversationturn {
+    border-left-color: #ff8a65;
+}
+
+.entity-card.priceexample {
+    border-left-color: #fdd835;
+}
+
+.entity-card.book {
+    border-left-color: #90caf9;
+}
+
+.entity-card.act {
+    border-left-color: #ce93d8;
+}

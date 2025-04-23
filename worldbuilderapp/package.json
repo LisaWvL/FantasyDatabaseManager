@@ -7,7 +7,7 @@
         "dev": "vite",
         "wait": "wait-on http://localhost:56507",
         "dev:ready": "concurrently \"npm run dev\" \"npm run wait\"",
-        "build": "vite build",
+        "build": "tsc -b && vite build",
         "preview": "vite preview",
         "lint": "eslint src --ext .js,.jsx",
         "start": "electron",

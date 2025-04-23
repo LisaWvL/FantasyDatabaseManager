@@ -1,7 +1,7 @@
-﻿// FactionsPage.jsx
+﻿// FactionsPage.tsx
 import '../../features/entities/EntityPage.css';
-import EntityPage from '../../features/entities/EntityPage';
+import ModularEntityPage from '../../features/entities/ModularEntityPage';
 
 export default function FactionsPage() {
-  return <EntityPage entityType="Faction" />;
+    return <ModularEntityPage cardEntity="Character" sectionEntity="Faction" updateFK="leaderId" />;
 }

@@ -1,0 +1,104 @@
+/* Character Card Grid Layout */
+.character-card-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  justify-items: center;
+  align-items: start;
+  min-height: 4rem;
+}
+
+/* Character Card Styling */
+.character-card {
+  background-color: #2c1d1a;
+  color: #f3e6d5;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  width: 280px;
+  box-shadow: 0 0 12px rgba(180, 130, 255, 0.15);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.character-card:hover {
+  transform: scale(1.04);
+}
+
+/* Header inside card */
+.card-header h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-header h4 {
+  font-size: 0.95rem;
+  color: #c9b093;
+  font-weight: normal;
+  margin-top: 0;
+}
+
+/* Button styling */
+.card-actions button {
+  margin: 0.2rem;
+  background-color: #3b2a24;
+  border: 1px solid #82644e;
+  color: #e7c37d;
+  padding: 0.25rem 0.5rem;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.card-actions button:hover {
+  background-color: #5c3f33;
+}
+
+/* Field layout */
+.card-summary,
+.card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.attribute-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+/* Label and Value style */
+.label {
+  font-size: 0.7rem;
+  color: #b89e84;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.value {
+  font-family: 'Georgia', serif;
+  font-size: 0.95rem;
+  color: #f6e6c6;
+}
+
+/* Toggle details button */
+.details-toggle {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  color: #dab98e;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1.25rem;
+}
+
+.card-details {
+  margin-top: 0.75rem;
+}

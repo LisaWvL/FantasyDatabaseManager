@@ -1,8 +1,8 @@
-﻿// PlotPointsPage.jsx
+﻿// PlotPointsPage.tsx
 
-import '../entities/EntityPage.css';
-import EntityPage from '../entities/EntityPage';
+import '../entities/ModularEntityPage.css';
+import ModularEntityPage from '../entities/ModularEntityPage';
 
 export default function PlotPointsPage() {
-    return <EntityPage entityType="PlotPoints" />;
+    return <ModularEntityPage cardEntity="Chapter" sectionEntity="PlotPoint" updateFK="plotPointId" />;
 }

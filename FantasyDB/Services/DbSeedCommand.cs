@@ -1,8 +1,10 @@
 ﻿
 // File: DbSeedCommand.cs
 using System;
+using FantasyDB.Entities._Shared;
 
-namespace FantasyDB // 👈 Or FantasyDB, if you want to move it
+
+namespace FantasyDB.Entities
 {
     public static class DbSeedCommand
     {

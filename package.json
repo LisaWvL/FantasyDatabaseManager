@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@grapesjs/studio-sdk": "^1.0.40",
     "@syncfusion/ej2-react-richtexteditor": "^29.1.35",
     "@szhsin/react-menu": "^4.3.1",
     "@tiptap/extension-color": "^2.11.7",
@@ -13,17 +14,22 @@
     "@tiptap/starter-kit": "^2.11.7",
     "axios": "^1.8.4",
     "quill": "^2.0.3",
+    "react": "^18.3.1",
     "react-beautiful-dnd": "^13.1.1",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
+    "react-dom": "^18.3.1",
     "react-icons": "^5.5.0",
     "react-quill": "^2.0.0-beta.4",
     "react-quilljs": "^2.0.5",
-    "react-router-dom": "^7.4.0"
+    "react-router-dom": "^6.30.0",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@types/node": "^22.14.1",
     "@typescript-eslint/eslint-plugin": "^8.29.1",
     "@typescript-eslint/parser": "^8.29.1",
+    "@vitejs/plugin-react": "^4.4.1",
     "eslint": "^9.24.0",
     "eslint-plugin-react": "^7.37.5",
     "prettier": "^3.5.3",

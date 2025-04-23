@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using FantasyDB.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using static FantasyDB.Models.JunctionClasses;
+using FantasyDB.Entities;
+using FantasyDB.Entities._Shared;
 
-namespace FantasyDB
+
+
+namespace FantasyDB.Entities
 {
     public class JsonSeeder
     {
@@ -37,23 +39,22 @@ namespace FantasyDB
                 Seed<Character>("Characters.json");
                 Seed<Faction>("Factions.json");
                 Seed<Item>("Items.json");
-                Seed<Calendar>("Dates.json");
+                Seed<Date>("Dates.json");
                 Seed<Event>("Events.json");
                 Seed<Era>("Eras.json");
                 Seed<Currency>("Currencies.json");
                 Seed<Route>("Routes.json");
                 Seed<River>("Rivers.json");
                 Seed<PriceExample>("PriceExamples.json");
+                Seed<PlotPoint>("PlotPoints.json");
+                Seed<ConversationTurn>("ConversationTurns.json");
 
                 // Junctions & Complex Links
                 Seed<LanguageLocation>("LanguagesLocations.json");
                 Seed<CharacterRelationship>("CharacterRelationships.json");
-                Seed<PlotPoint>("PlotPoints.json");
                 Seed<PlotPointRiver>("PlotPointsRivers.json");
                 Seed<PlotPointRoute>("PlotPointsRoutes.json");
-                Seed<ConversationTurn>("ConversationTurns.json");
-
-
+                Seed<ChapterPlotPoint>("ChaptersPlotPoints.json");
 
 
                 _context.SaveChanges();

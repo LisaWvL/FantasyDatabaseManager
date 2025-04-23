@@ -1,5 +1,5 @@
 ﻿// src/pages/LocationPage.jsx
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   fetchLocations,
   //createLocation,

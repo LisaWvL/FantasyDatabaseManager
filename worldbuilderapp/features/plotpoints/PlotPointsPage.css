@@ -1,0 +1,40 @@
+/* PlotPointChapterPage.css */
+.plotpoint-page {
+    padding: 1rem;
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+
+.chapter-card-pool {
+    margin-bottom: 2rem;
+}
+
+.chapter-card-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    background-color: #2a2a2a;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.05);
+}
+
+.plotpoint-drop-section {
+    margin-bottom: 2.5rem;
+    padding: 1rem;
+    background-color: #2b2b2b;
+    border: 1px dashed #555;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+
+    .plotpoint-drop-section:hover {
+        background-color: #333333;
+    }
+
+.plotpoint-header {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #f1f1f1;
+}
