@@ -1,179 +1,101 @@
-// 📁 CalendarGrid.jsx
+// 📁 features/plotpoints/CalendarGrid.jsx
 import React from 'react';
-import CalendarDayCell from './CalendarDayCell';
 import './CalendarGrid.css';
+import CalendarDayCell from './CalendarDayCell';
+import Card from '../../components/Card';
 
-export default function CalendarGrid({ calendarDays, cards, onContextMenu, onUpdateCard, onCardDrop, collapsedMonths = {}, setCollapsedMonths }) {
-    const calendarMap = Object.fromEntries(calendarDays.map(d => [d.id, d]));
-    const groupedCards = groupCardsByDate(cards, calendarMap);
+export default function CalendarGrid({
+    calendarDays,
+    cards,
+    onDropEntity,
+    onResizeEnd,
+    onContextMenu
+}) {
+    const cardsByDay = {};     // Start date → cards
+    const ghostSpans = [];     // Spanning visual placeholders
+
+    for (const card of cards) {
+        const CardData = card.CardData ?? card.cardData ?? {};
+        const entityType = CardData.EntityType ?? card.entityType;
+        const id = CardData.Id;
+        const startDateId = CardData.StartDateId;
+        const endDateId = CardData.EndDateId ?? startDateId;
+
+        if (!startDateId) continue;
+
+        // Place card in its starting day
+        if (!cardsByDay[startDateId]) cardsByDay[startDateId] = [];
+        cardsByDay[startDateId].push({ ...card, entityType, id });
+
+        // If card spans multiple days
+        if (startDateId !== endDateId) {
+            const min = Math.min(startDateId, endDateId);
+            const max = Math.max(startDateId, endDateId);
+            const isReversed = startDateId > endDateId;
+
+            // Create ghost spans with more metadata
+            for (let dayId = min + 1; dayId <= max; dayId++) {
+                ghostSpans.push({
+                    entityType,
+                    id,
+                    dayId,
+                    isReversed,
+                    color: CardData.Color ?? '#888',
+                    title: CardData.Name || CardData.Title || `#${id}`,
+                    isStart: dayId === min,
+                    isEnd: dayId === max,
+                    position: dayId === min + 1 ? 'start' : dayId === max ? 'end' : 'middle'
+                });
+            }
+        }
+    }
 
     return (
-        <div className="calendar-grid">
+        <div 
+            className="calendar-grid" 
+            style={{ 
+                gridTemplateColumns: `repeat(${calendarDays.length > 0 ? 7 : 1}, 1fr)`,
+                gridAutoRows: 'minmax(160px, auto)'
+            }}
+        >
             {calendarDays.map(day => {
-                const dayCards = groupedCards[day.id] || [];
-                const isCollapsed = collapsedMonths[day.month] || false;
+                const realCards = cardsByDay[day.id] ?? [];
+                const ghostsToday = ghostSpans.filter(g => g.dayId === day.id);
 
                 return (
-                    <CalendarDayCell
-                        key={day.id}
-                        date={day}
-                        cards={isCollapsed ? [] : dayCards}
-                        onContextMenu={onContextMenu}
-                        onUpdateCard={onUpdateCard}
-                        onCardDrop={onCardDrop}
-                    />
+                    <CalendarDayCell key={`cell-${day.id}`} day={day} onDropEntity={onDropEntity}>
+                        {/* Main calendar cards */}
+                        {realCards.map(card => (
+                            <Card
+                                key={`card-${card.entityType}-${card.id}`}
+                                card={card}
+                                mode="calendar"
+                                onContextMenu={(e) => onContextMenu?.(e, card)}
+                                onResizeEnd={onResizeEnd}
+                            />
+                        ))}
+
+                        {/* Enhanced ghost visual spans */}
+                        {ghostsToday.map(ghost => (
+                            <div
+                                key={`ghost-${ghost.entityType}-${ghost.id}-${ghost.dayId}`}
+                                className={`card-ghost ${ghost.position} ${ghost.isReversed ? 'reversed' : ''}`}
+                                style={{
+                                    borderColor: ghost.color,
+                                    backgroundColor: `${ghost.color}22`,
+                                }}
+                                title={`Continuation of: ${ghost.title}`}
+                            >
+                                <div className="ghost-content">
+                                    {ghost.position === 'middle' && '⋯'}
+                                    {ghost.position === 'start' && ghost.isReversed ? '◀' : ''}
+                                    {ghost.position === 'end' && !ghost.isReversed ? '▶' : ''}
+                                </div>
+                            </div>
+                        ))}
+                    </CalendarDayCell>
                 );
             })}
         </div>
     );
 }
-
-function groupCardsByDate(cards, calendarMap) {
-    const map = {};
-
-    for (const card of cards) {
-        const start = card.CardData?.startDateId;
-        const end = card.CardData?.endDateId;
-
-        if (!start) continue;
-
-        if (!map[start]) map[start] = [];
-        map[start].push({ ...card, isGhost: false });
-
-        if (card.Styling?.isSpanning && start !== end && calendarMap[start] && calendarMap[end]) {
-            const ghostRange = getDateRange(calendarMap, start, end);
-            ghostRange.forEach(id => {
-                if (!map[id]) map[id] = [];
-                map[id].push({ ...card, isGhost: true });
-            });
-        }
-    }
-
-    return map;
-}
-
-function getDateRange(dateMap, startId, endId) {
-    const ids = Object.keys(dateMap).map(Number).sort((a, b) => a - b);
-    const startIndex = ids.indexOf(startId);
-    const endIndex = ids.indexOf(endId);
-    if (startIndex === -1 || endIndex === -1) return [];
-
-    const range = ids.slice(Math.min(startIndex, endIndex) + 1, Math.max(startIndex, endIndex));
-    return range;
-}
-
-
-
-//import DateDayCell from './DateDayCell';
-//import Card from '../../components/Card';
-//import './DateGrid.css';
-
-//export default function DateGrid({
-//    dateDays,
-//    plotPoints,
-//    onDropPlotPoint,
-//    onContextMenu,
-//    onResizeEnd
-//}) {
-//    const dayIndexMap = {};
-//    dateDays.forEach((d, i) => {
-//        dayIndexMap[d.id] = i;
-//    });
-
-//    function handlePlotPointDragStart(e, pp) {
-//        e.dataTransfer.setData('entityId', pp.id.toString());
-//        e.dataTransfer.setData('entityType', 'PlotPoint');
-//        e.dataTransfer.effectAllowed = 'move';
-//    }
-
-//    const renderSpanningCard = (pp) => {
-//        const startIdx = dayIndexMap[pp.startDateId];
-//        const endIdx = pp.endDateId ? dayIndexMap[pp.endDateId] : startIdx;
-
-//        if (startIdx === undefined || endIdx === undefined || startIdx > endIdx) {
-//            console.warn(`Skipping span render for PlotPoint ${pp.id} due to invalid start/end`, {
-//                startIdx, endIdx, pp
-//            });
-//            return null;
-//        }
-
-//        const spanStart = startIdx + 1;
-//        const spanLength = endIdx - startIdx + 1;
-
-//        console.log(`📏 Rendering span for PlotPoint ${pp.id}: ${spanStart} → ${spanLength}`);
-
-//        return (
-//            <div
-//                key={`span-${pp.id}`}
-//                className="plotpoint-span"
-//                style={{
-//                    gridColumn: `${spanStart} / span ${spanLength}`,
-//                    zIndex: 2,
-//                }}
-//            >
-//                <Card
-//                    key={`card-${pp.id}`}
-//                    entity={pp}
-//                    entityType="PlotPoint"
-//                    displayMode="date"
-//                    isReversed={pp.isReversed}
-//                    isGhost={false}
-//                    colorIndex={pp.colorIndex}
-//                    onContextMenu={(e) => onContextMenu?.(e, pp, 'PlotPoint')}
-//                    onResizeEnd={(direction, newDayId) => onResizeEnd?.(pp.id, direction, newDayId)}
-//                    onDragStart={(e) => handlePlotPointDragStart(e, pp)}
-//                    onDragEnd={() => { }}
-//                    draggable
-//                />
-//            </div>
-//        );
-//    };
-
-//    const plotpointsByStartDay = plotPoints.reduce((acc, pp) => {
-//        if (!pp.startDateId) return acc;
-//        if (!acc[pp.startDateId]) acc[pp.startDateId] = [];
-//        acc[pp.startDateId].push(pp);
-//        return acc;
-//    }, {});
-
-//    return (
-//        <div className="date-grid" style={{ gridTemplateColumns: 'repeat(7, 1fr)' }}>
-//            {dateDays.map((day) => {
-//                const dayPlotPoints = plotpointsByStartDay[day.id] || [];
-//                return (
-//                    <DateDayCell
-//                        key={day.id}
-//                        day={day}
-//                        weekday={day.weekday}
-//                        month={day.month}
-//                        year={day.year}
-//                        onDropPlotPoint={onDropPlotPoint}
-//                        onContextMenu={onContextMenu}
-//                    >
-//                        {dayPlotPoints.map((pp) => (
-//                            <Card
-//                                key={`pp-${pp.id}-${day.id}`}
-//                                entity={pp}
-//                                entityType="PlotPoint"
-//                                displayMode="date"
-//                                isGhost={false}
-//                                isReversed={pp.isReversed}
-//                                colorIndex={pp.colorIndex}
-//                                onContextMenu={(e) => onContextMenu?.(e, pp, 'PlotPoint')}
-//                                onResizeEnd={(direction, newDayId) => onResizeEnd?.(pp.id, direction, newDayId)}
-//                                onDragStart={(e) => handlePlotPointDragStart(e, pp)}
-//                                onDragEnd={() => { }}
-//                                draggable
-//                            />
-//                        ))}
-//                    </DateDayCell>
-//                );
-//            })}
-
-//            {/* Render only spanning cards once, visually positioned using CSS grid */}
-//            {plotPoints
-//                .filter((pp) => pp.startDateId && pp.endDateId && pp.endDateId !== pp.startDateId)
-//                .map((pp) => renderSpanningCard(pp))}
-//        </div>
-//    );
-//}

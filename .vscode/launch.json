@@ -1,0 +1,52 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch API",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/FantasyDB.API/bin/Debug/net8.0/FantasyDB.API.dll",
+            "args": ["--urls", "http://localhost:5000"],
+            "cwd": "${workspaceFolder}/FantasyDB.API",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)",
+                "uriFormat": "%s/swagger"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        {
+            "name": "Launch Frontend",
+            "type": "shell",
+            "request": "launch",
+            "command": "npm",
+            "args": ["run", "dev"],
+            "cwd": "${workspaceFolder}/creatorapp",
+            "preLaunchTask": "start-vite",
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "^.*$",
+                    "file": 1,
+                    "location": 2,
+                    "message": 3
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": ".*VITE.*",
+                    "endsPattern": ".*ready in.*"
+                }
+            }
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Full Stack",
+            "configurations": ["Launch API", "Launch Frontend"]
+        }
+    ]
+} 

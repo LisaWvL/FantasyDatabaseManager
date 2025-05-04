@@ -1,4 +1,4 @@
-import '../../features/entities/EntityPage.css';
+import '../../features/entities/ModularEntityPage.css';
 import ModularEntityPage from '../../features/entities/ModularEntityPage';
 
 

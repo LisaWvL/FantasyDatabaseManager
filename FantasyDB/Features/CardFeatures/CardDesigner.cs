@@ -105,7 +105,7 @@ namespace FantasyDB.Features
             "dashboard" => "compact",
             "unassignedSidebar" => "compact",
             "section" => "basic",
-            "calendar" => "compact",
+            "calendar" => "calendar",
             "edit" => "full",
             "create" => "full",
             "clone" => "full",
@@ -220,14 +220,14 @@ namespace FantasyDB.Features
         public string DisplayName { get; set; } = "";
     }
 
-    public class LoadAndRender
-    {
-        public async Task<List<CardRenderResponse>> Load(string entityType, string context)
-        {
-            // dummy fallback — this was the old implementation
-            return new List<CardRenderResponse>();
-        }
-    }
+    //public class LoadAndRender
+    //{
+    //    public async Task<List<CardRenderResponse>> Load(string entityType, string context)
+    //    {
+    //        // dummy fallback — this was the old implementation
+    //        return new List<CardRenderResponse>();
+    //    }
+    //}
 
     public class DropPayload
     {

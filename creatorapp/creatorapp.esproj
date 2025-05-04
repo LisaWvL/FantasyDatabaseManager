@@ -14,14 +14,39 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="src\components\CardRenderer.tsx" />
+    <None Remove="src\features\characters\CharacterCard.jsx" />
+    <None Remove="src\features\characters\CharacterCardGroupList.jsx" />
+    <None Remove="src\features\entities\ContextMenu.css" />
+    <None Remove="src\features\entities\ContextMenu.jsx" />
+    <None Remove="src\features\entities\EntityCard.css" />
+    <None Remove="src\features\entities\SmallEntityCard.css" />
+    <None Remove="src\features\entities\SmallEntityCard.jsx" />
+    <None Remove="src\features\&#xD;&#xA;		  &#xD;&#xA;s\PlotPointCard.css" />
+    <None Remove="src\features\plotpoints\CardOverrides.css" />
+    <None Remove="src\features\plotpoints\PlotPointCard.jsx" />
+    <None Remove="src\features\plotpoints\PlotPointModal.css" />
+    <None Remove="src\features\plotpoints\PlotPointModal.jsx" />
+    <None Remove="src\hooks\DragDropHandlers.js" />
     <None Remove="src\hooks\useChapterManager.js" />
     <None Remove="src\hooks\useCharacters.js" />
     <None Remove="src\hooks\useEntityContextMenu.jsx" />
     <None Remove="src\hooks\useEntityManager.js" />
+    <None Remove="src\hooks\usePlotPointEntities.js" />
     <None Remove="src\hooks\useRowEditKeyboard.js" />
     <None Remove="src\store\EntityRegistry.ts" />
     <None Remove="src\store\EntityRegistryHelpers.ts" />
+    <None Remove="src\utils\colorMapping.ts" />
+    <None Remove="src\utils\DragDropHandlers.js" />
     <None Remove="src\utils\EntityActionHelper.js" />
+    <None Remove="src\utils\EntityCard.css" />
+    <None Remove="src\utils\EntityCard.jsx" />
+    <None Remove="src\utils\handleDropToUnassigned.js" />
+    <None Remove="src\utils\PlotPointCard.css" />
+    <None Remove="src\utils\PlotPointCard.jsx" />
+    <None Remove="src\utils\plotPointFormUtils.js" />
+    <None Remove="src\utils\SmallEntityCard.css" />
+    <None Remove="src\utils\SmallEntityCard.jsx" />
+    <None Remove="src\utils\unassignedFieldRules.ts" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\app\" />

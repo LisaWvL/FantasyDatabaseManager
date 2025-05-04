@@ -22,7 +22,7 @@ import PriceExamplesPage from '../src/features/items/PriceExamplesPage.jsx';
 import LocationsPage from '../src/features/locations/LocationsPage.jsx';
 import RiversPage from '../src/features/rivers/RiversPage.jsx';
 import RoutesPage from '../src/features/routes/RoutesPage.jsx';
-import AssistantPage from '../src/features/ai/AssistantPage.jsx';
+import AssistantPage from '../src/features/ai/aiAssistantPage.jsx';
 import WritingAssistantPage from '../src/features/chapters/WritingAssistantPage.jsx';
 
 export default function App() {
@@ -31,7 +31,7 @@ export default function App() {
             <Routes>
                 <Route element={<MainLayout />}>
                     <Route index element={<Dashboard />} />
-                    <Route path="dashboard" element={<Dashboard />} />
+                    {/*<Route path="dashboard" element={<Dashboard />} />*/}
                     <Route path="chapters" element={<ChapterEntityView />} />
                     <Route path="timelinestoryview" element={<TimelineStoryView />} />
                     <Route path="characters" element={<CharactersPage />} />

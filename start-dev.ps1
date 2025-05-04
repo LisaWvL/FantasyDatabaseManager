@@ -30,12 +30,13 @@ function Start-ServiceIfMissing {
 
 # 📦 Backend ASP.NET Core API
 Start-ServiceIfMissing -Name "Backend API (.NET)" -Port 5000 `
-    -Command "dotnet run --project 'F:\FantasyDatabase\FantasyDatabaseManager\FantasyDB.API'"
+    -Command "dotnet run --project 'F:\FantasyDatabase\FantasyDatabaseManager\FantasyDB.API' --urls='http://localhost:5000'" `
+    -WorkingDir "F:\FantasyDatabase\FantasyDatabaseManager\FantasyDB.API"
 
 # 🌐 Vite Frontend
 Start-ServiceIfMissing -Name "Vite Frontend" -Port 56507 `
     -Command "npm run dev" `
-    -WorkingDir "F:\FantasyDatabase\FantasyDatabaseManager\worldbuilderapp"
+    -WorkingDir "F:\FantasyDatabase\FantasyDatabaseManager\creatorapp"
 
 # 🧠 Assistant Python API
 Start-ServiceIfMissing -Name "FantasyAssistant API (FastAPI)" -Port 8000 `

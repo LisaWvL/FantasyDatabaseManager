@@ -1,5 +1,5 @@
 ﻿// 📁 MainLayout.jsx
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
@@ -9,30 +9,40 @@ import UnassignedSidebar from '../features/sidebars/UnassignedSidebar';
 import '../features/sidebars/UnassignedSidebar.css';
 import '../features/sidebars/NavSidebar.css';
 
-import { fetchDashboard } from '../features/plotpoints/PlotPointApi';
-
+import { getDashboardCards } from '../features/plotpoints/PlotPointApi';
 
 export default function MainLayout({ headerContent }) {
     const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
     const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
     const [cards, setCards] = useState([]);
-    const [calendarGrid, setCalendarGrid] = useState([]);
-
     const location = useLocation();
+    const hasLoadedRef = useRef(false);
 
-        // ✅ Fetch cards and grid once when MainLayout loads
-        useEffect(() => {
-            async function load() {
-                try {
-                    const { calendarGrid, cards } = await fetchDashboard();
-                    setCards(cards);
-                    setCalendarGrid(calendarGrid);
-                } catch (err) {
-                    console.error('❌ Failed to fetch dashboard data in MainLayout:', err);
-                }
-            }
-            load();
-        }, []);
+    // ✅ Fetch cards once
+    useEffect(() => {
+        if (hasLoadedRef.current) return;
+        hasLoadedRef.current = true;
+        loadCards();
+    }, []);
+
+    const loadCards = async () => {
+        try {
+            const { cards } = await getDashboardCards();
+            setCards(cards);
+        } catch (err) {
+            console.error('❌ Failed to fetch dashboard data in MainLayout:', err);
+        }
+    };
+
+    // ✅ Define refreshCards so we can pass it down
+    const refreshCards = async () => {
+        try {
+            const { cards: updated } = await getDashboardCards();
+            setCards(updated);
+        } catch (err) {
+            console.error('❌ Failed to refresh cards:', err);
+        }
+    };
 
     return (
         <div className="app-shell">
@@ -49,7 +59,8 @@ export default function MainLayout({ headerContent }) {
                 </div>
 
                 <div className={`main-container ${rightSidebarOpen ? 'with-unassigned-sidebar' : 'sidebar-collapsed'}`}>
-                    <Outlet context={{ cards, setCards, calendarGrid }} />
+                    {/* 🧠 Outlet context passes cards and setter */}
+                    <Outlet context={{ cards, setCards }} />
                 </div>
 
                 <div className={`unassigned-sidebar ${rightSidebarOpen ? 'open' : 'collapsed'}`}>
@@ -57,6 +68,7 @@ export default function MainLayout({ headerContent }) {
                         isSidebarOpen={rightSidebarOpen}
                         setIsSidebarOpen={setRightSidebarOpen}
                         allCards={cards}
+                        refreshCards={refreshCards} // ✅ NOW we pass it
                     />
                 </div>
             </div>

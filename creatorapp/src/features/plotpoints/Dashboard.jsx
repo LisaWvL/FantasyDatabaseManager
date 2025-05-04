@@ -1,138 +1,145 @@
-// 📁 Dashboard.jsx
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+// 📁 features/plotpoints/Dashboard.jsx
+import React, { useEffect, useState, useMemo } from 'react';
 import CalendarGrid from './CalendarGrid';
-//import PlotPointModal from './PlotPointModal';
-//import UnassignedSidebar from '../sidebars/UnassignedSidebar';
-import Card from '../../components/Card';
-import { fetchDashboard } from './PlotPointApi';
-import { EntityDeleter } from '../../store/EntityManager';
-import { useEntityContextMenu } from '../../hooks/useEntityContextMenu';
+import { getDashboardGrid } from './PlotPointApi';
+import { useOutletContext } from 'react-router-dom';
 import './Dashboard.css';
 import './CalendarGrid.css';
 import './CalendarDayCell.css';
-import { useOutletContext } from 'react-router-dom';
-
-
+import { useDragAndDrop } from '../../hooks/useDragAndDrop';
 
 export default function Dashboard() {
     const [calendarGrid, setCalendarGrid] = useState([]);
-    //const [cards, setCards] = useState([]);
     const { cards, setCards } = useOutletContext();
-    const [collapsedMonths, setCollapsedMonths] = useState({});
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-    const [showModal, setShowModal] = useState(false);
-    const [editingId, setEditingId] = useState(null);
 
     useEffect(() => {
-        async function load() {
+        async function loadCalendar() {
             try {
-                const { calendarGrid } = await fetchDashboard();
+                const { calendarGrid } = await getDashboardGrid();
                 setCalendarGrid(calendarGrid);
             } catch (error) {
-                console.error('🚨 Dashboard load failed:', error);
+                console.error('🚨 Calendar load failed:', error);
             }
         }
-        load();
+        loadCalendar();
     }, []);
 
-    const handleDeleteEntity = async (entityType, id) => {
-        await EntityDeleter.delete(entityType, id);
-        //check if Id or id
-        setCards(prev => prev.filter(c => c.cardData.Id !== id));
+    const calendarById = useMemo(
+        () => Object.fromEntries(calendarGrid.map(day => [day.id, day])),
+        [calendarGrid]
+    );
+
+    const refreshCards = async () => {
+        try {
+            const response = await fetch('/api/cards/getDashboardCards');
+            const { cards: updated } = await response.json();
+            setCards(updated);
+        } catch (err) {
+            console.error('❌ Failed to refresh cards:', err);
+        }
     };
 
-    const handleUpdateCard = (updated) => {
-        setCards(prev =>
-            //check if Id or id
-            prev.map(c => c.cardData.Id === updated.id ? { ...c, CardData: updated } : c)
-        );
-    };
-
-    const {
-        showContextMenu,
-        openContextMenu,
-        contextMenuPortal
-    } = useEntityContextMenu({
-        onCreate: () => setShowModal(true),
-        onEdit: (entity) => {
-            setEditingId(entity.id);
-            setShowModal(true);
-        },
-        onDelete: (entity) => handleDeleteEntity(entity.entityType, entity.id),
+    // 📦 Drag hook
+    const { handleDrop } = useDragAndDrop({
+        onDropSuccess: async (entityId, dropTargetDayId, entityType) => {
+            console.log('📦 Drop success:', { entityId, dropTargetDayId, entityType });
+            await refreshCards();
+        }
     });
 
-    function getEditableCardData() {
-        if (editingId) {
-            //check if Id or id
-            const existing = cards.find(c => c.cardData.Id === editingId);
-            return existing ? { ...existing.CardData } : {};
+    // 📏 Resize handler
+    const handleResizeEnd = async (entityId, direction, newDayId) => {
+        const card = cards.find(c => c.cardData?.Id === entityId);
+        if (!card) return;
+
+        const cardData = card.cardData;
+        const entityType = card.entityType ?? cardData?.EntityType;
+
+        let start = cardData.StartDateId;
+        let end = cardData.EndDateId ?? start;
+
+        if (direction === 'start') start = newDayId;
+        else if (direction === 'end') end = newDayId;
+
+        try {
+            const response = await fetch('/api/cards/updateDateRange', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    EntityType: entityType,
+                    Id: entityId,
+                    StartDateId: start,
+                    EndDateId: end
+                })
+            });
+
+            const result = await response.json();
+            console.log('✅ Resize success:', result);
+            await refreshCards();
+        } catch (err) {
+            console.error('❌ Resize save failed:', err);
         }
+    };
 
-        // for "create" mode: return a skeleton with default fields
-        return {
-            entityType: "PlotPoint", // or whatever default you prefer
-            Name: "",
-            Title: "",
-            ChapterTitle: "",
-            startDateId: null,
-            endDateId: null,
-            // add more based on schema
+    // 📥 Drop handler
+    const handleDropEntity = async (entityId, entityType, dayId) => {
+        const card = cards.find(c => c.cardData?.Id === entityId && c.entityType === entityType);
+        if (!card) return;
+
+        const cardData = card.cardData;
+        const currentSpan = {
+            StartDateId: dayId,
+            EndDateId: cardData.EndDateId ?? dayId,
         };
-    }
 
+        // Preserve duration
+        const duration = (cardData.EndDateId ?? cardData.StartDateId) - cardData.StartDateId;
+        currentSpan.EndDateId = dayId + duration;
 
+        // Optimistic update
+        const optimisticCards = cards.map(c => 
+            c.cardData?.Id === entityId ? {
+                ...c,
+                cardData: {
+                    ...c.cardData,
+                    StartDateId: currentSpan.StartDateId,
+                    EndDateId: currentSpan.EndDateId
+                }
+            } : c
+        );
+        setCards(optimisticCards);
+
+        try {
+            const response = await fetch('/api/cards/updateDateRange', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    EntityType: entityType,
+                    Id: entityId,
+                    StartDateId: currentSpan.StartDateId,
+                    EndDateId: currentSpan.EndDateId
+                })
+            });
+
+            const result = await response.json();
+            console.log('📥 Card dropped and updated:', result);
+            await refreshCards(); // Only refresh if needed to sync with other changes
+        } catch (err) {
+            console.error('❌ Failed to drop entity:', err);
+            // Revert optimistic update on failure
+            setCards(cards);
+        }
+    };
 
     return (
-        <>
-            <div className="sticky-header">
-                //Placeholder for header content
-            </div>
-
-            <CalendarGrid
-                calendarDays={calendarGrid}
-                cards={cards}
-                collapsedMonths={collapsedMonths}
-                setCollapsedMonths={setCollapsedMonths}
-                onContextMenu={showContextMenu}
-                onUpdateCard={handleUpdateCard}
-                onCardDrop={async (payload) => {
-                    await axios.put('/api/cards/drop', payload);
-                    const updated = await axios.get(`/api/cards/${payload.entityType}/${payload.entityId}`);
-                    setCards(prev =>
-                        prev.map(c => c.cardData.Id === payload.entityId ? updated.data : c)
-                    );
-                }}
-            />
-
-            {contextMenuPortal}
-
-            {showModal && (
-                <div className="inline-card-editor">
-                    <Card
-                        key={editingId || 'new'}
-                        cards={{
-                            CardData: getEditableCardData(),
-                            DisplayMode: 'full',
-                            Styling: {}
-                        }}
-                        mode="full"
-                        onClick={() => {
-                            setShowModal(false);
-                            setEditingId(null);
-                        }}
-                    />
-                    <button
-                        className="inline-card-close"
-                        onClick={() => {
-                            setShowModal(false);
-                            setEditingId(null);
-                        }}
-                    >
-                        ✕ Close
-                    </button>
-                </div>
-            )}
-        </>
+        <CalendarGrid
+            calendarDays={calendarGrid}
+            cards={cards}
+            onDropEntity={handleDropEntity}
+            onResizeEnd={handleResizeEnd}
+            onContextMenu={(entityType, id) => {
+                console.log('📜 Context menu opened for:', entityType, id);
+            }}
+        />
     );
 }

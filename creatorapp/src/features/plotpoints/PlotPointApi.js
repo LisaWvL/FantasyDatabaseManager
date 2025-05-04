@@ -157,9 +157,19 @@ export const getRelatedChapters = async (actId) => {
     }
 };
 
-export const fetchDashboard = async () => {
+export const getDashboardGrid = async () => {
     try {
-        const { data } = await axiosInstance.get('/dashboard/getDashboard');
+        const { data } = await axiosInstance.get('/dashboard/getDashboardGrid');
+        return data;
+    } catch (error) {
+        console.error('❌ Failed to load dashboard:', error.response?.data || error.message);
+        throw error;
+    }
+};
+
+export const getDashboardCards = async () => {
+    try {
+        const { data } = await axiosInstance.get('/cards/getDashboardCards');
         return data;
     } catch (error) {
         console.error('❌ Failed to load dashboard:', error.response?.data || error.message);

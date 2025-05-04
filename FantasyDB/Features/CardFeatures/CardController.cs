@@ -47,44 +47,60 @@ namespace FantasyDB.Features
             return Ok(card);
         }
 
-        [HttpGet("dashboard")]
+        [HttpGet("getDashboardCards")]
         public async Task<IActionResult> GetDashboardCards()
         {
-            var allCards = new List<CardRenderResponse>();
+            var cards = new List<CardRenderResponse>();
 
             var plotPoints = await _context.PlotPoints
                 .Include(p => p.StartDate)
                 .Include(p => p.EndDate)
                 .ToListAsync();
 
+            foreach (var pp in plotPoints)
+            {
+                var context = (pp.StartDateId != null && pp.EndDateId != null) ? "calendar" : "dashboard";
+                cards.Add(await _designer.DesignCard("PlotPoint", pp, context));
+            }
+
             var events = await _context.Events
                 .Include(e => e.StartDate)
                 .Include(e => e.EndDate)
                 .ToListAsync();
+
+            foreach (var ev in events)
+            {
+                var context = (ev.StartDateId != null && ev.EndDateId != null) ? "calendar" : "dashboard";
+                cards.Add(await _designer.DesignCard("Event", ev, context));
+            }
 
             var eras = await _context.Eras
                 .Include(e => e.StartDate)
                 .Include(e => e.EndDate)
                 .ToListAsync();
 
+            foreach (var era in eras)
+            {
+                var context = (era.StartDateId != null && era.EndDateId != null) ? "calendar" : "dashboard";
+                cards.Add(await _designer.DesignCard("Era", era, context));
+            }
+
             var chapters = await _context.Chapters
                 .Include(c => c.StartDate)
                 .Include(c => c.EndDate)
                 .ToListAsync();
 
-            var cardTasks = new List<Task<CardRenderResponse>>();
-            cardTasks.AddRange(plotPoints.Select(pp => _designer.DesignCard("PlotPoint", pp, "dashboard")));
-            cardTasks.AddRange(events.Select(ev => _designer.DesignCard("Event", ev, "dashboard")));
-            cardTasks.AddRange(eras.Select(era => _designer.DesignCard("Era", era, "dashboard")));
-            cardTasks.AddRange(chapters.Select(ch => _designer.DesignCard("Chapter", ch, "dashboard")));
+            foreach (var ch in chapters)
+            {
+                var context = (ch.StartDateId != null && ch.EndDateId != null) ? "calendar" : "dashboard"; 
+                cards.Add(await _designer.DesignCard("Chapter", ch, context));
+            }
 
-            var cards = await Task.WhenAll(cardTasks);
-            allCards.AddRange(cards);
-
-            return Ok(new { cards = allCards });
+            return Ok(new { cards });
         }
 
-        [HttpPost("drop")]
+
+        [HttpPut("drop")]
         public async Task<IActionResult> HandleDrop([FromBody] DropPayload payload)
         {
             var result = await _dropHandler.ProcessDropAsync(payload);

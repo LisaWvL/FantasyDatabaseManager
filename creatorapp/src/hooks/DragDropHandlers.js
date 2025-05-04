@@ -51,6 +51,7 @@ export function useDragAndDrop({ handleUpdateEntity }) {
 
         e.dataTransfer.setData('entityType', entity.entityType);
         e.dataTransfer.setData('entityId', entity.id.toString());
+        dataTransfer.setData('application/json', JSON.stringify(card))
         e.dataTransfer.setData('dragSourceContext', context);
 
         Object.entries(extra).forEach(([key, value]) => {

@@ -1,4 +1,66 @@
+﻿/* 📁 features/plotpoints/CalendarDayCell.css */
+
 .calendar-cell {
+    background-color: var(--bg, rgba(40, 30, 25, 0.9));
+    border: 1px solid var(--accent, #a88864);
+    border-radius: 8px;
+    padding: 6px;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+    transition: background-color 0.2s ease, outline 0.2s ease;
+}
+
+    /* Highlight cell when dragging over it */
+    .calendar-cell.drag-over {
+        outline: 2px dashed var(--accent, #d9b78c);
+        background-color: rgba(255, 255, 200, 0.08);
+    }
+
+    /* Highlight cell during resizing preview */
+    .calendar-cell.preview-span {
+        background-color: rgba(255, 255, 200, 0.1);
+        box-shadow: inset 0 0 6px rgba(255, 255, 150, 0.4);
+    }
+
+/* Cell Header */
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-size: 0.85rem;
+    color: var(--text, #dcc8b0);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 2px;
+    margin-bottom: 4px;
+}
+
+.calendar-day-number {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #f3d2a0;
+}
+
+.calendar-weekday {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #ccb89a;
+}
+
+/* Body of the cell */
+.calendar-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    overflow: visible;
+}
+
+
+
+/*.calendar-cell {
     background-color: var(--bg);
     border: 1px solid var(--accent);
     border-radius: 6px;
@@ -26,6 +88,7 @@
     font-size: 1.2rem;
     color: #e8d2b0;
 }
+
 .calendar-weekday {
     font-size: 0.85rem;
     font-weight: 500;
@@ -51,3 +114,6 @@
     background-color: rgba(255, 255, 150, 0.1);
     box-shadow: inset 0 0 4px rgba(255, 255, 100, 0.3);
 }
+
+
+*/

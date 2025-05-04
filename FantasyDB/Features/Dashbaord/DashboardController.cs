@@ -23,8 +23,8 @@ namespace FantasyDB.Features
             _designer = designer;
         }
 
-        [HttpGet("getDashboard")]
-        public async Task<IActionResult> GetDashboard()
+        [HttpGet("getDashboardGrid")]
+        public async Task<IActionResult> getDashboardGrid()
         {
             try
             {
@@ -35,39 +35,7 @@ namespace FantasyDB.Features
                         .OrderBy(d => d.Id)
                         .ToListAsync(),
 
-                    Cards = new List<CardRenderResponse>()
                 };
-
-                var plotPoints = await _context.PlotPoints
-                    .Include(p => p.StartDate)
-                    .Include(p => p.EndDate)
-                    .ToListAsync();
-
-                var events = await _context.Events
-                    .Include(e => e.StartDate)
-                    .Include(e => e.EndDate)
-                    .ToListAsync();
-
-                var eras = await _context.Eras
-                    .Include(e => e.StartDate)
-                    .Include(e => e.EndDate)
-                    .ToListAsync();
-
-                var chapters = await _context.Chapters
-                    .Include(c => c.StartDate)
-                    .Include(c => c.EndDate)
-                    .ToListAsync();
-
-                var cardTasks = new List<Task<CardRenderResponse>>();
-
-                cardTasks.AddRange(plotPoints.Select(pp => _designer.DesignCard("PlotPoint", pp, "dashboard")));
-                cardTasks.AddRange(events.Select(ev => _designer.DesignCard("Event", ev, "dashboard")));
-                cardTasks.AddRange(eras.Select(era => _designer.DesignCard("Era", era, "dashboard")));
-                cardTasks.AddRange(chapters.Select(ch => _designer.DesignCard("Chapter", ch, "dashboard")));
-
-                var cards = await Task.WhenAll(cardTasks);
-                response.Cards.AddRange(cards);
-
                 return Ok(response);
             }
             catch (Exception ex)

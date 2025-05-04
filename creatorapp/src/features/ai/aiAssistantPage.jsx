@@ -7,10 +7,10 @@ import {
   fetchConversationHistory,
   sendChatTurn,
   requestSummaryTurn,
-} from '../ai/ConversationTurnApi';
+} from './ConversationTurnApi';
 
-import './AssistantPage.css';
-import EntityCard from '../../utils/EntityCard';
+import './aiAssistantPage.css';
+import Card from '../../components/Card';
 
 export default function AssistantPage() {
   const [plotpoints, setPlotpoints] = useState([]);
@@ -206,7 +206,7 @@ export default function AssistantPage() {
       </div>
 
       {/*{expandedEntity && (*/}
-      {/*  <EntityCard entity={expandedEntity} onBlur={() => setExpandedEntity(null)} />*/}
+      {/*  <Card entity={expandedEntity} onBlur={() => setExpandedEntity(null)} />*/}
       {/*)}*/}
       </div>
 

@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
-import MainLayout from '../../styles/MainLayout';
 import Card from '../../components/Card';
-import ModularEntityCard from '../../components/Card';
-import { safeLower } from '../../utils/UpperLowerCase';
-import useDragScroll from '../../hooks/useDragScroll';
-import { useDragAndDrop } from '../../utils/DragDropHandlers';
+import {
+    useDragAndDrop,
+    useDragScroll,
+    createDragOverHandler,
+    createDragLeaveHandler,
+} from '../../hooks/useDragAndDrop';
+
 import { entitySchemas } from '../../store/EntitySchemas';
 import {
     EntityCreator,
     EntityUpdater,
     EntityFetcher,
     EntityDeleter
-} from '../../store/EntityManager'; // <- You’ll need to implement these
+} from '../../store/EntityManager';
 import './ModularEntityPage.css';
 
 export default function ModularEntityPage({ cardEntity, sectionEntity, updateFK }) {
@@ -27,117 +29,89 @@ export default function ModularEntityPage({ cardEntity, sectionEntity, updateFK 
 
     useDragScroll(isDragging);
 
-    useEffect(() => {
-        const loadData = async () => {
-            const [sectionResults, cardResults] = await Promise.all([
-                fetchEntities(sectionEntity),
-                fetchEntities(cardEntity)
-            ]);
-            setSections(sectionResults);
-            setCards(cardResults);
-        };
-        loadData();
-    }, [cardEntity, sectionEntity]);
+    // useEffect(() => {
+    //    const loadData = async () => {
+    //        const [sectionResults, cardResults] = await Promise.all([
+    //            EntityFetcher.fetchAll(sectionEntity),
+    //            EntityFetcher.fetchAll(cardEntity)
+    //        ]);
+    //         setSections(sectionResults);
+    //         setCards(cardResults);
+    //     };
+    //     loadData();
+    // }, [cardEntity, sectionEntity]);
+
+
 
     const handleDragStart = () => setIsDragging(true);
     const handleDragEnd = () => setIsDragging(false);
 
     const handleUpdateCard = async (updatedCard) => {
-        await updateEntity(cardEntity, updatedCard.id, updatedCard);
-        setCards((prev) =>
-            prev.map((c) => (c.id === updatedCard.id ? { ...c, ...updatedCard } : c))
-        );
+        await EntityUpdater.update(cardEntity, updatedCard.id, updatedCard);
+        setCards(prev => prev.map(c => (c.id === updatedCard.id ? { ...c, ...updatedCard } : c)));
     };
 
     const handleDeleteEntity = async (card) => {
-        await deleteEntity(cardEntity, card.id);
-        setCards((prev) => prev.filter((c) => c.id !== card.id));
+        await EntityDeleter.delete(cardEntity, card.id);
+        setCards(prev => prev.filter(c => c.id !== card.id));
     };
 
     const handleCreateNewEntity = async () => {
         const payload = { name: `New ${cardEntity}`, [updateFK]: null };
-        const created = await createEntity(cardEntity, payload);
-        if (created) setCards((prev) => [created, ...prev]);
+        const created = await EntityCreator.create(cardEntity, payload);
+        if (created) setCards(prev => [created, ...prev]);
     };
 
-    const { handleDrop } = useDragAndDrop({
-        handleUpdateEntity: async ({ entity, dropTarget, context }) => {
-            if (dropTarget === 'unassigned-sidebar') {
-                await setFieldToNull(entity.entityType, entity.id, updateFK);
-                setCards((prev) =>
-                    prev.map((c) =>
-                        c.id === entity.id ? { ...c, [updateFK]: null } : c
-                    )
-                );
-            } else if (dropTarget === 'context-dropzone') {
-                const chapterId = parseInt(context?.chapterId);
-                if (chapterId) {
-                    await updateEntity(entity.entityType, entity.id, {
-                        [updateFK]: chapterId,
+    const { handleDrop, handleDragStart: dndDragStart } = useDragAndDrop({
+        handleUpdateEntity: async ({ entity, dropContext, contextData }) => {
+            if (dropContext === 'unassigned-sidebar') {
+                await EntityUpdater.setNull(entity.entityType, entity.id, updateFK);
+                setCards(prev => prev.map(c => (c.id === entity.id ? { ...c, [updateFK]: null } : c)));
+            } else if (dropContext === 'section-dropzone') {
+                const sectionId = contextData?.sectionId;
+                if (sectionId) {
+                    await EntityUpdater.update(entity.entityType, entity.id, {
+                        [updateFK]: sectionId
                     });
-                    setCards((prev) =>
-                        prev.map((c) =>
-                            c.id === entity.id ? { ...c, [updateFK]: chapterId } : c
-                        )
-                    );
+                    setCards(prev => prev.map(c => (c.id === entity.id ? { ...c, [updateFK]: sectionId } : c)));
                 }
             }
-        },
+        }
     });
 
-    const PageContent = (
+    return (
         <div className="entity-page">
             <div className="entity-page-header">
                 <h2>{cardSchema.label} Assignment</h2>
-                <button onClick={handleCreateNewEntity}>➕ Add {cardSchema.label}</button>
+                <button onClick={handleCreateNewEntity}>＋ Add {cardSchema.label}</button>
             </div>
 
-            {sections.map((section) => {
-                const sectionCards = cards.filter((c) => c[updateFK] === section.id);
+            {sections.map(section => {
+                const sectionCards = cards.filter(c => c[updateFK] === section.id);
                 return (
                     <div
                         key={section.id}
-                        className={`chapter-section ${dragOverSectionId === section.id ? 'drag-over' : ''}`}
-                        data-chapter-id={section.id}
-                        onDragOver={(e) => e.preventDefault()}
-                        onDragEnter={() => setDragOverSectionId(section.id)}
-                        onDragLeave={(e) => {
-                            const target = e.relatedTarget;
-                            if (!(target instanceof Node) || !e.currentTarget.contains(target)) {
-                                setDragOverSectionId(null);
-                            }
-                        }}
+                        className={`section-dropzone ${dragOverSectionId === section.id ? 'drag-over' : ''}`}
+                        onDragOver={createDragOverHandler(() => setDragOverSectionId(section.id))}
+                        onDragLeave={createDragLeaveHandler(() => setDragOverSectionId(null))}
                         onDrop={(e) => {
-                            e.preventDefault();
-                            handleDrop(e, 'context-dropzone', { chapterId: section.id });
+                            handleDrop(e, 'section-dropzone', { sectionId: section.id });
                             setDragOverSectionId(null);
                         }}
                     >
-                        <div className="chapter-header">
+                        <div className="section-header">
                             <h3>{section.title || section.name || `${sectionSchema.label} #${section.id}`}</h3>
                         </div>
                         <div className="entity-card-row">
-                            {sectionCards.map((card) => (
+                            {sectionCards.map(card => (
                                 <Card
                                     key={card.id}
-                                    entity={card}
-                                    entityType={cardEntity}
-                                    onFieldUpdate={handleUpdateCard}
-                                    onDelete={() => handleDeleteEntity(card)}
-                                    onCreateNewVersion={handleCreateNewEntity}
+                                    card={{ CardData: card, DisplayMode: 'basic' }}
+                                    mode="basic"
+                                    onClick={() => { }}
                                     draggable
-                                    onResizeEnd={(newWidth) => {
-                                        handleUpdateCard({ ...card, width: newWidth });
-                                    }}
-                                    onDragStart={(e) => {
-                                        e.dataTransfer.setData(`${safeLower(cardEntity)}Id`, card.id);
-                                        handleDragStart();
-                                    }}
+                                    onDragStart={(e) => dndDragStart(e, { entityType: cardEntity, id: card.id }, 'section')}
                                     onDragEnd={handleDragEnd}
-                                    onContextMenu={(e) => {
-                                        e.preventDefault();
-                                        console.log('Right-clicked', card);
-                                    }}
                                 />
                             ))}
                         </div>
@@ -145,57 +119,5 @@ export default function ModularEntityPage({ cardEntity, sectionEntity, updateFK 
                 );
             })}
         </div>
-    );
-
-    return (
-        <MainLayout
-            headerContent={<h2>{cardSchema.label} Assignment</h2>}
-            unassignedSidebar={{
-                entityType: cardEntity,
-                items: cards,
-                isUnassigned: (c) => !c[updateFK],
-                onDropToUnassigned: async (cardId) => {
-                    const card = cards.find((c) => c.id === cardId);
-                    if (!card) return;
-                    await setFieldToNull(cardEntity, card.id, updateFK);
-                    setCards((prev) =>
-                        prev.map((c) =>
-                            c.id === card.id ? { ...c, [updateFK]: null } : c
-                        )
-                    );
-                },
-                onContextMenu: (e, item) => {
-                    e.preventDefault();
-                    console.log('Right-clicked', item);
-                },
-                renderItem: (item) => (
-                    <Card
-                        key={item.id}
-                        entity={item}
-                        entityType={cardEntity}
-                        onFieldUpdate={handleUpdateCard}
-                        onDelete={() => handleDeleteEntity(item)}
-                        onCreateNewVersion={handleCreateNewEntity}
-                        draggable
-                        onDragStart={(e) => {
-                            e.dataTransfer.setData(`${safeLower(cardEntity)}Id`, item.id);
-                            handleDragStart();
-                        }}
-                        onDragEnd={handleDragEnd}
-                        onContextMenu={(e) => {
-                            e.preventDefault();
-                            console.log('Right-clicked', item);
-                        }}
-                    />
-                ),
-                isSidebarOpen,
-                setIsSidebarOpen,
-                isOverSidebar,
-                onSidebarDragOver: () => setIsOverSidebar(true),
-                onSidebarDragLeave: () => setIsOverSidebar(false),
-            }}
-        >
-            {PageContent}
-        </MainLayout>
     );
 }

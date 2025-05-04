@@ -76,7 +76,7 @@
     letter-spacing: 0.5px;
 }
 
-/* Grid layout for EntityCards inside sections */
+/* Grid layout for Cards inside sections */
 .entity-card-row {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));

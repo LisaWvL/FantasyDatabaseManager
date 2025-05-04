@@ -381,7 +381,7 @@ namespace FantasyDB.Features
         {
             ["PlotPoint"] = new(StringComparer.OrdinalIgnoreCase)
             {
-                ["dashboard"] = new() { "StartDateId", "EndDateId" },
+                ["calendar"] = new() { "StartDateId", "EndDateId" },
                 ["timeline"] = new() { "StartDateId", "EndDateId" },
                 ["unassigned-dropzone"] = new() { "StartDateId", "EndDateId" },
                 ["context-dropzone"] = new() { "ChapterId" },
@@ -390,7 +390,7 @@ namespace FantasyDB.Features
             },
             ["Event"] = new(StringComparer.OrdinalIgnoreCase)
             {
-                ["dashboard"] = new() { "StartDateId", "EndDateId" },
+                ["calendar"] = new() { "StartDateId", "EndDateId" },
                 ["timeline"] = new() { "StartDateId", "EndDateId" },
                 ["unassigned-dropzon"] = new() { "StartDateId", "EndDateId" },
                 ["context-dropzone"] = new() { "ChapterId" },
@@ -398,14 +398,14 @@ namespace FantasyDB.Features
             },
             ["Chapter"] = new(StringComparer.OrdinalIgnoreCase)
             {
-                ["dashboard"] = new() { "StartDateId" },
+                ["calendar"] = new() { "StartDateId" },
                 ["timeline"] = new() { "StartDateId" },
                 ["unassigned-dropzon"] = new() { "StartDateId" },
                 ["context-dropzone"] = new() { "StartDateId" }
             },
             ["Era"] = new(StringComparer.OrdinalIgnoreCase)
             {
-                ["dashboard"] = new() { "StartDateId", "EndDateId" },
+                ["calendar"] = new() { "StartDateId", "EndDateId" },
                 ["timeline"] = new() { "StartDateId", "EndDateId" },
                 ["unassigned-dropzone"] = new() { "StartDateId", "EndDateId" }
             },

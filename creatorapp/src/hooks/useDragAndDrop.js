@@ -1,69 +1,103 @@
-// 📁 src/hooks/useDragAndDrop.js
-//useDragAndDrop.ts:
-//Already handles drag start and drop actions for all entities. Ensure it's extended to support PlotPoint drag-and-drop (update context data).
-//usePlotPointDragResize.ts:
-//Already handles resizing for PlotPoints. Ensure it's extended to work inside the Dashboard grid and is conditionally triggered for compact view.
-//What's Missing/Needed:
-//Ensure the context prop is passed correctly (e.g., context="dashboard" in the Dashboard).
-//Render ghost cards in the date based on startDate/endDate.
-//Handle resize in date using usePlotPointDragResize inside the Date grid.
+// 📁 hooks/useDragAndDrop.js
+import { useEffect, useState } from 'react';
 
+export const createDragOverHandler = (setIsOver) => (e) => {
+    e.preventDefault();
+    setIsOver?.(true);
+};
 
-export function useDragAndDrop({ handleUpdateEntity }) {
-    const handleDragStart = (e, entity) => {
-        if (!entity || !entity.entityType || !entity.id) {
-            console.warn('❌ Invalid drag entity:', entity);
-            return;
-        }
+export const createDragLeaveHandler = (setIsOver) => () => {
+    setIsOver?.(false);
+};
 
-        e.dataTransfer.setData('entityType', entity.entityType);
-        e.dataTransfer.setData('entityId', entity.id.toString());
-    };
+export function useDragScroll(isDragging) {
+    useEffect(() => {
+        if (!isDragging) return;
 
-    const handleDrop = (e, dropTarget) => {
-        e.preventDefault();
+        const scrollMargin = 50;
+        const scrollSpeed = 15;
 
-        const entityType = e.dataTransfer.getData('entityType');
-        const entityId = parseInt(e.dataTransfer.getData('entityId'), 10);
-
-        if (!entityType || !entityId) {
-            console.warn('❌ Missing drop data');
-            return;
-        }
-
-        const entity = { id: entityId, entityType };
-        const payload = {};
-        let updateTargetType = entityType;
-        let updateTargetId = entityId;
-
-        if (dropTarget === 'POV-dropzone' && entityType === 'Character') {
-            const chapterId = e.currentTarget.closest('[data-chapter-id]')?.dataset?.chapterId;
-            if (!chapterId) {
-                console.warn('❌ No chapterId found for POV drop');
-                return;
+        const handleMouseMove = (e) => {
+            if (e.clientY < scrollMargin) {
+                window.scrollBy(0, -scrollSpeed);
+            } else if (window.innerHeight - e.clientY < scrollMargin) {
+                window.scrollBy(0, scrollSpeed);
             }
-            updateTargetType = 'Chapter';
-            updateTargetId = parseInt(chapterId);
-            payload.povCharacterId = entity.id;
-        } else if (dropTarget === 'context-dropzone' || dropTarget === 'unassigned-sidebar') {
-            const chapterId = dropTarget === 'unassigned-sidebar'
-                ? null
-                : parseInt(e.currentTarget.closest('[data-chapter-id]')?.dataset?.chapterId || '');
-            payload.chapterId = chapterId;
+        };
+
+        document.addEventListener('mousemove', handleMouseMove);
+        return () => {
+            document.removeEventListener('mousemove', handleMouseMove);
+        };
+    }, [isDragging]);
+}
+
+export function useDragAndDrop({ onDropSuccess }) {
+    const [isDragging, setIsDragging] = useState(false);
+
+    const handleDragStart = (e, entity, fromContext) => {
+        if (!entity || !entity.entityType || !entity.id || !fromContext) {
+            console.warn('❌ Invalid drag start payload');
+            return;
         }
 
-        console.log('[📦 handleDrop]', { entity, payload, dropTarget });
-        handleUpdateEntity({ entity, payload, updateTargetType, updateTargetId, dropTarget });
+        const payload = {
+            entityType: entity.entityType,
+            entityId: entity.id,
+            fromContext
+        };
+
+        e.dataTransfer.setData('application/json', JSON.stringify(payload));
+        e.dataTransfer.effectAllowed = 'move';
+        setIsDragging(true);
+
+        console.log('📦 Drag started:', payload);
     };
 
-    const handleDragOver = (e) => e.preventDefault();
-    const handleDragLeave = () => { };
+    const handleDrop = async (e, dropTargetType, dropTargetId = null) => {
+        e.preventDefault();
+        setIsDragging(false);
+
+        const raw = e.dataTransfer.getData('application/json');
+        if (!raw) return;
+
+        try {
+            const { entityType, entityId, fromContext } = JSON.parse(raw);
+
+            const payload = {
+                EntityType: entityType,
+                Id: entityId,
+                DropTargetType: dropTargetType,
+                DropTargetId: dropTargetId,
+                FromContext: fromContext
+            };
+
+            const endpoint =
+                dropTargetType === 'unassigned-dropzone'
+                    ? '/api/cards/dropToUnassigned'
+                    : '/api/cards/drop';
+
+            const res = await fetch(endpoint, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await res.json();
+            console.log(`✅ Drop successful to ${dropTargetType}:`, result);
+
+            await onDropSuccess?.(entityId, dropTargetId, entityType);
+
+        } catch (err) {
+            console.error('❌ Drop failed:', err);
+        }
+    };
 
     return {
         handleDragStart,
         handleDrop,
-        handleDragOver,
-        handleDragLeave,
+        isDragging,
+        handleDragOver: (e) => e.preventDefault(),
+        handleDragLeave: () => { }
     };
 }
-

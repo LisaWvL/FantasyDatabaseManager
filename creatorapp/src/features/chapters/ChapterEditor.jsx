@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import TiptapEditorWithToolbar from './TiptapEditorWithToolbar';
 import { updateChapter } from './ChapterApi';
 import './ChapterEditor.css';
-import SmallEntityCard from '../../utils/SmallEntityCard';
+import Card from '../../components/Card';
 
 export default function ChapterEditor({ full, onSave, onDropToChapter }) {
     const { chapter, entities = [] } = full;
@@ -105,7 +105,7 @@ export default function ChapterEditor({ full, onSave, onDropToChapter }) {
                 >
                     <div className="dropzone-title">POV Character</div>
                     {povCharacterName ? (
-                        <SmallEntityCard
+                        <Card
                             entity={{ name: povCharacterName }}
                             entityType="Character"
                             onContextMenu={handleContextMenu}
@@ -143,7 +143,7 @@ export default function ChapterEditor({ full, onSave, onDropToChapter }) {
                 <div className="dropzone-title">Connected Entities</div>
                 {entities.length > 0 ? (
                     entities.map((entity) => (
-                        <SmallEntityCard
+                        <Card
                             key={`${entity.entityType?.toLowerCase?.()}-${entity.id}`}
                             entity={entity}
                             entityType={entity.entityType}
